@@ -1,0 +1,583 @@
+@extends('adminDashboard.index')
+@section('adminDashboard.content')
+<style>
+    /* =========================================
+       PAGE
+    ========================================= */
+
+    .container-fluid{
+        padding: 30px;
+    }
+
+    .card{
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    }
+
+    .card-header{
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        padding: 22px 30px;
+        border: none;
+    }
+
+    .card-header h3{
+        color: #fff;
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .card-body{
+        padding: 35px;
+    }
+
+    /* =========================================
+       LABELS
+    ========================================= */
+
+    .form-label{
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+
+    /* =========================================
+       INPUTS
+    ========================================= */
+
+    .form-control,
+    .form-select,
+    select{
+        min-height: 52px;
+        border-radius: 14px !important;
+        border: 1px solid #dbe2ea !important;
+        background: #f9fafb !important;
+        font-size: 15px;
+        padding: 12px 18px;
+        transition: all .3s ease;
+        box-shadow: none !important;
+    }
+
+    textarea.form-control{
+        min-height: 120px;
+    }
+
+    .form-control:focus,
+    .form-select:focus,
+    select:focus{
+        border-color: #4f46e5 !important;
+        background: #fff !important;
+        box-shadow: 0 0 0 4px rgba(79,70,229,.12) !important;
+    }
+
+    /* =========================================
+       SELECT2
+    ========================================= */
+
+    .select2-container--default .select2-selection--multiple{
+        border-radius: 14px !important;
+        border: 1px solid #dbe2ea !important;
+        min-height: 52px !important;
+        padding: 8px !important;
+        background: #f9fafb !important;
+    }
+
+    .select2-selection__choice{
+        background: linear-gradient(135deg,#4f46e5,#7c3aed) !important;
+        border: none !important;
+        color: white !important;
+        border-radius: 30px !important;
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+    }
+
+    /* =========================================
+       CKEDITOR
+    ========================================= */
+
+    .ck-editor{
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid #dbe2ea;
+    }
+
+    .ck.ck-toolbar{
+        background: #f3f4f6 !important;
+        border: none !important;
+        padding: 10px !important;
+    }
+
+    .ck-editor__editable{
+        min-height: 500px !important;
+        padding: 25px !important;
+        font-size: 16px !important;
+        line-height: 1.9 !important;
+    }
+
+    /* =========================================
+       SOURCE EDITOR
+    ========================================= */
+
+    #sourceEditor{
+        background: #111827 !important;
+        color: #f9fafb !important;
+        border-radius: 16px !important;
+        border: none !important;
+        padding: 20px !important;
+        min-height: 500px;
+    }
+
+    /* =========================================
+       BUTTONS
+    ========================================= */
+
+    .btn{
+        border-radius: 14px !important;
+        padding: 12px 22px;
+        font-weight: 600;
+        transition: .3s;
+    }
+
+    .btn-primary{
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        border: none;
+    }
+
+    .btn-primary:hover{
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(79,70,229,.25);
+    }
+
+    .btn-secondary{
+        background: #e5e7eb;
+        border: none;
+        color: #111827;
+    }
+
+    .btn-group .btn{
+        border-radius: 12px !important;
+    }
+
+    /* =========================================
+       HEADINGS
+    ========================================= */
+
+    h5{
+        font-size: 24px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 20px;
+    }
+
+    /* =========================================
+       FILE INPUT
+    ========================================= */
+
+    input[type="file"]{
+        padding: 12px;
+        background: #f9fafb;
+    }
+
+    /* =========================================
+       CHECKBOX
+    ========================================= */
+
+    .form-check-input{
+        width: 20px;
+        height: 20px;
+        margin-top: 2px;
+    }
+
+    .form-check-label{
+        margin-left: 10px;
+        font-weight: 600;
+    }
+
+    /* =========================================
+       WORD COUNT
+    ========================================= */
+
+    #wordCount{
+        font-weight: 700;
+        color: #4f46e5;
+    }
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @media(max-width:768px){
+
+        .container-fluid{
+            padding: 15px;
+        }
+
+        .card-body{
+            padding: 20px;
+        }
+
+        .row{
+            flex-direction: column;
+        }
+
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Create New Post</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data" id="postForm">
+                        @csrf
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Title *</label>
+                            <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}" required>
+                            @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Category *</label>
+                                    <select name="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
+                                        <option value="">Select Category</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Tags</label>
+                                    <select name="tags[]" class="form-control" multiple>
+                                        @foreach($tags as $tag)
+                                            <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags', [])) ? 'selected' : '' }}>{{ $tag->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Excerpt</label>
+                            <textarea name="excerpt" rows="3" class="form-control">{{ old('excerpt') }}</textarea>
+                        </div>
+
+                        <!-- Content Editor with Source Toggle -->
+                        <h5 class="mt-4 mb-3"><i class="fas fa-edit"></i> Content</h5>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="form-label mb-0">Content * <small class="text-muted">(Min 300 words recommended)</small></label>
+                                <div class="btn-group" role="group">
+                                    <button type="button" id="visualModeBtn" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i> Visual
+                                    </button>
+                                    <button type="button" id="htmlModeBtn" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-code"></i> HTML
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Visual Editor Container -->
+                            <div id="editorContainer">
+                                <textarea name="content" id="editor" class="form-control @error('content') is-invalid @enderror" style="display:none;">{{ old('content') }}</textarea>
+                            </div>
+                            
+                            <!-- HTML Source Editor (Hidden by default) -->
+                            <div id="sourceContainer" style="display: none;">
+                                <textarea id="sourceEditor" class="form-control font-monospace" rows="20" 
+                                          style="font-size: 13px; background-color: white; color: #d4d4d4; border-radius: 6px;"></textarea>
+                            </div>
+                            
+                            <small class="text-muted mt-1 d-block">Word count: <span id="wordCount">0</span> words</small>
+                            @error('content')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Featured Image</label>
+                            <input type="file" name="featured_image" class="form-control" accept="image/*">
+                        </div>
+
+                        <!-- SEO Fields -->
+                        <h5 class="mt-4">SEO Settings</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Meta Title</label>
+                            <input type="text" name="meta_title" class="form-control" value="{{ old('meta_title') }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Meta Description</label>
+                            <textarea name="meta_description" rows="2" class="form-control">{{ old('meta_description') }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Meta Keywords</label>
+                            <input type="text" name="meta_keywords" class="form-control" value="{{ old('meta_keywords') }}">
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="is_published" value="1" class="form-check-input" id="published" {{ old('is_published') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="published">Publish Now</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Create Post
+                        </button>
+                        <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('styles')
+<style>
+    .ck-editor__editable {
+        min-height: 400px;
+    }
+    #sourceEditor {
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        resize: vertical;
+        tab-size: 4;
+    }
+    .btn-group .btn {
+        transition: all 0.3s ease;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+<script>
+    let editorInstance;
+    let isSourceMode = false;
+    let editorTextarea = document.querySelector('#editor');
+
+    // Custom Upload Adapter
+    class MyUploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
+        }
+
+        upload() {
+            return this.loader.file.then(file => new Promise((resolve, reject) => {
+                const data = new FormData();
+                data.append('upload', file);
+                data.append('_token', '{{ csrf_token() }}');
+
+                console.log('Uploading image...');
+
+                fetch('{{ route("admin.upload.image") }}', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    return response.text().then(text => {
+                        try {
+                            const json = JSON.parse(text);
+                            if (!response.ok) {
+                                throw new Error(json.error?.message || json.message || 'Upload failed');
+                            }
+                            return json;
+                        } catch (e) {
+                            console.error('Response text:', text);
+                            throw new Error('Server error: ' + text.substring(0, 100));
+                        }
+                    });
+                })
+                .then(result => {
+                    console.log('Upload successful:', result);
+                    if (result.url) {
+                        resolve({ default: result.url });
+                    } else {
+                        throw new Error('No URL in response');
+                    }
+                })
+                .catch(error => {
+                    console.error('Upload error:', error);
+                    alert('Image upload failed: ' + error.message);
+                    reject(error);
+                });
+            }));
+        }
+
+        abort() {
+            console.log('Upload aborted');
+        }
+    }
+
+    function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return new MyUploadAdapter(loader);
+        };
+    }
+
+    // Initialize CKEditor
+    ClassicEditor
+        .create(editorTextarea, {
+            extraPlugins: [MyCustomUploadAdapterPlugin],
+            toolbar: {
+                items: [
+                    'heading', '|',
+                    'bold', 'italic', 'underline', 'strikethrough', '|',
+                    'link', 'bulletedList', 'numberedList', '|',
+                    'outdent', 'indent', '|',
+                    'blockQuote', 'insertTable', 'imageUpload', '|',
+                    'undo', 'redo'
+                ]
+            },
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'imageStyle:inline',
+                    'imageStyle:block',
+                    'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+            }
+        })
+        .then(editor => {
+            editorInstance = editor;
+            console.log('CKEditor initialized successfully');
+            
+            // Set old content if validation fails
+            const oldContent = `{!! addslashes(old('content', '')) !!}`;
+            if (oldContent) {
+                editor.setData(oldContent);
+            }
+
+            // Auto-update textarea on editor change
+            editor.model.document.on('change:data', () => {
+                editorTextarea.value = editor.getData();
+            });
+        })
+        .catch(error => {
+            console.error('CKEditor initialization failed:', error);
+            alert('Failed to initialize editor. Please refresh the page.');
+        });
+
+    // Form submit handler - CRITICAL
+    document.getElementById('postForm').addEventListener('submit', function(e) {
+        if (isSourceMode) {
+            // If in HTML mode, get content from source editor
+            editorTextarea.value = document.getElementById('sourceEditor').value;
+        } else if (editorInstance) {
+            // If in visual mode, get content from CKEditor
+            editorTextarea.value = editorInstance.getData();
+        }
+        
+        // Validate content is not empty
+        if (!editorTextarea.value.trim()) {
+            e.preventDefault();
+            alert('Please enter some content for the post.');
+            return false;
+        }
+        
+        console.log('Content being submitted:', editorTextarea.value.substring(0, 100) + '...');
+    });
+
+    // Toggle to Visual Mode
+    document.getElementById('visualModeBtn').addEventListener('click', function() {
+        if (!isSourceMode) return;
+        
+        isSourceMode = false;
+        
+        // Get HTML from source editor and set to CKEditor
+        const htmlContent = document.getElementById('sourceEditor').value;
+        editorInstance.setData(htmlContent);
+        
+        // Toggle visibility
+        document.getElementById('sourceContainer').style.display = 'none';
+        document.getElementById('editorContainer').style.display = 'block';
+        
+        // Update button styles
+        this.classList.remove('btn-outline-primary');
+        this.classList.add('btn-primary');
+        document.getElementById('htmlModeBtn').classList.remove('btn-primary');
+        document.getElementById('htmlModeBtn').classList.add('btn-outline-primary');
+    });
+
+    // Toggle to HTML Mode
+    document.getElementById('htmlModeBtn').addEventListener('click', function() {
+        if (isSourceMode) return;
+        
+        isSourceMode = true;
+        
+        // Get HTML from CKEditor and set to source editor
+        const htmlContent = editorInstance.getData();
+        document.getElementById('sourceEditor').value = formatHTML(htmlContent);
+        
+        // Toggle visibility
+        document.getElementById('editorContainer').style.display = 'none';
+        document.getElementById('sourceContainer').style.display = 'block';
+        
+        // Update button styles
+        this.classList.remove('btn-outline-primary');
+        this.classList.add('btn-primary');
+        document.getElementById('visualModeBtn').classList.remove('btn-primary');
+        document.getElementById('visualModeBtn').classList.add('btn-outline-primary');
+    });
+
+    // Format HTML for better readability
+    function formatHTML(html) {
+        let formatted = '';
+        let indent = 0;
+        const tab = '    ';
+        
+        html = html.replace(/></g, '>\n<');
+        const lines = html.split('\n');
+        
+        lines.forEach(line => {
+            line = line.trim();
+            if (!line) return;
+            
+            if (line.match(/^<\/\w/)) {
+                indent = Math.max(0, indent - 1);
+            }
+            
+            formatted += tab.repeat(indent) + line + '\n';
+            
+            if (line.match(/^<\w[^>]*[^\/]>/) && !line.match(/^<(br|hr|img|input|meta|link)/i)) {
+                indent++;
+            }
+        });
+        
+        return formatted.trim();
+    }
+
+    // Handle Tab key in source editor
+    document.getElementById('sourceEditor').addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+            this.selectionStart = this.selectionEnd = start + 4;
+        }
+    });
+</script>
+@endpush
+@endsection
