@@ -1,4 +1,4 @@
-@extends('website.index')
+﻿@extends('website.index')
 
 @section('title', $settings->meta_title ?? 'Affordable Web Development Company in Noida | Shiva Tech Digital | Delhi NCR')
 
@@ -301,304 +301,6 @@
     </script>
 @endpush
 
-@push('styles')
-<style>
-    .section-title-creative-dark{
-        color: black;
-    }
-    /* ========================================
-       LEAD FORM BOX STYLES
-    ======================================== */
-    .hero-lead-box {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.2);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        padding: 20px;
-        margin-top: 30px;
-        border-radius: 15px;
-        animation: fadeIn 1.5s ease;
-        text-align: center;
-    }
-
-    .hero-lead-box h2 {
-        color: #fff;
-        margin-bottom: 10px;
-        font-weight: 600;
-        font-size: 1.5rem;
-    }
-
-    .lead-form {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .lead-form .form-group {
-        flex: 1 1 200px;
-        max-width: 250px;
-    }
-
-    .lead-form input {
-        width: 100%;
-        padding: 12px 15px;
-        border-radius: 8px;
-        border: 2px solid transparent;
-        outline: none;
-        font-size: 14px;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .lead-form input:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
-    }
-
-    .lead-form input::placeholder {
-        color: #999;
-    }
-
-    @media (max-width: 768px) {
-        .lead-form .form-group {
-            flex: 1 1 45%;
-            max-width: none;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .lead-form .form-group {
-            flex: 1 1 100%;
-        }
-        
-        .lead-form input {
-            padding: 14px;
-        }
-    }
-
-    .lead-btn {
-        background: linear-gradient(135deg, #ff006a 0%, #ff4d4d 100%);
-        color: #fff;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 15px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        white-space: nowrap;
-    }
-
-    .lead-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(255, 0, 106, 0.4);
-    }
-
-    .lead-btn:active {
-        transform: translateY(0);
-    }
-
-    .whatsapp-link-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .whatsapp-btn {
-        display: inline-flex;
-        align-items: center;
-        margin-top: 15px;
-        font-weight: 600;
-        color: #00ff8a;
-        padding: 12px 25px;
-        border: 2px solid #00ff8a;
-        border-radius: 10px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .whatsapp-btn:hover {
-        background: #00ff8a;
-        color: #000;
-    }
-
-    /* ========================================
-       FORM MESSAGES
-    ======================================== */
-    .form-message {
-        padding: 12px 20px;
-        border-radius: 8px;
-        margin-top: 15px;
-        text-align: center;
-        font-weight: 500;
-    }
-
-    .form-message.success {
-        background: rgba(0, 255, 138, 0.15);
-        color: #00ff8a;
-        border: 1px solid rgba(0, 255, 138, 0.3);
-    }
-
-    .form-message.error {
-        background: rgba(255, 0, 106, 0.15);
-        color: #ff006a;
-        border: 1px solid rgba(255, 0, 106, 0.3);
-    }
-
-    .error-text {
-        color: #ff6b6b;
-        font-size: 12px;
-        margin-top: 4px;
-    }
-
-    /* ========================================
-       ACCESSIBILITY IMPROVEMENTS
-    ======================================== */
-    .visually-hidden {
-        position: absolute !important;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0 !important;
-        margin: -1px !important;
-        overflow: hidden !important;
-        clip: rect(0, 0, 0, 0) !important;
-        white-space: nowrap !important;
-        border: 0 !important;
-    }
-
-    .skip-link {
-        position: absolute;
-        top: -40px;
-        left: 0;
-        background: #0d6efd;
-        color: #fff;
-        padding: 10px 20px;
-        z-index: 10000;
-        text-decoration: none;
-        border-radius: 0 0 5px 0;
-        transition: top 0.3s ease;
-    }
-
-    .skip-link:focus {
-        top: 0;
-    }
-
-    /* ========================================
-       PARTNER LOGO STYLES
-    ======================================== */
-    .partner-logo-img {
-        max-width: 80px;
-        max-height: 60px;
-        width: auto;
-        height: auto;
-        object-fit: contain;
-        filter: grayscale(100%);
-        opacity: 0.7;
-        transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    .partner-card:hover .partner-logo-img {
-        filter: grayscale(0%);
-        opacity: 1;
-        transform: scale(1.05);
-    }
-
-    /* ========================================
-       STAT NUMBER STYLES
-    ======================================== */
-    .stat-number {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #fff;
-        margin: 0;
-        line-height: 1.2;
-    }
-
-    .stat-label {
-        font-size: 0.875rem;
-        color: rgba(255, 255, 255, 0.8);
-        margin: 0;
-    }
-
-    /* ========================================
-       ANIMATION KEYFRAMES
-    ======================================== */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* ========================================
-       FAQ ACCORDION STYLES
-    ======================================== */
-    .faq-section .accordion-item {
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        margin-bottom: 15px;
-        overflow: hidden;
-    }
-
-    .faq-section .accordion-button {
-        font-weight: 600;
-        font-size: 1.1rem;
-        padding: 20px;
-        background: #fff;
-    }
-
-    .faq-section .accordion-button:not(.collapsed) {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: #fff;
-    }
-
-    .faq-section .accordion-body {
-        padding: 20px;
-        background: #f8f9fa;
-    }
-
-    .faq-section .accordion-body ul {
-        margin: 10px 0;
-        padding-left: 20px;
-    }
-
-    .faq-section .accordion-body li {
-        margin-bottom: 8px;
-    }
-
-    /* ========================================
-       FOCUS STYLES FOR ACCESSIBILITY
-    ======================================== */
-    a:focus,
-    button:focus,
-    input:focus,
-    select:focus,
-    textarea:focus {
-        outline: 2px solid #667eea;
-        outline-offset: 2px;
-    }
-
-    /* ========================================
-       REDUCED MOTION PREFERENCE
-    ======================================== */
-    @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-        }
-    }
-</style>
-@endpush
-
 @section('website.content')
 
     <!-- Breadcrumb Navigation (Hidden visually but good for SEO) -->
@@ -644,7 +346,7 @@
                             <span class="badge-text">Affordable Web Development in Noida, Delhi NCR</span>
                         </div>
 
-                        <!-- ✅ SINGLE H1 TAG - NOIDA FOCUSED -->
+                        <!-- âœ… SINGLE H1 TAG - NOIDA FOCUSED -->
                         <h1 class="hero-title" id="hero-heading" itemprop="headline">
                             <span class="title-line-1">Transform Your</span>
                             <span class="title-line-2">
@@ -690,7 +392,7 @@
                             </a>
                         </div>
 
-                        <!-- ✅ REALISTIC NUMBERS -->
+                        <!-- âœ… REALISTIC NUMBERS -->
                         <div class="hero-stats" data-aos="fade-up" data-aos-delay="500" role="list" aria-label="Our achievements">
                             <div class="stat-item" role="listitem">
                                 <div class="stat-icon" aria-hidden="true">
@@ -808,12 +510,12 @@
         <!-- NOIDA FOCUSED TICKER -->
         <div class="social-proof-ticker" aria-label="Social proof" role="marquee">
             <div class="ticker-content">
-                <span class="ticker-item">🚀 New website launched in Noida!</span>
-                <span class="ticker-item">⭐ 4.9/5 rated on Google Reviews</span>
-                <span class="ticker-item">💰 Affordable pricing fors</span>
-                <span class="ticker-item">🏙️ Serving entire Delhi NCR</span>
-                <span class="ticker-item">🌐 Clients in 10+ countries</span>
-                <span class="ticker-item">🚀 New website launched in Noida!</span>
+                <span class="ticker-item">ðŸš€ New website launched in Noida!</span>
+                <span class="ticker-item">â­ 4.9/5 rated on Google Reviews</span>
+                <span class="ticker-item">ðŸ’° Affordable pricing fors</span>
+                <span class="ticker-item">ðŸ™ï¸ Serving entire Delhi NCR</span>
+                <span class="ticker-item">ðŸŒ Clients in 10+ countries</span>
+                <span class="ticker-item">ðŸš€ New website launched in Noida!</span>
             </div>
         </div>
     </section>
@@ -824,7 +526,7 @@
     <section class="lead-form-section py-4" id="get-quote" aria-labelledby="lead-form-heading">
         <div class="container">
             <div class="hero-lead-box" data-aos="fade-up" data-aos-delay="100">
-                <h2 id="lead-form-heading">🚀 Get Free Quote for Your Project in Delhi NCR</h2>
+                <h2 id="lead-form-heading">ðŸš€ Get Free Quote for Your Project in Delhi NCR</h2>
                 <p class="text-white-50 mb-3">Affordable web development, mobile app & digital marketing fors and businesses in Noida</p>
                 
                 <form action="{{ route('servicecontact.submit') }}" method="POST" class="lead-form" 
@@ -1744,11 +1446,11 @@
                                 <div class="accordion-body">
                                     <p>Our affordable website development pricing in Noida:</p>
                                     <ul>
-                                        <li><strong>Startup Landing Page:</strong> ₹5,000 - ₹10,000</li>
-                                        <li><strong>Business Website (5-10 pages):</strong> ₹10,000 - ₹20,000</li>
-                                        <li><strong>E-commerce Website:</strong> ₹10,000 - ₹25,000</li>
-                                        <li><strong>Custom Web Application:</strong> ₹20,000+</li>
-                                        <li><strong>Mobile App (Flutter):</strong> ₹30,000 - ₹3,00,000</li>
+                                        <li><strong>Startup Landing Page:</strong> â‚¹5,000 - â‚¹10,000</li>
+                                        <li><strong>Business Website (5-10 pages):</strong> â‚¹10,000 - â‚¹20,000</li>
+                                        <li><strong>E-commerce Website:</strong> â‚¹10,000 - â‚¹25,000</li>
+                                        <li><strong>Custom Web Application:</strong> â‚¹20,000+</li>
+                                        <li><strong>Mobile App (Flutter):</strong> â‚¹30,000 - â‚¹3,00,000</li>
                                     </ul>
                                     <p><strong>EMI options available!</strong> We offer flexible payment plans fors. <a href="{{ route('contact') }}">Contact us</a> at +91-7007294764 for a free quote.</p>
                                 </div>
@@ -1817,12 +1519,12 @@
                                     </address>
                                     <p><strong>We serve the entire Delhi NCR:</strong></p>
                                     <ul>
-                                        <li>🏙️ <strong>Noida:</strong> All sectors including 62, 63, 18, 15, 16</li>
-                                        <li>🏙️ <strong>Greater Noida:</strong> Knowledge Park, Alpha, Beta, Gamma</li>
-                                        <li>🏙️ <strong>Delhi:</strong> South Delhi, East Delhi, Central Delhi</li>
-                                        <li>🏙️ <strong>Gurgaon:</strong> Cyber City, Golf Course Road, Sohna Road</li>
-                                        <li>🏙️ <strong>Ghaziabad:</strong> Indirapuram, Vaishali, Kaushambi</li>
-                                        <li>🏙️ <strong>Faridabad:</strong> Sector 15, 16, Ballabgarh</li>
+                                        <li>ðŸ™ï¸ <strong>Noida:</strong> All sectors including 62, 63, 18, 15, 16</li>
+                                        <li>ðŸ™ï¸ <strong>Greater Noida:</strong> Knowledge Park, Alpha, Beta, Gamma</li>
+                                        <li>ðŸ™ï¸ <strong>Delhi:</strong> South Delhi, East Delhi, Central Delhi</li>
+                                        <li>ðŸ™ï¸ <strong>Gurgaon:</strong> Cyber City, Golf Course Road, Sohna Road</li>
+                                        <li>ðŸ™ï¸ <strong>Ghaziabad:</strong> Indirapuram, Vaishali, Kaushambi</li>
+                                        <li>ðŸ™ï¸ <strong>Faridabad:</strong> Sector 15, 16, Ballabgarh</li>
                                     </ul>
                                     <p><strong>Contact:</strong> <a href="tel:+917007294764">+91-7007294764</a> | <a href="mailto:info@shivatechdigital.com">info@shivatechdigital.com</a></p>
                                 </div>
@@ -1845,7 +1547,7 @@
                                         <li><strong>Training:</strong> How to manage your website/app</li>
                                         <li><strong>Documentation:</strong> User guides and admin manuals</li>
                                     </ul>
-                                    <p>Optional maintenance packages from <strong>₹3,000/month</strong> for ongoing support, updates, and backups.</p>
+                                    <p>Optional maintenance packages from <strong>â‚¹3,000/month</strong> for ongoing support, updates, and backups.</p>
                                 </div>
                             </div>
                         </div>
