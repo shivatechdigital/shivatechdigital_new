@@ -5140,3 +5140,57 @@ select.form-control-creative option {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
+
+/* =============================================
+   ABOUT PAGE - WHY CHOOSE SECTION
+   (was missing from style.css)
+============================================= */
+.why-choose-section {
+    background: #fff;
+}
+
+.why-choose-card {
+    padding: 30px;
+    border-radius: 15px;
+    background: #f8f9fa;
+    height: 100%;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.why-choose-card:hover {
+    background: #fff;
+    border-color: #667eea;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15);
+    transform: translateY(-5px);
+}
+
+.why-choose-card .icon-box {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.why-choose-card .icon-box i {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.why-choose-card h4 {
+    font-size: 1.1rem;
+    color: #1a1a2e;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.why-choose-card p {
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
