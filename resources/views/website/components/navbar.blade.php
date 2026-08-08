@@ -30,6 +30,7 @@
     .navbar-nav .nav-link:hover,
     .navbar-nav .nav-link.active {
         color: #0b0b0c !important;
+        font-weight: 700;
     }
 
     .navbar-nav .nav-link::after {
