@@ -5500,6 +5500,7 @@ select.form-control-creative option {
 .hero-carousel-section {
     position: relative;
     overflow: hidden;
+    background: #fff !important;
 }
 
 /* Base slide */
@@ -5510,10 +5511,10 @@ select.form-control-creative option {
 }
 
 /* Per-slide backgrounds - LIGHT MODE */
-.slide-web      { background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 60%, #dbeafe 100%); }
-.slide-android  { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #d1fae5 100%); }
-.slide-marketing{ background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 60%, #fed7aa 100%); }
-.slide-cloud    { background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 60%, #ddd6fe 100%); }
+.slide-web      { background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 60%, #dbeafe 100%) !important; }
+.slide-android  { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #d1fae5 100%) !important; }
+.slide-marketing{ background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 60%, #fed7aa 100%) !important; }
+.slide-cloud    { background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 60%, #ddd6fe 100%) !important; }
 
 /* Decorative bg shape */
 .slide-bg-shape {
@@ -5552,7 +5553,7 @@ select.form-control-creative option {
 .slide-title {
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 800;
-    color: #0f172a;
+    color: #0f172a !important;
     line-height: 1.2;
     margin-bottom: 20px;
 }
@@ -5565,7 +5566,7 @@ select.form-control-creative option {
 
 /* Description */
 .slide-desc {
-    color: #475569;
+    color: #475569 !important;
     font-size: 1.05rem;
     line-height: 1.75;
     margin-bottom: 28px;
