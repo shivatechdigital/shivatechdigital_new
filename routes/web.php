@@ -80,6 +80,12 @@ Route::delete('/comment/{comment}',[CommentController::class,'destroy'])->name('
 Route::prefix('services')->name('services.')->group(function () {
     Route::get('/our-services', [ServicesController::class, 'index'])->name('index');
     Route::get('/web-development', [ServicesController::class, 'webDevelopment'])->name('web-development');
+
+    // City-specific web development pages (SEO)
+    Route::get('/web-development-noida',     [ServicesController::class, 'webDevelopmentNoida'])->name('web-development-noida');
+    Route::get('/web-development-delhi',     [ServicesController::class, 'webDevelopmentDelhi'])->name('web-development-delhi');
+    Route::get('/web-development-gurgaon',   [ServicesController::class, 'webDevelopmentGurgaon'])->name('web-development-gurgaon');
+    Route::get('/web-development-ghaziabad', [ServicesController::class, 'webDevelopmentGhaziabad'])->name('web-development-ghaziabad');
     Route::get('/mobile-app-development', [ServicesController::class, 'mobileAppDevelopment'])->name('mobile-app');
     Route::get('/ui-ux-design', [ServicesController::class, 'uiUxDesign'])->name('ui-ux');
     Route::get('/ecommerce-development', [ServicesController::class, 'ecommerce'])->name('ecommerce');

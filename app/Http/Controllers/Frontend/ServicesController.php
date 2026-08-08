@@ -74,6 +74,26 @@ class ServicesController extends Controller
         return view('website.pages.services.web-development', compact('faqs', 'relatedServices'));
     }
 
+    public function webDevelopmentNoida()
+    {
+        return view('website.pages.services.web-development-noida');
+    }
+
+    public function webDevelopmentDelhi()
+    {
+        return view('website.pages.services.web-development-delhi');
+    }
+
+    public function webDevelopmentGurgaon()
+    {
+        return view('website.pages.services.web-development-gurgaon');
+    }
+
+    public function webDevelopmentGhaziabad()
+    {
+        return view('website.pages.services.web-development-ghaziabad');
+    }
+
     public function mobileAppDevelopment()
     {
         $faqs = [
