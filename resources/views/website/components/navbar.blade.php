@@ -29,7 +29,7 @@
 
     .navbar-nav .nav-link:hover,
     .navbar-nav .nav-link.active {
-        color: #262627 !important;
+        color: #0b0b0c !important;
     }
 
     .navbar-nav .nav-link::after {
