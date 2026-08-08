@@ -316,207 +316,194 @@
     </nav>
 
     <!-- ========================================
-         HERO SECTION - NOIDA
+         HERO CAROUSEL SECTION
     ======================================== -->
-    <section class="hero-section" id="home" aria-labelledby="hero-heading" itemscope itemtype="https://schema.org/WPHeader">
-        <div class="hero-animated-bg" aria-hidden="true">
-            <div class="gradient-orb orb-1"></div>
-            <div class="gradient-orb orb-2"></div>
-            <div class="gradient-orb orb-3"></div>
-        </div>
+    <section class="hero-carousel-section" id="home" aria-labelledby="hero-heading">
 
-        <div class="particles-container" id="particles" aria-hidden="true"></div>
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5500">
 
-        <div class="geometric-shapes" aria-hidden="true">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
-            <div class="shape shape-4"></div>
-            <div class="shape shape-5"></div>
-        </div>
+            <div class="carousel-indicators hero-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Web Development"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Android Development"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Digital Marketing"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3" aria-label="Cloud Migration"></button>
+            </div>
 
-        <div class="grid-background" aria-hidden="true"></div>
+            <div class="carousel-inner">
 
-        <div class="container">
-            <div class="row align-items-center min-vh-100">
-                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
-                    <div class="hero-content" itemprop="text">
-                        <div class="hero-badge">
-                            <span class="badge-dot" aria-hidden="true"></span>
-                            <span class="badge-text">Affordable Web Development in Noida, Delhi NCR</span>
-                        </div>
-
-                        <!-- âœ… SINGLE H1 TAG - NOIDA FOCUSED -->
-                        <h1 class="hero-title" id="hero-heading" itemprop="headline">
-                            <span class="title-line-1">Transform Your</span>
-                            <span class="title-line-2">
-                                <span class="gradient-text typed-text" id="typedText" aria-label="Digital Business"></span>
-                                <span class="cursor" aria-hidden="true">|</span>
-                            </span>
-                            <span class="title-line-3">Presence</span>
-                        </h1>
-
-                        <p class="hero-subtitle" itemprop="description">
-                            We are an <strong class="highlight-text">affordable web development in Noida</strong> 
-                            creating <strong class="highlight-text">stunning web & mobile applications</strong>
-                            with powerful <strong class="highlight-text">SEO and digital marketing strategies</strong>
-                            to grow your business. Serving <strong>Delhi NCR, India, USA, UK, UAE</strong> and worldwide.
-                        </p>
-
-                        <div class="hero-tags" role="list" aria-label="Our expertise areas">
-                            <span class="tag" role="listitem" data-aos="fade-up" data-aos-delay="100">
-                                <i class="fas fa-check-circle" aria-hidden="true"></i> 
-                                <span>Web Development</span>
-                            </span>
-                            <span class="tag" role="listitem" data-aos="fade-up" data-aos-delay="200">
-                                <i class="fas fa-check-circle" aria-hidden="true"></i> 
-                                <span>Mobile Apps</span>
-                            </span>
-                            <span class="tag" role="listitem" data-aos="fade-up" data-aos-delay="300">
-                                <i class="fas fa-check-circle" aria-hidden="true"></i> 
-                                <span>SEO & Digital Marketing</span>
-                            </span>
-                        </div>
-
-                        <div class="hero-buttons" data-aos="fade-up" data-aos-delay="400">
-                            <a href="{{ route('contact') }}" class="btn btn-primary-gradient" title="Start your web development project with Shiva Tech Digital Noida">
-                                <span class="btn-text">Start Your Project</span>
-                                <span class="btn-icon" aria-hidden="true"><i class="fas fa-rocket"></i></span>
-                                <span class="btn-shine" aria-hidden="true"></span>
-                            </a>
-                            <a href="{{ route('portfolio') }}" class="btn btn-glass" title="View our web development portfolio">
-                                <span class="play-icon" aria-hidden="true">
-                                    <i class="fas fa-briefcase"></i>
-                                </span>
-                                <span class="btn-text">View Portfolio</span>
-                            </a>
-                        </div>
-
-                        <!-- âœ… REALISTIC NUMBERS -->
-                        <div class="hero-stats" data-aos="fade-up" data-aos-delay="500" role="list" aria-label="Our achievements">
-                            <div class="stat-item" role="listitem">
-                                <div class="stat-icon" aria-hidden="true">
-                                    <i class="fas fa-project-diagram"></i>
+                <!-- SLIDE 1: WEB DEVELOPMENT -->
+                <div class="carousel-item active hero-slide slide-web">
+                    <div class="slide-bg-shape"></div>
+                    <div class="container h-100">
+                        <div class="row align-items-center min-vh-100 py-5">
+                            <div class="col-lg-6">
+                                <div class="slide-label slide-label-web"><i class="fas fa-laptop-code me-2"></i>Web Development</div>
+                                <h1 class="slide-title" id="hero-heading">Build Stunning <span class="slide-highlight slide-highlight-web">Websites</span> That Convert</h1>
+                                <p class="slide-desc">From landing pages to enterprise platforms — we build fast, scalable, SEO-ready websites using <strong>Laravel, React &amp; Vue.js</strong>. Serving businesses across <strong>Noida, Delhi NCR &amp; worldwide</strong>.</p>
+                                <div class="slide-chips">
+                                    <span class="chip"><i class="fab fa-laravel"></i> Laravel</span>
+                                    <span class="chip"><i class="fab fa-react"></i> React.js</span>
+                                    <span class="chip"><i class="fab fa-vuejs"></i> Vue.js</span>
+                                    <span class="chip"><i class="fas fa-search"></i> SEO Ready</span>
+                                    <span class="chip"><i class="fas fa-bolt"></i> Fast Delivery</span>
                                 </div>
-                                <div class="stat-content">
-                                    <p class="stat-number" data-count="50" aria-label="50+ Projects Completed">0+</p>
-                                    <p class="stat-label">Projects Completed</p>
+                                <div class="slide-actions">
+                                    <a href="{{ route('contact') }}" class="slide-btn-primary btn-web"><i class="fas fa-rocket me-2"></i>Start Your Project</a>
+                                    <a href="{{ route('portfolio') }}" class="slide-btn-outline">View Portfolio <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                                <div class="slide-stats">
+                                    <div class="slide-stat"><span class="stat-val">50+</span><span class="stat-lbl">Projects</span></div>
+                                    <div class="slide-stat"><span class="stat-val">30+</span><span class="stat-lbl">Clients</span></div>
+                                    <div class="slide-stat"><span class="stat-val">4.9★</span><span class="stat-lbl">Rating</span></div>
                                 </div>
                             </div>
-                            <div class="stat-item" role="listitem">
-                                <div class="stat-icon" aria-hidden="true">
-                                    <i class="fas fa-users"></i>
+                            <div class="col-lg-6 d-none d-lg-flex justify-content-center">
+                                <div class="slide-visual visual-web">
+                                    <div class="visual-icon-wrap"><i class="fas fa-laptop-code visual-icon"></i></div>
+                                    <div class="visual-float f1"><i class="fab fa-react"></i></div>
+                                    <div class="visual-float f2"><i class="fab fa-laravel"></i></div>
+                                    <div class="visual-float f3"><i class="fab fa-vuejs"></i></div>
+                                    <div class="visual-float f4"><i class="fab fa-node-js"></i></div>
+                                    <div class="visual-ring r1"></div>
+                                    <div class="visual-ring r2"></div>
                                 </div>
-                                <div class="stat-content">
-                                    <p class="stat-number" data-count="30" aria-label="30+ Happy Clients">0+</p>
-                                    <p class="stat-label">Happy Clients</p>
-                                </div>
-                            </div>
-                            <div class="stat-item" role="listitem">
-                                <div class="stat-icon" aria-hidden="true">
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <div class="stat-content">
-                                    <p class="stat-number" data-count="5" aria-label="4.9 Star Rating">4.9</p>
-                                    <p class="stat-label">Star Rating</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="trusted-by" data-aos="fade-up" data-aos-delay="600">
-                            <p class="trusted-label">Technologies We Use</p>
-                            <div class="brand-logos" role="list" aria-label="Technologies and platforms we work with">
-                                <i class="fa-brands fa-laravel brand-logo" role="listitem" aria-label="Laravel" title="Laravel Development"></i>
-                                <i class="fa-brands fa-react brand-logo" role="listitem" aria-label="React" title="React Development"></i>
-                                <i class="fa-brands fa-vuejs brand-logo" role="listitem" aria-label="Vue.js" title="Vue.js Development"></i>
-                                <i class="fa-brands fa-node-js brand-logo" role="listitem" aria-label="Node.js" title="Node.js Development"></i>
-                                <i class="fa-brands fa-aws brand-logo" role="listitem" aria-label="AWS" title="AWS Cloud Services"></i>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
-                    <div class="hero-visual" aria-label="Our services illustration">
-                        <div class="card-stack">
-                            <article class="stack-card card-1" data-tilt>
-                                <div class="card-glow" aria-hidden="true"></div>
-                                <div class="card-content">
-                                    <div class="card-icon" aria-hidden="true">
-                                        <i class="fas fa-laptop-code"></i>
-                                    </div>
-                                    <h2 class="h4">Web Development</h2>
-                                    <p>Laravel, React, Vue.js Solutions</p>
-                                    <div class="card-stats">
-                                        <span><i class="fas fa-check" aria-hidden="true"></i> Affordable Pricing</span>
-                                    </div>
+                <!-- SLIDE 2: ANDROID DEVELOPMENT -->
+                <div class="carousel-item hero-slide slide-android">
+                    <div class="slide-bg-shape"></div>
+                    <div class="container h-100">
+                        <div class="row align-items-center min-vh-100 py-5">
+                            <div class="col-lg-6">
+                                <div class="slide-label slide-label-android"><i class="fab fa-android me-2"></i>Mobile App Development</div>
+                                <h2 class="slide-title">Native &amp; Cross-Platform <span class="slide-highlight slide-highlight-android">Mobile Apps</span></h2>
+                                <p class="slide-desc">Launch your app on <strong>iOS &amp; Android</strong> with a single codebase. We build high-performance mobile apps using <strong>Flutter &amp; React Native</strong> with beautiful UI and smooth UX.</p>
+                                <div class="slide-chips">
+                                    <span class="chip"><i class="fab fa-android"></i> Android</span>
+                                    <span class="chip"><i class="fab fa-apple"></i> iOS</span>
+                                    <span class="chip"><i class="fas fa-mobile-alt"></i> Flutter</span>
+                                    <span class="chip"><i class="fab fa-react"></i> React Native</span>
+                                    <span class="chip"><i class="fas fa-store"></i> Play Store</span>
                                 </div>
-                            </article>
-
-                            <article class="stack-card card-2" data-tilt>
-                                <div class="card-glow" aria-hidden="true"></div>
-                                <div class="card-content">
-                                    <div class="card-icon" aria-hidden="true">
-                                        <i class="fas fa-mobile-alt"></i>
-                                    </div>
-                                    <h2 class="h4">Mobile Apps</h2>
-                                    <p>Flutter & React Native</p>
-                                    <div class="card-stats">
-                                        <span><i class="fas fa-check" aria-hidden="true"></i> iOS & Android</span>
-                                    </div>
+                                <div class="slide-actions">
+                                    <a href="{{ route('contact') }}" class="slide-btn-primary btn-android"><i class="fas fa-mobile-alt me-2"></i>Build Your App</a>
+                                    <a href="{{ route('portfolio') }}" class="slide-btn-outline">View Apps <i class="fas fa-arrow-right ms-1"></i></a>
                                 </div>
-                            </article>
-
-                            <article class="stack-card card-3" data-tilt>
-                                <div class="card-glow" aria-hidden="true"></div>
-                                <div class="card-content">
-                                    <div class="card-icon" aria-hidden="true">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                    <h2 class="h4">SEO & Marketing</h2>
-                                    <p>Data-driven digital growth</p>
-                                    <div class="card-stats">
-                                        <span><i class="fas fa-check" aria-hidden="true"></i> Results-Driven</span>
-                                    </div>
+                                <div class="slide-stats">
+                                    <div class="slide-stat"><span class="stat-val">20+</span><span class="stat-lbl">Apps Built</span></div>
+                                    <div class="slide-stat"><span class="stat-val">2</span><span class="stat-lbl">Platforms</span></div>
+                                    <div class="slide-stat"><span class="stat-val">100%</span><span class="stat-lbl">On Time</span></div>
                                 </div>
-                            </article>
-                        </div>
-
-                        <div class="floating-elements" aria-hidden="true">
-                            <div class="float-item item-1"><i class="fab fa-react"></i></div>
-                            <div class="float-item item-2"><i class="fab fa-node"></i></div>
-                            <div class="float-item item-3"><i class="fab fa-python"></i></div>
-                            <div class="float-item item-4"><i class="fab fa-angular"></i></div>
-                            <div class="float-item item-5"><i class="fab fa-aws"></i></div>
-                        </div>
-
-                        <div class="animated-rings" aria-hidden="true">
-                            <div class="ring ring-1"></div>
-                            <div class="ring ring-2"></div>
-                            <div class="ring ring-3"></div>
+                            </div>
+                            <div class="col-lg-6 d-none d-lg-flex justify-content-center">
+                                <div class="slide-visual visual-android">
+                                    <div class="visual-icon-wrap"><i class="fas fa-mobile-alt visual-icon"></i></div>
+                                    <div class="visual-float f1"><i class="fab fa-android"></i></div>
+                                    <div class="visual-float f2"><i class="fab fa-apple"></i></div>
+                                    <div class="visual-float f3"><i class="fas fa-mobile-alt"></i></div>
+                                    <div class="visual-float f4"><i class="fab fa-react"></i></div>
+                                    <div class="visual-ring r1"></div>
+                                    <div class="visual-ring r2"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="scroll-indicator mb-3" data-aos="fade-up" data-aos-delay="800" aria-hidden="true">
-            <div class="mouse">
-                <div class="wheel"></div>
-            </div>
-            <p>Scroll to explore</p>
-        </div>
+                <!-- SLIDE 3: DIGITAL MARKETING -->
+                <div class="carousel-item hero-slide slide-marketing">
+                    <div class="slide-bg-shape"></div>
+                    <div class="container h-100">
+                        <div class="row align-items-center min-vh-100 py-5">
+                            <div class="col-lg-6">
+                                <div class="slide-label slide-label-marketing"><i class="fas fa-bullhorn me-2"></i>Digital Marketing</div>
+                                <h2 class="slide-title">Grow Your Business <span class="slide-highlight slide-highlight-marketing">10x Faster</span></h2>
+                                <p class="slide-desc">Data-driven digital marketing strategies that deliver real results. <strong>SEO, Google Ads, Social Media &amp; Content Marketing</strong> — all under one roof at affordable prices for Noida businesses.</p>
+                                <div class="slide-chips">
+                                    <span class="chip"><i class="fas fa-search"></i> SEO</span>
+                                    <span class="chip"><i class="fab fa-google"></i> Google Ads</span>
+                                    <span class="chip"><i class="fab fa-instagram"></i> Social Media</span>
+                                    <span class="chip"><i class="fas fa-pen"></i> Content</span>
+                                    <span class="chip"><i class="fas fa-chart-bar"></i> Analytics</span>
+                                </div>
+                                <div class="slide-actions">
+                                    <a href="{{ route('contact') }}" class="slide-btn-primary btn-marketing"><i class="fas fa-chart-line me-2"></i>Boost My Growth</a>
+                                    <a href="{{ route('services') }}" class="slide-btn-outline">Our Services <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                                <div class="slide-stats">
+                                    <div class="slide-stat"><span class="stat-val">200%</span><span class="stat-lbl">Avg Traffic Growth</span></div>
+                                    <div class="slide-stat"><span class="stat-val">Top 3</span><span class="stat-lbl">Rankings</span></div>
+                                    <div class="slide-stat"><span class="stat-val">ROI+</span><span class="stat-lbl">Guaranteed</span></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 d-none d-lg-flex justify-content-center">
+                                <div class="slide-visual visual-marketing">
+                                    <div class="visual-icon-wrap"><i class="fas fa-chart-line visual-icon"></i></div>
+                                    <div class="visual-float f1"><i class="fab fa-google"></i></div>
+                                    <div class="visual-float f2"><i class="fab fa-instagram"></i></div>
+                                    <div class="visual-float f3"><i class="fab fa-facebook"></i></div>
+                                    <div class="visual-float f4"><i class="fas fa-search"></i></div>
+                                    <div class="visual-ring r1"></div>
+                                    <div class="visual-ring r2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- NOIDA FOCUSED TICKER -->
-        <div class="social-proof-ticker" aria-label="Social proof" role="marquee">
-            <div class="ticker-content">
-                <span class="ticker-item">ðŸš€ New website launched in Noida!</span>
-                <span class="ticker-item">â­ 4.9/5 rated on Google Reviews</span>
-                <span class="ticker-item">ðŸ’° Affordable pricing fors</span>
-                <span class="ticker-item">ðŸ™ï¸ Serving entire Delhi NCR</span>
-                <span class="ticker-item">ðŸŒ Clients in 10+ countries</span>
-                <span class="ticker-item">ðŸš€ New website launched in Noida!</span>
+                <!-- SLIDE 4: CLOUD MIGRATION -->
+                <div class="carousel-item hero-slide slide-cloud">
+                    <div class="slide-bg-shape"></div>
+                    <div class="container h-100">
+                        <div class="row align-items-center min-vh-100 py-5">
+                            <div class="col-lg-6">
+                                <div class="slide-label slide-label-cloud"><i class="fas fa-cloud me-2"></i>Cloud Migration</div>
+                                <h2 class="slide-title">Move to Cloud, <span class="slide-highlight slide-highlight-cloud">Scale Without Limits</span></h2>
+                                <p class="slide-desc">Migrate your infrastructure to <strong>AWS, Google Cloud or Azure</strong> seamlessly. We handle everything from planning to deployment with <strong>zero downtime</strong> and full DevOps support.</p>
+                                <div class="slide-chips">
+                                    <span class="chip"><i class="fab fa-aws"></i> AWS</span>
+                                    <span class="chip"><i class="fab fa-google"></i> GCP</span>
+                                    <span class="chip"><i class="fab fa-microsoft"></i> Azure</span>
+                                    <span class="chip"><i class="fas fa-cogs"></i> DevOps</span>
+                                    <span class="chip"><i class="fas fa-shield-alt"></i> Secure</span>
+                                </div>
+                                <div class="slide-actions">
+                                    <a href="{{ route('contact') }}" class="slide-btn-primary btn-cloud"><i class="fas fa-cloud-upload-alt me-2"></i>Start Migration</a>
+                                    <a href="{{ route('services') }}" class="slide-btn-outline">Cloud Services <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                                <div class="slide-stats">
+                                    <div class="slide-stat"><span class="stat-val">99.9%</span><span class="stat-lbl">Uptime</span></div>
+                                    <div class="slide-stat"><span class="stat-val">0</span><span class="stat-lbl">Downtime</span></div>
+                                    <div class="slide-stat"><span class="stat-val">40%</span><span class="stat-lbl">Cost Savings</span></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 d-none d-lg-flex justify-content-center">
+                                <div class="slide-visual visual-cloud">
+                                    <div class="visual-icon-wrap"><i class="fas fa-cloud visual-icon"></i></div>
+                                    <div class="visual-float f1"><i class="fab fa-aws"></i></div>
+                                    <div class="visual-float f2"><i class="fab fa-google"></i></div>
+                                    <div class="visual-float f3"><i class="fas fa-server"></i></div>
+                                    <div class="visual-float f4"><i class="fas fa-shield-alt"></i></div>
+                                    <div class="visual-ring r1"></div>
+                                    <div class="visual-ring r2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
+            <button class="carousel-control-prev hero-ctrl" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <i class="fas fa-chevron-left"></i><span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next hero-ctrl" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <i class="fas fa-chevron-right"></i><span class="visually-hidden">Next</span>
+            </button>
+
         </div>
     </section>
     
