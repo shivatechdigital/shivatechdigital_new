@@ -398,6 +398,24 @@
     .hero-ctrl { display: none !important; }
 }
 
+/* ===== PROCESS SECTION FIX ===== */
+#process .section-title-creative,
+#process .section-title-creative-dark { color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; }
+
+/* Inactive cards → white */
+#process .step-content-horizontal { background: #ffffff !important; border: 1px solid #e2e8f0 !important; box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important; }
+#process .step-content-horizontal h3,
+#process .step-content-horizontal h4 { color: #94a3b8 !important; -webkit-text-fill-color: #94a3b8 !important; }
+#process .step-content-horizontal p { color: #94a3b8 !important; }
+#process .step-features-horizontal li { color: #94a3b8 !important; }
+
+/* Active card → heading black */
+#process .process-step-horizontal.active .step-content-horizontal { background: #ffffff !important; border: 2px solid #6366f1 !important; box-shadow: 0 12px 40px rgba(99,102,241,0.2) !important; }
+#process .process-step-horizontal.active .step-content-horizontal h3,
+#process .process-step-horizontal.active .step-content-horizontal h4 { color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; }
+#process .process-step-horizontal.active .step-content-horizontal p { color: #475569 !important; }
+#process .process-step-horizontal.active .step-features-horizontal li { color: #2563eb !important; }
+
 /* ===== LEAD FORM SECTION ===== */
 .lead-form-section { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
 .hero-lead-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 30px; margin-top: 0; border-radius: 16px; text-align: center; }
