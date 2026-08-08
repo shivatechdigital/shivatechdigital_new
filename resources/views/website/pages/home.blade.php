@@ -306,7 +306,27 @@
 /* ===== HERO CAROUSEL - INLINE STYLES (guaranteed to load) ===== */
 .hero-carousel-section { position: relative; overflow: hidden; }
 
-.hero-slide { position: relative; min-height: 100vh; overflow: hidden; }
+/* Navbar fix for light carousel - white bg + dark text before scroll */
+.navbar:not(.scrolled) {
+    background: rgba(255,255,255,0.96) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.07) !important;
+}
+.navbar:not(.scrolled) .navbar-brand,
+.navbar:not(.scrolled) .navbar-brand span,
+.navbar:not(.scrolled) .navbar-brand .brand-text { color: #0f172a !important; }
+.navbar:not(.scrolled) .navbar-nav .nav-link { color: #1e293b !important; }
+.navbar:not(.scrolled) .navbar-nav .nav-link:hover { color: #2563eb !important; }
+.navbar:not(.scrolled) .btn-get-started,
+.navbar:not(.scrolled) .btn-primary { background: linear-gradient(135deg,#2563eb,#1d4ed8) !important; color:#fff !important; }
+
+.hero-slide {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    padding-top: 70px; /* account for navbar height */
+}
 
 .slide-web      { background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 60%, #dbeafe 100%) !important; }
 .slide-android  { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #d1fae5 100%) !important; }
