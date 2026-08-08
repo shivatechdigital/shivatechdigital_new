@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 @php
     $cssFile = public_path('web_assets/css/style.css');
+    clearstatcache(true, $cssFile); // PHP filesystem stat cache clear karo
     $cssVer = file_exists($cssFile) ? filemtime($cssFile) : config('app.css_version', '1.0');
 @endphp
 <link rel="stylesheet" href="{{ asset('web_assets/css/style.css') }}?v={{ $cssVer }}">
