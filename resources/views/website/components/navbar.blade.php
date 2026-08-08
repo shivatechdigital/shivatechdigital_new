@@ -3,12 +3,12 @@
     .navbar {
         padding: 0.6rem 0;
         transition: all 0.3s ease;
-        background: #ffffff;
+        background: black;
         box-shadow: 0 2px 16px rgba(0,0,0,0.07);
     }
 
     .navbar.scrolled {
-        background: #ffffff !important;
+        background: black !important;
         box-shadow: 0 4px 24px rgba(0,0,0,0.10) !important;
         padding: 0.4rem 0 !important;
     }
