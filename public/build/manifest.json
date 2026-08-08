@@ -1,0 +1,10 @@
+{
+  "resources/css/website.css": {
+    "file": "assets/website-C96_n_Z1.css",
+    "src": "resources/css/website.css",
+    "isEntry": true,
+    "names": [
+      "website.css"
+    ]
+  }
+}
