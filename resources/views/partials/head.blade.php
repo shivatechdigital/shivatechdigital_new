@@ -10,5 +10,14 @@
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+@php
+    try {
+        $adminVite = Vite::useManifestFilename('manifest.json')
+            ->withEntryPoints(['resources/css/app.css', 'resources/js/app.js'])
+            ->toHtml();
+    } catch (\Exception $e) {
+        $adminVite = ''; // Vite manifest missing - skip gracefully
+    }
+@endphp
+{!! $adminVite !!}
 @fluxAppearance
