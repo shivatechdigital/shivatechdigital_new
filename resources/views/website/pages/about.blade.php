@@ -303,11 +303,6 @@
                         <p class="stat-number" data-count="4.9">4.9</p>
                         <p>Google Rating</p>
                     </div>
-                    <div class="header-stat-item" role="listitem">
-                        <div class="stat-icon-wrap"><i class="fas fa-trophy"></i></div>
-                        <p class="stat-number">5+</p>
-                        <p>Years Experience</p>
-                    </div>
                 </div>
 
             </div>
