@@ -1,20 +1,94 @@
 <style>
-    .navbar-nav .nav-link {
-        justify-content: center;
-        align-items: center;
+    /* ===== NAVBAR STYLES ===== */
+    .navbar {
+        padding: 0.6rem 0;
+        transition: all 0.3s ease;
+        background: #ffffff;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.07);
     }
 
-    .navbar {
-        padding: 1rem 0;
-        transition: var(--transition);
-        background: rgba(15, 23, 42, 0.95) !important;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+    .navbar.scrolled {
+        background: #ffffff !important;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.10) !important;
+        padding: 0.4rem 0 !important;
+    }
+
+    .navbar-brand-icon {
+        height: 55px !important;
+        width: auto;
+    }
+
+    .navbar-nav .nav-link {
+        color: #1e293b !important;
+        font-weight: 600;
+        font-size: 0.92rem;
+        padding: 0.5rem 1rem;
+        position: relative;
+        transition: color 0.25s ease;
+    }
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+        color: #2563eb !important;
+    }
+
+    .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: #2563eb;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    .navbar-nav .nav-link:hover::after,
+    .navbar-nav .nav-link.active::after {
+        width: 70%;
+    }
+
+    /* Get Started button */
+    .btn-get-started {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+        color: #fff !important;
+        border-radius: 50px !important;
+        padding: 0.5rem 1.4rem !important;
+        font-weight: 700 !important;
+        margin-left: 8px;
+        box-shadow: 0 4px 15px rgba(99,102,241,0.35);
+        transition: all 0.3s ease !important;
+    }
+
+    .btn-get-started:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(99,102,241,0.5) !important;
+        color: #fff !important;
+    }
+
+    .btn-get-started::after { display: none !important; }
+
+    /* Mobile toggler */
+    .navbar-toggler {
+        border-color: rgba(30,41,59,0.2) !important;
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2830, 41, 59, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+
+    /* Dropdown */
+    .dropdown-menu {
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        border-radius: 12px;
     }
 </style>
 
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{route('home')}}">
                 <img src="{{ asset('storage/settings/logos/' . basename($settings->site_logo ?? '')) }}" alt="{{ $settings->site_name ?? 'ShivaTechDigital' }}" class="navbar-brand-icon" style="height:70px; width:auto;">
