@@ -397,6 +397,32 @@
     .slide-stats { gap: 20px; }
     .hero-ctrl { display: none !important; }
 }
+
+/* ===== LEAD FORM SECTION ===== */
+.lead-form-section { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
+.hero-lead-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 30px; margin-top: 0; border-radius: 16px; text-align: center; }
+.hero-lead-box h2 { color: #fff !important; margin-bottom: 8px; font-weight: 700; font-size: 1.5rem; }
+.hero-lead-box p { color: rgba(255,255,255,0.7) !important; }
+.lead-form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
+.lead-form .form-group { flex: 1 1 200px; max-width: 250px; }
+.lead-form input { width: 100%; padding: 12px 15px; border-radius: 8px; border: 2px solid transparent; outline: none; font-size: 14px; background: #fff; color: #1e293b; transition: border-color 0.3s ease; }
+.lead-form input:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.3); }
+.lead-form input::placeholder { color: #999; }
+.lead-btn { background: linear-gradient(135deg, #ff006a 0%, #ff4d4d 100%); color: #fff !important; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease; white-space: nowrap; }
+.lead-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,0,106,0.4); }
+.whatsapp-link-btn { display: flex; align-items: center; justify-content: center; margin-top: 10px; }
+.whatsapp-btn { display: inline-flex; align-items: center; font-weight: 600; color: #00ff8a !important; padding: 10px 22px; border: 2px solid #00ff8a; border-radius: 10px; text-decoration: none; transition: all 0.3s ease; }
+.whatsapp-btn:hover { background: #00ff8a; color: #000 !important; }
+.form-message { padding: 12px 20px; border-radius: 8px; margin-top: 15px; text-align: center; font-weight: 500; }
+.form-message.success { background: rgba(0,255,138,0.15); color: #00ff8a; border: 1px solid rgba(0,255,138,0.3); }
+.form-message.error { background: rgba(255,0,106,0.15); color: #ff006a; border: 1px solid rgba(255,0,106,0.3); }
+.error-text { color: #ff6b6b; font-size: 12px; margin-top: 4px; }
+@media(max-width:768px) {
+    .lead-form .form-group { flex: 1 1 45%; max-width: none; }
+}
+@media(max-width:480px) {
+    .lead-form .form-group { flex: 1 1 100%; }
+}
 </style>
 @endpush
 
@@ -612,7 +638,7 @@
     <section class="lead-form-section py-4" id="get-quote" aria-labelledby="lead-form-heading">
         <div class="container">
             <div class="hero-lead-box" data-aos="fade-up" data-aos-delay="100">
-                <h2 id="lead-form-heading">ðŸš€ Get Free Quote for Your Project in Delhi NCR</h2>
+                <h2 id="lead-form-heading">🚀 Get Free Quote for Your Project in Delhi NCR</h2>
                 <p class="text-white-50 mb-3">Affordable web development, mobile app & digital marketing fors and businesses in Noida</p>
                 
                 <form action="{{ route('servicecontact.submit') }}" method="POST" class="lead-form" 
