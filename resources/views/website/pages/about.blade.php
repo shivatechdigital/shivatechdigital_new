@@ -9,6 +9,10 @@
 .why-choose-section {
     background: #f8fafc !important;
 }
+
+.service-areas-section{ background: white !important;}
+.team-info h3{ color:black}
+.mission-vision-card{color:white}
 .why-choose-card {
     padding: 28px;
     border-radius: 14px;
