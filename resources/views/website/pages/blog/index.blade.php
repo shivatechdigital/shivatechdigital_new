@@ -10,7 +10,7 @@
         padding-top: 7rem !important;
     }
     .hero-section {
-        background: linear-gradient(-45deg,#667eea,#764ba2,#0ea5e9,#8b5cf6);
+        background: linear-gradient(-45deg,#0f172a,#1e3a8a,#1e40af,#0369a1);
         background-size: 400% 400%;
         animation: gradientMove 12s ease infinite;
     }
@@ -22,7 +22,7 @@
     }
     
     .btn-primary{
-        background:linear-gradient(135deg,#6366f1,#8b5cf6);
+        background:linear-gradient(135deg,#2563eb,#1d4ed8);
         border:none;
         border-radius:14px;
         padding:12px 24px;
@@ -32,7 +32,7 @@
     
     .btn-primary:hover{
         transform:translateY(-3px);
-        box-shadow:0 10px 30px rgba(99,102,241,.5);
+        box-shadow:0 10px 30px rgba(37,99,235,.5);
     }
     /* ========================================
        PAGINATION STYLING
@@ -79,18 +79,18 @@
     
     .pagination li a:hover,
     .pagination .page-link:hover {
-        background: linear-gradient(135deg,#6366f1,#8b5cf6);
+        background: linear-gradient(135deg,#2563eb,#1d4ed8);
         color: #fff;
         transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(99,102,241,.35);
+        box-shadow: 0 10px 25px rgba(37,99,235,.35);
     }
     
     .pagination .active span,
     .pagination .active .page-link {
-        background: linear-gradient(135deg,#6366f1,#8b5cf6);
+        background: linear-gradient(135deg,#2563eb,#1d4ed8);
         color: #fff;
         border-color: transparent;
-        box-shadow: 0 10px 25px rgba(99,102,241,.35);
+        box-shadow: 0 10px 25px rgba(37,99,235,.35);
     }
     
     .pagination .disabled span {
@@ -132,27 +132,33 @@
 </style>
 <section class="hero-section position-relative overflow-hidden py-5" style="color:white">
     <div class="hero-bg"></div>
+    <!-- Tech grid overlay -->
+    <div class="hero-grid-overlay"></div>
     <div class="container position-relative" style="z-index: 1; margin-top:30px;">
         <div class="row align-items-center">
             <div class="col-lg-8 mx-auto text-center">
+                <!-- Label badge -->
+                <div class="hero-label mb-3 animate-fade-in">
+                    <span><i class="fas fa-code me-2"></i>Tech Insights & Resources</span>
+                </div>
                 <h1 class="display-3 fw-bold text-white mb-3 animate-fade-in">
-                    Discover Amazing Stories
+                    Expert Knowledge.<br><span class="hero-highlight">Real Solutions.</span>
                 </h1>
-                <p class="lead text-white mb-4">
-                    Explore tutorials, insights, and articles from our community
+                <p class="lead text-white-50 mb-4" style="max-width:520px; margin:0 auto;">
+                    In-depth articles on web development, digital strategy &amp; technology from our engineering team.
                 </p>
                 
-                <!-- Enhanced Search Bar -->
+                <!-- Search Bar -->
                 <form action="{{ route('blog.index') }}" method="GET" class="mt-4">
-                    <div class="search-wrapper mx-auto" style="max-width: 600px;">
-                        <div class="input-group input-group-lg shadow-lg">
-                            <span class="input-group-text bg-white border-0">
-                                <i class="fas fa-search text-primary"></i>
+                    <div class="search-wrapper mx-auto" style="max-width: 580px;">
+                        <div class="input-group input-group-lg shadow-lg hero-search">
+                            <span class="input-group-text bg-white border-0" style="border-radius:14px 0 0 14px;">
+                                <i class="fas fa-search" style="color:#2563eb;"></i>
                             </span>
                             <input type="text" name="search" class="form-control border-0" 
-                                   placeholder="Search articles, topics..." 
+                                   placeholder="Search articles, topics, tutorials..." 
                                    value="{{ request('search') }}">
-                            <button class="btn btn-primary px-4" type="submit">
+                            <button class="btn btn-primary px-4" type="submit" style="border-radius:0 14px 14px 0;">
                                 Search
                             </button>
                         </div>
@@ -160,18 +166,24 @@
                 </form>
 
                 <!-- Stats -->
-                <div class="row mt-5 text-white">
+                <div class="row mt-5">
                     <div class="col-md-4">
-                        <h3 class="fw-bold">{{ \App\Models\BlogPost::published()->count() }}+</h3>
-                        <p>Articles Published</p>
+                        <div class="hero-stat">
+                            <h3 class="fw-bold text-white">{{ \App\Models\BlogPost::published()->count() }}+</h3>
+                            <p class="text-white-50 mb-0 small">Articles Published</p>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <h3 class="fw-bold">{{ \App\Models\Category::count() }}+</h3>
-                        <p>Categories</p>
+                        <div class="hero-stat hero-stat-border">
+                            <h3 class="fw-bold text-white">{{ \App\Models\Category::count() }}+</h3>
+                            <p class="text-white-50 mb-0 small">Tech Categories</p>
+                        </div>
                     </div>
                     <div class="col-md-4">
-                        <h3 class="fw-bold">{{ \App\Models\User::count() }}+</h3>
-                        <p>Authors</p>
+                        <div class="hero-stat">
+                            <h3 class="fw-bold text-white">{{ \App\Models\User::count() }}+</h3>
+                            <p class="text-white-50 mb-0 small">Expert Authors</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -179,7 +191,7 @@
     </div>
 </section>
 
-<div class="container my-5" style="color:white">
+<div class="container my-5">
     <div class="row">
         <!-- Main Content -->
         <div class="col-lg-8">
@@ -532,9 +544,11 @@
 
 @push('styles')
 <style>
-/* Hero Section */
+/* =============================================
+   HERO SECTION
+============================================= */
 .hero-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
     position: relative;
 }
 
@@ -544,11 +558,60 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Subtle animated circuit-board dots */
+.hero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle, rgba(37,99,235,0.15) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-label {
+    display: inline-block;
+}
+
+.hero-label span {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(37,99,235,0.25);
+    border: 1px solid rgba(37,99,235,0.5);
+    color: #93c5fd;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(6px);
+}
+
+.hero-highlight {
+    background: linear-gradient(90deg, #60a5fa, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-search .form-control:focus {
+    box-shadow: none;
+}
+
+.hero-stat {
+    padding: 10px 0;
+}
+
+.hero-stat-border {
+    border-left: 1px solid rgba(255,255,255,0.1);
+    border-right: 1px solid rgba(255,255,255,0.1);
 }
 
 .animate-fade-in {
-    animation: fadeIn 1s ease-in;
+    animation: fadeIn 0.9s ease-in;
 }
 
 @keyframes fadeIn {
@@ -556,63 +619,62 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-.search-wrapper .input-group {
-    border-radius: 50px;
-    overflow: hidden;
-}
-
-.search-wrapper .form-control:focus {
-    box-shadow: none;
-}
-
-/* Category Pills */
+/* =============================================
+   CATEGORY PILLS
+============================================= */
 .category-pill {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 8px 16px;
+    padding: 7px 16px;
     background: white;
-    border: 2px solid #e9ecef;
-    border-radius: 25px;
-    color: #495057;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    color: #374151;
     text-decoration: none;
-    transition: all 0.3s ease;
-    font-weight: 500;
+    transition: all 0.25s ease;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.2px;
 }
 
 .category-pill:hover,
 .category-pill.active {
-    background: #667eea;
+    background: #2563eb;
     color: white;
-    border-color: #667eea;
+    border-color: #2563eb;
     transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37,99,235,0.3);
 }
 
 .category-pill .badge {
-    background: rgba(0,0,0,0.1);
+    background: rgba(0,0,0,0.12);
     padding: 2px 8px;
     border-radius: 10px;
     font-size: 11px;
 }
 
-/* Blog Card */
+/* =============================================
+   BLOG CARDS
+============================================= */
 .blog-card {
-    background: white;
-    border-radius: 15px;
+    background: #ffffff;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
+    border: 1px solid #f1f5f9;
 }
 
-.blog-card:hover{
-    box-shadow:
-      0 0 20px rgba(99,102,241,.4),
-      0 0 40px rgba(99,102,241,.2);
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(37,99,235,0.15), 0 4px 12px rgba(0,0,0,0.08);
+    border-color: #bfdbfe;
 }
 
 .blog-card-image {
     position: relative;
-    height: 220px;
+    height: 210px;
     overflow: hidden;
 }
 
@@ -624,7 +686,7 @@
 }
 
 .blog-card:hover .blog-card-image img {
-    transform: scale(1.1);
+    transform: scale(1.06);
 }
 
 .placeholder-image {
@@ -633,8 +695,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, #1e3a8a 0%, #0369a1 100%);
+    color: rgba(255,255,255,0.4);
 }
 
 .blog-card-overlay {
@@ -643,16 +705,25 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: linear-gradient(to top, rgba(15,23,42,0.8) 0%, transparent 60%);
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 15px;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .blog-card:hover .blog-card-overlay {
     opacity: 1;
+}
+
+.blog-card-overlay .btn-light {
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 6px 14px;
+    color: #1e3a8a;
 }
 
 .blog-card-body {
@@ -666,41 +737,44 @@
 }
 
 .category-badge {
-    background: #667eea;
-    color: white;
+    background: #eff6ff;
+    color: #1d4ed8;
     padding: 4px 12px;
-    border-radius: 15px;
-    font-size: 12px;
+    border-radius: 6px;
+    font-size: 11px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    border: 1px solid #bfdbfe;
 }
 
 .read-time {
-    color: #6c757d;
-    font-size: 13px;
+    color: #94a3b8;
+    font-size: 12px;
 }
 
 .blog-card-title {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
-    margin: 10px 0;
-    line-height: 1.4;
+    margin: 10px 0 8px;
+    line-height: 1.45;
 }
 
 .blog-card-title a {
-    color: #212529;
+    color: #0f172a;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color 0.25s ease;
 }
 
 .blog-card-title a:hover {
-    color: #667eea;
+    color: #2563eb;
 }
 
 .blog-card-excerpt {
-    color: #6c757d;
+    color: #64748b;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.65;
     margin-bottom: 15px;
 }
 
@@ -708,8 +782,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 15px;
-    border-top: 1px solid #e9ecef;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
 }
 
 .author-info {
@@ -719,61 +793,65 @@
 }
 
 .author-avatar {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .author-name {
     font-weight: 600;
-    font-size: 14px;
-    color: #212529;
+    font-size: 13px;
+    color: #1e293b;
 }
 
 .post-date {
-    font-size: 12px;
-    color: #6c757d;
+    font-size: 11px;
+    color: #94a3b8;
 }
 
 .post-stats {
     display: flex;
-    gap: 15px;
+    gap: 12px;
 }
 
 .stat-item {
-    color: #6c757d;
-    font-size: 13px;
+    color: #94a3b8;
+    font-size: 12px;
 }
 
 .stat-item i {
-    color: #667eea;
+    color: #2563eb;
 }
 
 .tag-badge {
     display: inline-block;
-    padding: 4px 10px;
-    background: #f8f9fa;
-    color: #495057;
-    border-radius: 12px;
+    padding: 3px 10px;
+    background: #f8fafc;
+    color: #475569;
+    border-radius: 6px;
     font-size: 12px;
     text-decoration: none;
     margin-right: 5px;
-    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+    transition: all 0.25s ease;
 }
 
 .tag-badge:hover {
-    background: #667eea;
+    background: #2563eb;
     color: white;
+    border-color: #2563eb;
 }
 
-/* Sidebar */
+/* =============================================
+   SIDEBAR
+============================================= */
 .sidebar-sticky {
     position: sticky;
     top: 20px;
@@ -781,15 +859,16 @@
 
 .sidebar-widget {
     background: white;
-    border-radius: 15px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    border: 1px solid #f1f5f9;
 }
 
 .widget-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
     color: white;
-    padding: 15px 20px;
+    padding: 14px 20px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -797,8 +876,9 @@
 
 .widget-header h5 {
     margin: 0;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
 }
 
 .widget-body {
@@ -808,7 +888,7 @@
 /* Newsletter Widget */
 .newsletter-widget .widget-body p {
     font-size: 14px;
-    color: #6c757d;
+    color: #64748b;
 }
 
 /* Archive List */
@@ -819,26 +899,29 @@
 }
 
 .archive-list li {
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 }
 
 .archive-list a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 15px;
-    background: #f8f9fa;
+    padding: 10px 14px;
+    background: #f8fafc;
     border-radius: 8px;
-    color: #495057;
+    color: #374151;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
+    border: 1px solid #f1f5f9;
+    font-size: 14px;
 }
 
 .archive-list a:hover,
 .archive-list a.active {
-    background: #667eea;
+    background: #2563eb;
     color: white;
-    transform: translateX(5px);
+    border-color: #2563eb;
+    transform: translateX(4px);
 }
 
 .archive-list .count {
@@ -863,18 +946,19 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #495057;
+    color: #374151;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color 0.25s ease;
     margin-bottom: 5px;
+    font-size: 14px;
 }
 
 .category-list a:hover {
-    color: #667eea;
+    color: #2563eb;
 }
 
 .category-icon {
-    color: #667eea;
+    color: #2563eb;
 }
 
 .category-name {
@@ -883,23 +967,24 @@
 }
 
 .category-count {
-    background: #e9ecef;
+    background: #eff6ff;
+    color: #1d4ed8;
     padding: 2px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
 }
 
 .category-progress {
-    height: 4px;
-    background: #e9ecef;
+    height: 3px;
+    background: #e2e8f0;
     border-radius: 2px;
     overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(90deg, #2563eb 0%, #0369a1 100%);
     transition: width 0.3s ease;
 }
 
@@ -909,7 +994,7 @@
     gap: 12px;
     margin-bottom: 15px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 .popular-post-item:last-child {
@@ -919,21 +1004,22 @@
 }
 
 .post-number {
-    width: 30px;
-    height: 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
     color: white;
-    border-radius: 50%;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
+    font-size: 13px;
     flex-shrink: 0;
 }
 
 .post-thumbnail {
-    width: 60px;
-    height: 60px;
+    width: 58px;
+    height: 58px;
     border-radius: 8px;
     overflow: hidden;
     flex-shrink: 0;
@@ -948,11 +1034,11 @@
 .thumbnail-placeholder {
     width: 100%;
     height: 100%;
-    background: #e9ecef;
+    background: #eff6ff;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #adb5bd;
+    color: #93c5fd;
 }
 
 .post-details {
@@ -960,24 +1046,24 @@
 }
 
 .post-title {
-    color: #212529;
+    color: #1e293b;
     text-decoration: none;
     font-weight: 600;
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 13px;
+    line-height: 1.45;
     display: block;
     margin-bottom: 5px;
 }
 
 .post-title:hover {
-    color: #667eea;
+    color: #2563eb;
 }
 
 .post-meta {
     display: flex;
     gap: 10px;
-    font-size: 12px;
-    color: #6c757d;
+    font-size: 11px;
+    color: #94a3b8;
 }
 
 /* Recent Posts */
@@ -986,7 +1072,7 @@
     gap: 10px;
     margin-bottom: 12px;
     padding-bottom: 12px;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 .recent-post-item:last-child {
@@ -998,7 +1084,7 @@
 .post-thumbnail-small {
     width: 50px;
     height: 50px;
-    border-radius: 6px;
+    border-radius: 8px;
     overflow: hidden;
     flex-shrink: 0;
 }
@@ -1012,16 +1098,16 @@
 .thumbnail-placeholder-small {
     width: 100%;
     height: 100%;
-    background: #e9ecef;
+    background: #eff6ff;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #adb5bd;
+    color: #93c5fd;
     font-size: 12px;
 }
 
 .post-details-small a {
-    color: #212529;
+    color: #1e293b;
     text-decoration: none;
     font-weight: 500;
     font-size: 13px;
@@ -1031,12 +1117,12 @@
 }
 
 .post-details-small a:hover {
-    color: #667eea;
+    color: #2563eb;
 }
 
 .post-date-small {
     font-size: 11px;
-    color: #6c757d;
+    color: #94a3b8;
 }
 
 /* Top Authors */
@@ -1044,16 +1130,17 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 15px;
-    padding: 12px;
-    background: #f8f9fa;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    background: #f8fafc;
     border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
+    border: 1px solid #f1f5f9;
 }
 
 .author-item:hover {
-    background: #667eea;
-    color: white;
+    background: #2563eb;
+    border-color: #2563eb;
 }
 
 .author-item:hover .author-name-link,
@@ -1062,21 +1149,21 @@
 }
 
 .author-avatar-large {
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 18px;
     flex-shrink: 0;
 }
 
 .author-name-link {
-    color: #212529;
+    color: #1e293b;
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
@@ -1086,7 +1173,7 @@
 
 .author-posts-count {
     font-size: 12px;
-    color: #6c757d;
+    color: #64748b;
 }
 
 /* Tags Cloud */
@@ -1099,41 +1186,62 @@
 .tag-cloud-item {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 6px 12px;
-    background: #f8f9fa;
-    color: #495057;
-    border-radius: 15px;
+    gap: 4px;
+    padding: 5px 12px;
+    background: #f8fafc;
+    color: #475569;
+    border-radius: 6px;
     text-decoration: none;
     font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: 13px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.25s ease;
 }
 
 .tag-cloud-item:hover {
-    background: #667eea;
+    background: #2563eb;
     color: white;
-    transform: scale(1.05);
+    border-color: #2563eb;
+    transform: scale(1.04);
 }
 
 .tag-count {
     background: rgba(0,0,0,0.1);
-    padding: 2px 6px;
-    border-radius: 8px;
-    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-size: 10px;
 }
 
 /* Empty State */
 .empty-state {
     background: white;
-    border-radius: 15px;
+    border-radius: 12px;
     padding: 60px 20px;
+    border: 1px solid #f1f5f9;
 }
 
 .empty-state i {
-    opacity: 0.3;
+    opacity: 0.25;
+    color: #2563eb !important;
 }
 
-/* Responsive */
+/* Results info */
+.results-info p {
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* Active filter badges */
+.active-filters .badge {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+/* =============================================
+   RESPONSIVE
+============================================= */
 @media (max-width: 991px) {
     .sidebar-sticky {
         position: static;
@@ -1151,12 +1259,18 @@
     }
     
     .category-pill {
-        font-size: 13px;
+        font-size: 12px;
         padding: 6px 12px;
     }
     
     .blog-card-image {
         height: 180px;
+    }
+
+    .hero-stat-border {
+        border: none;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 }
 </style>
