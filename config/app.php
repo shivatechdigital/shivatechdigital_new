@@ -67,6 +67,8 @@ return [
 
     'timezone' => 'UTC',
 
+    'css_version' => env('CSS_VERSION', '1.0'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
