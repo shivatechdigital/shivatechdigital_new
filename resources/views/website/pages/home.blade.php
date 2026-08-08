@@ -313,6 +313,9 @@
     padding-top: 70px;
 }
 
+
+.partner-card{border: 1px solid #d9d3d3 !important; border-radius: 12px; padding: 20px;}
+.faq-section { background: #f8fafc !important; }
 .slide-web      { background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 60%, #dbeafe 100%) !important; }
 .slide-android  { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #d1fae5 100%) !important; }
 .slide-marketing{ background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 60%, #fed7aa 100%) !important; }
@@ -396,6 +399,7 @@
 .hero-ctrl i { color: #0f172a !important; font-size: 1rem !important; }
 .carousel-control-prev.hero-ctrl { left: 20px !important; }
 .carousel-control-next.hero-ctrl { right: 20px !important; }
+.about-preview{ background: white;}
 
 @media(max-width:768px) {
     .slide-title { font-size: 1.8rem !important; }
@@ -891,7 +895,7 @@
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="about-content">
                         <span class="section-label">About Shiva Tech Digital</span>
-                        <h2 class="section-title-creative-dark" id="about-heading" style="color:white">
+                        <h2 class="section-title-creative-dark" id="about-heading">
                             Noida's-Friendly Web Development Agency
                         </h2>
                         <p>
@@ -1032,7 +1036,7 @@
                             <div class="step-ring" aria-hidden="true"></div>
                         </div>
                         <div class="step-content-horizontal">
-                            <h3>Development</h3>
+                            <h3>Application Development</h3>
                             <p>Fast, quality coding with regular updates</p>
                             <ul class="step-features-horizontal">
                                 <li><i class="fas fa-check-circle" aria-hidden="true"></i> Weekly demos</li>
