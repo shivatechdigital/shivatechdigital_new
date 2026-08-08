@@ -301,6 +301,105 @@
     </script>
 @endpush
 
+@push('styles')
+<style>
+/* ===== HERO CAROUSEL - INLINE STYLES (guaranteed to load) ===== */
+.hero-carousel-section { position: relative; overflow: hidden; }
+
+.hero-slide { position: relative; min-height: 100vh; overflow: hidden; }
+
+.slide-web      { background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 60%, #dbeafe 100%) !important; }
+.slide-android  { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #d1fae5 100%) !important; }
+.slide-marketing{ background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 60%, #fed7aa 100%) !important; }
+.slide-cloud    { background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 60%, #ddd6fe 100%) !important; }
+
+.slide-bg-shape { position: absolute; right: -10%; top: -10%; width: 65%; height: 120%; border-radius: 50% 0 0 50%; opacity: 0.4; pointer-events: none; }
+.slide-web       .slide-bg-shape { background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%); }
+.slide-android   .slide-bg-shape { background: radial-gradient(circle, rgba(5,150,105,0.12) 0%, transparent 70%); }
+.slide-marketing .slide-bg-shape { background: radial-gradient(circle, rgba(234,88,12,0.12) 0%, transparent 70%); }
+.slide-cloud     .slide-bg-shape { background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%); }
+
+.slide-label { display: inline-flex; align-items: center; padding: 8px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 20px; }
+.slide-label-web       { background: rgba(37,99,235,0.1);  color: #1d4ed8 !important; border: 1px solid rgba(37,99,235,0.25); }
+.slide-label-android   { background: rgba(5,150,105,0.1);  color: #047857 !important; border: 1px solid rgba(5,150,105,0.25); }
+.slide-label-marketing { background: rgba(234,88,12,0.1);  color: #c2410c !important; border: 1px solid rgba(234,88,12,0.25); }
+.slide-label-cloud     { background: rgba(124,58,237,0.1); color: #6d28d9 !important; border: 1px solid rgba(124,58,237,0.25); }
+
+.slide-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #0f172a !important; line-height: 1.2; margin-bottom: 20px; }
+.slide-highlight { display: inline-block; }
+.slide-highlight-web       { color: #2563eb !important; }
+.slide-highlight-android   { color: #059669 !important; }
+.slide-highlight-marketing { color: #ea580c !important; }
+.slide-highlight-cloud     { color: #7c3aed !important; }
+
+.slide-desc { color: #475569 !important; font-size: 1.05rem; line-height: 1.75; margin-bottom: 28px; max-width: 520px; }
+
+.slide-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: #fff !important; border-radius: 50px; font-size: 0.82rem; font-weight: 600; color: #374151 !important; border: 1.5px solid #e2e8f0; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+.slide-web       .chip i { color: #2563eb !important; }
+.slide-android   .chip i { color: #059669 !important; }
+.slide-marketing .chip i { color: #ea580c !important; }
+.slide-cloud     .chip i { color: #7c3aed !important; }
+
+.slide-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 36px; }
+.slide-btn-primary { display: inline-flex; align-items: center; padding: 13px 28px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; color: #fff !important; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+.btn-web       { background: linear-gradient(135deg, #2563eb, #1d4ed8) !important; }
+.btn-android   { background: linear-gradient(135deg, #059669, #047857) !important; }
+.btn-marketing { background: linear-gradient(135deg, #ea580c, #c2410c) !important; }
+.btn-cloud     { background: linear-gradient(135deg, #7c3aed, #6d28d9) !important; }
+.slide-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 35px rgba(0,0,0,0.2); color: #fff !important; }
+.slide-btn-outline { display: inline-flex; align-items: center; padding: 12px 22px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; color: #374151 !important; border: 2px solid #e2e8f0; text-decoration: none; background: #fff !important; transition: all 0.3s ease; }
+.slide-btn-outline:hover { border-color: #94a3b8; color: #0f172a !important; transform: translateY(-2px); }
+
+.slide-stats { display: flex; gap: 30px; }
+.slide-stat { display: flex; flex-direction: column; }
+.stat-val { font-size: 1.6rem; font-weight: 800; color: #0f172a !important; line-height: 1; }
+.stat-lbl { font-size: 0.75rem; color: #64748b !important; font-weight: 500; margin-top: 4px; }
+
+.slide-visual { position: relative; width: 360px; height: 360px; display: flex; align-items: center; justify-content: center; }
+.visual-icon-wrap { width: 200px; height: 200px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 2; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.12); }
+.visual-web      .visual-icon-wrap { background: linear-gradient(135deg, #2563eb, #1e40af) !important; }
+.visual-android  .visual-icon-wrap { background: linear-gradient(135deg, #059669, #065f46) !important; }
+.visual-marketing .visual-icon-wrap { background: linear-gradient(135deg, #ea580c, #9a3412) !important; }
+.visual-cloud    .visual-icon-wrap { background: linear-gradient(135deg, #7c3aed, #4c1d95) !important; }
+.visual-icon { font-size: 5rem; color: rgba(255,255,255,0.95) !important; }
+
+.visual-float { position: absolute; width: 52px; height: 52px; background: #fff !important; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 3; animation: floatBob 3s ease-in-out infinite; }
+.visual-float.f1 { top:10px; left:30px; animation-delay:0s; }
+.visual-float.f2 { top:10px; right:30px; animation-delay:0.5s; }
+.visual-float.f3 { bottom:30px; left:10px; animation-delay:1s; }
+.visual-float.f4 { bottom:30px; right:10px; animation-delay:1.5s; }
+.visual-web       .visual-float { color: #2563eb !important; }
+.visual-android   .visual-float { color: #059669 !important; }
+.visual-marketing .visual-float { color: #ea580c !important; }
+.visual-cloud     .visual-float { color: #7c3aed !important; }
+@keyframes floatBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+.visual-ring { position: absolute; border-radius: 50%; border: 2px solid; animation: ringPulse 4s ease-in-out infinite; }
+.visual-ring.r1 { width:260px; height:260px; opacity:0.2; animation-delay:0s; }
+.visual-ring.r2 { width:320px; height:320px; opacity:0.1; animation-delay:1s; }
+.visual-web       .visual-ring { border-color: #2563eb; }
+.visual-android   .visual-ring { border-color: #059669; }
+.visual-marketing .visual-ring { border-color: #ea580c; }
+.visual-cloud     .visual-ring { border-color: #7c3aed; }
+@keyframes ringPulse { 0%,100%{transform:scale(1);opacity:0.2} 50%{transform:scale(1.05);opacity:0.35} }
+
+.hero-indicators { bottom: 24px !important; gap: 8px; }
+.hero-indicators button { width: 32px !important; height: 4px !important; border-radius: 4px !important; background: rgba(15,23,42,0.2) !important; border: none !important; opacity: 1 !important; transition: all 0.3s ease; }
+.hero-indicators button.active { width: 52px !important; background: #2563eb !important; }
+.hero-ctrl { width: 50px !important; height: 50px !important; background: rgba(255,255,255,0.92) !important; border-radius: 50% !important; top: 50% !important; transform: translateY(-50%) !important; box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important; border: 1.5px solid #e2e8f0 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+.hero-ctrl i { color: #0f172a !important; font-size: 1rem !important; }
+.carousel-control-prev.hero-ctrl { left: 20px !important; }
+.carousel-control-next.hero-ctrl { right: 20px !important; }
+
+@media(max-width:768px) {
+    .slide-title { font-size: 1.8rem !important; }
+    .slide-stats { gap: 20px; }
+    .hero-ctrl { display: none !important; }
+}
+</style>
+@endpush
+
 @section('website.content')
 
     <!-- Breadcrumb Navigation (Hidden visually but good for SEO) -->
