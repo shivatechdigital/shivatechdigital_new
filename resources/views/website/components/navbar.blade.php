@@ -19,7 +19,7 @@
     }
 
     .navbar-nav .nav-link {
-        color: #1e293b !important;
+        color: #d3d5da !important;
         font-weight: 600;
         font-size: 0.92rem;
         padding: 0.5rem 1rem;
@@ -29,7 +29,7 @@
 
     .navbar-nav .nav-link:hover,
     .navbar-nav .nav-link.active {
-        color: #2563eb !important;
+        color: #262627 !important;
     }
 
     .navbar-nav .nav-link::after {
