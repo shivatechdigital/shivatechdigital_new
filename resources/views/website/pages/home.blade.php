@@ -314,7 +314,7 @@
 }
 
 
-.partner-card{border: 1px solid #d9d3d3 !important; border-radius: 12px; padding: 20px;}
+.partner-card{border: 1px solid #d9d3d3 !important; background: rgb(177 174 174 / 6%);}
 .faq-section { background: #f8fafc !important; }
 .slide-web      { background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 60%, #dbeafe 100%) !important; }
 .slide-android  { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #d1fae5 100%) !important; }

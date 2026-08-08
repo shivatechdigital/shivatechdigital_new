@@ -1,4 +1,12 @@
 {
+  "resources/css/app.css": {
+    "file": "assets/app-CcKOIMVX.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "names": [
+      "app.css"
+    ]
+  },
   "resources/css/website.css": {
     "file": "assets/website-C96_n_Z1.css",
     "src": "resources/css/website.css",
@@ -6,5 +14,11 @@
     "names": [
       "website.css"
     ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-l0sNRNKZ.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
   }
 }
