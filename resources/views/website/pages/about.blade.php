@@ -11,8 +11,9 @@
 }
 
 .service-areas-section{ background: white !important;}
-.team-info h3{ color:black}
-.mission-vision-card{color:white}
+.team-info h3{ color:black !important;}
+.mission-vision-card{color:white !important;}
+.timeline-content h3{color:white}
 .why-choose-card {
     padding: 28px;
     border-radius: 14px;
