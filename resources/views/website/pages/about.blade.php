@@ -65,6 +65,179 @@
 </style>
 @endpush
 
+@push('styles')
+<style>
+/* ===== ABOUT PAGE HEADER ===== */
+.page-header-creative {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg, rgba(10,15,40,0.82) 0%, rgba(30,58,138,0.75) 100%),
+        url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&q=80') center/cover no-repeat;
+    padding: 100px 0 60px;
+}
+
+/* Animated overlay */
+.page-header-creative::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+}
+
+.page-header-creative .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Center all header content */
+.page-header-inner {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 22px;
+    background: rgba(99,102,241,0.2);
+    border: 1px solid rgba(99,102,241,0.45);
+    border-radius: 50px;
+    color: #a5b4fc;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+
+.page-title {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    color: #fff !important;
+    line-height: 1.15;
+    margin-bottom: 20px;
+}
+
+.page-title span {
+    background: linear-gradient(90deg, #818cf8, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.75) !important;
+    line-height: 1.75;
+    max-width: 640px;
+    margin: 0 auto 48px;
+}
+
+/* Stats row */
+.header-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1px;
+    flex-wrap: wrap;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.header-stat-item {
+    flex: 1;
+    min-width: 150px;
+    padding: 24px 20px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    border-radius: 0;
+    border: none;
+}
+
+.header-stat-item:last-child { border-right: none; }
+
+.header-stat-item .stat-number {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+/* Stat icon */
+.stat-icon-wrap {
+    width: 46px;
+    height: 46px;
+    background: rgba(99,102,241,0.2);
+    border: 1px solid rgba(99,102,241,0.4);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 1.2rem;
+    color: #a5b4fc;
+    transition: all 0.3s ease;
+}
+
+.header-stat-item:hover .stat-icon-wrap {
+    background: rgba(99,102,241,0.4);
+    transform: scale(1.1);
+    color: #fff;
+}
+
+.header-stat-item p {
+    color: rgba(255,255,255,0.65) !important;
+    font-size: 0.82rem;
+    font-weight: 500;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Scroll indicator */
+.header-scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.75rem;
+    animation: headerBounce 2s ease-in-out infinite;
+    z-index: 2;
+}
+
+@keyframes headerBounce {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+}
+
+@media(max-width: 768px) {
+    .page-header-creative { min-height: auto; padding: 120px 0 60px; }
+    .header-stats { gap: 0; }
+    .header-stat-item { min-width: 120px; padding: 18px 12px; }
+    .header-stat-item .stat-number { font-size: 1.8rem; }
+}
+</style>
+@endpush
+
 @section('website.content')
 
     <!-- Breadcrumb Navigation (SEO) -->
@@ -93,34 +266,57 @@
             <div class="header-orb orb-1"></div>
             <div class="header-orb orb-2"></div>
         </div>
+
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6" data-aos="fade-right">
-                    <span class="page-badge">About Shiva Tech Digital Noida</span>
-                    <h1 class="page-title" id="page-heading">
-                        {{ $about->page_title ?? 'Noida\'s Startup-Friendly Web Development Agency' }}
-                    </h1>
-                    <p class="page-subtitle">
-                        {{ $about->page_subtitle ?? 'We are a passionate team of developers and marketers based in Noida, Delhi NCR, dedicated to helping startups and SMEs build their digital presence at affordable prices.' }}
-                    </p>
-                </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <div class="header-stats" role="list" aria-label="Our achievements">
-                        <div class="header-stat-item" role="listitem">
-                            <p class="stat-number" data-count="{{ $about->projects_delivered ?? '50' }}" aria-label="{{ $about->projects_delivered ?? '50' }}+ Projects">0+</p>
-                            <p>Projects Delivered</p>
-                        </div>
-                        <div class="header-stat-item" role="listitem">
-                            <p class="stat-number" data-count="{{ $about->happy_clients ?? '30' }}" aria-label="{{ $about->happy_clients ?? '30' }}+ Clients">0+</p>
-                            <p>Happy Clients</p>
-                        </div>
-                        <div class="header-stat-item" role="listitem">
-                            <p class="stat-number" data-count="4.9" aria-label="4.9 Star Rating">4.9</p>
-                            <p>Star Rating</p>
-                        </div>
+            <div class="page-header-inner" data-aos="fade-up">
+
+                <!-- Badge -->
+                <span class="page-badge">
+                    <i class="fas fa-map-marker-alt"></i>
+                    About Shiva Tech Digital — Noida, Delhi NCR
+                </span>
+
+                <!-- Heading -->
+                <h1 class="page-title" id="page-heading">
+                    {{ $about->page_title ?? 'Building Digital <span>Futures</span> From Noida' }}
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="page-subtitle">
+                    {{ $about->page_subtitle ?? 'We are a passionate team of developers and marketers based in Noida, dedicated to helping startups and SMEs build their digital presence at affordable prices.' }}
+                </p>
+
+                <!-- Stats bar -->
+                <div class="header-stats" role="list" aria-label="Our achievements">
+                    <div class="header-stat-item" role="listitem">
+                        <div class="stat-icon-wrap"><i class="fas fa-laptop-code"></i></div>
+                        <p class="stat-number" data-count="{{ $about->projects_delivered ?? '50' }}">0+</p>
+                        <p>Projects Delivered</p>
+                    </div>
+                    <div class="header-stat-item" role="listitem">
+                        <div class="stat-icon-wrap"><i class="fas fa-users"></i></div>
+                        <p class="stat-number" data-count="{{ $about->happy_clients ?? '30' }}">0+</p>
+                        <p>Happy Clients</p>
+                    </div>
+                    <div class="header-stat-item" role="listitem">
+                        <div class="stat-icon-wrap"><i class="fas fa-star"></i></div>
+                        <p class="stat-number" data-count="4.9">4.9</p>
+                        <p>Google Rating</p>
+                    </div>
+                    <div class="header-stat-item" role="listitem">
+                        <div class="stat-icon-wrap"><i class="fas fa-trophy"></i></div>
+                        <p class="stat-number">5+</p>
+                        <p>Years Experience</p>
                     </div>
                 </div>
+
             </div>
+        </div>
+
+        <!-- Scroll hint -->
+        <div class="header-scroll-hint" aria-hidden="true">
+            <i class="fas fa-chevron-down"></i>
+            <span>Scroll</span>
         </div>
     </section>
 
