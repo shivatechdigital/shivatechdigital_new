@@ -304,7 +304,7 @@
 @push('styles')
 <style>
     .section-title-creative-dark{
-        color: white;
+        color: black;
     }
     /* ========================================
        LEAD FORM BOX STYLES
