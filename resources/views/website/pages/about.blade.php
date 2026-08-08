@@ -3,6 +3,62 @@
 {{-- 🔥 SEO SLUG - This loads meta from service_meta table --}}
 @section('seo_slug', 'about')
 
+@push('styles')
+<style>
+/* About page - critical styles */
+.why-choose-section {
+    background: #f8fafc !important;
+}
+.why-choose-card {
+    padding: 28px;
+    border-radius: 14px;
+    background: #fff;
+    height: 100%;
+    transition: all 0.3s ease;
+    border: 1.5px solid #e2e8f0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.why-choose-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 10px 40px rgba(102,126,234,0.15);
+    transform: translateY(-5px);
+}
+.why-choose-card .icon-box {
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+.why-choose-card .icon-box i {
+    font-size: 1.4rem;
+    color: #fff;
+}
+.why-choose-card h3 {
+    font-size: 1.05rem;
+    color: #1a1a2e;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.why-choose-card p {
+    color: #555;
+    margin: 0;
+    line-height: 1.65;
+    font-size: 0.9rem;
+}
+/* Section heading on light bg */
+#why-choose-us .section-title-creative-dark {
+    color: #1a1a2e !important;
+}
+#why-choose-us .section-subtitle-creative {
+    color: #64748b !important;
+}
+</style>
+@endpush
+
 @section('website.content')
 
     <!-- Breadcrumb Navigation (SEO) -->
