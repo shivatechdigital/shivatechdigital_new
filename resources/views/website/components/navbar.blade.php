@@ -3,6 +3,14 @@
         justify-content: center;
         align-items: center;
     }
+
+    .navbar {
+        padding: 1rem 0;
+        transition: var(--transition);
+        background: rgba(15, 23, 42, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+    }
 </style>
 
 
