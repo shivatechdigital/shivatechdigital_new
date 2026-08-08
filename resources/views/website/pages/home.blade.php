@@ -1115,7 +1115,7 @@
         <div class="container">
             <header class="section-header text-center mb-5" data-aos="fade-up">
                 <span class="section-label">Our Process</span>
-                <h2 class="section-title-creative-dark" id="process-heading">How We Deliver Your Project</h2>
+                <h2 class="section-title-creative" id="process-heading">How We Deliver Your Project</h2>
                 <p class="section-subtitle-creative">A simple 4-step process ensuring quality delivery at affordable prices</p>
             </header>
 
