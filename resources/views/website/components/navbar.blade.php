@@ -5,7 +5,7 @@
 ================================================ */
 
 /* ---- TOP BAR ---- */
-.topbar { background: linear-gradient(90deg, #0f172a, #1e3a8a); padding: 6px 0; font-size: 0.78rem; }
+.topbar { background: linear-gradient(90deg, #0f172a, #1e3a8a) !important; padding: 6px 0; font-size: 0.78rem; }
 .topbar-left { display: flex; align-items: center; gap: 18px; }
 .topbar-left a { color: rgba(255,255,255,0.75); text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
 .topbar-left a:hover { color: #60a5fa; }
@@ -16,8 +16,18 @@
 .topbar-badge { background: rgba(99,102,241,0.25); border: 1px solid rgba(99,102,241,0.4); color: #a5b4fc; padding: 2px 10px; border-radius: 50px; font-size: 0.7rem; font-weight: 600; }
 
 /* ---- MAIN NAVBAR ---- */
-.navbar { background: #ffffff !important; padding: 0 !important; box-shadow: 0 2px 20px rgba(0,0,0,0.08); transition: all 0.3s ease; }
-.navbar.scrolled { background: #ffffff !important; box-shadow: 0 4px 30px rgba(0,0,0,0.12) !important; }
+.navbar {
+        padding: 0.6rem 0;
+        transition: all 0.3s ease;
+        background: rgba(15, 23, 42, 0.95) !important;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+.navbar.scrolled {
+    padding: 0.6rem 0;
+    transition: all 0.3s ease;
+    background: rgba(15, 23, 42, 0.95) !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+}
 .navbar-brand-icon { height: 52px !important; width: auto; }
 .navbar-nav .nav-link { color: #1e293b !important; font-weight: 600; font-size: 0.875rem; padding: 12px 14px !important; position: relative; transition: all 0.25s ease; }
 .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active { color: #2563eb !important; }
