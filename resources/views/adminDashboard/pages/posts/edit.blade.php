@@ -219,8 +219,26 @@
         border-radius: 14px !important;
         border: 1px solid #dbe2ea !important;
         min-height: 54px !important;
-        padding: 8px !important;
+        padding: 6px 8px !important;
         background: #f9fafb !important;
+        display: flex !important;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .edit-post-page .select2-container {
+        width: 100% !important;
+    }
+
+    .edit-post-page .select2-container--default .select2-search--inline {
+        flex: 1 0 130px;
+    }
+
+    .edit-post-page .select2-container--default .select2-search--inline .select2-search__field {
+        width: 100% !important;
+        min-width: 120px;
+        margin-top: 0 !important;
     }
 
     .select2-selection__choice{
@@ -229,6 +247,60 @@
         color: white !important;
         border-radius: 30px !important;
         padding: 6px 12px !important;
+    }
+
+    html[data-theme=dark] .edit-post-page .select2-container--default .select2-selection--multiple {
+        background: rgba(30, 41, 59, 0.76) !important;
+        border-color: #475569 !important;
+    }
+
+    html[data-theme=dark] .edit-post-page .select2-container--default .select2-search--inline .select2-search__field {
+        color: #f8fafc !important;
+    }
+
+    html[data-theme=dark] .edit-post-page .select2-container--default .select2-selection__choice {
+        color: #ffffff !important;
+    }
+
+    html[data-theme=dark] .select2-dropdown {
+        background: #111827 !important;
+        color: #e2e8f0 !important;
+        border-color: #334155 !important;
+    }
+
+    html[data-theme=dark] .select2-results__option {
+        color: #e2e8f0 !important;
+    }
+
+    html[data-theme=dark] .select2-results__option--highlighted[aria-selected] {
+        background-color: #2563eb !important;
+        color: #ffffff !important;
+    }
+
+    .editor-mode-toggle {
+        display: inline-flex;
+        gap: 10px;
+    }
+
+    .editor-mode-toggle .btn {
+        border-radius: 14px !important;
+        min-width: 102px;
+    }
+
+    .editor-mode-toggle .btn-outline-primary {
+        color: #2563eb;
+        border-color: #2563eb;
+        background: transparent;
+    }
+
+    html[data-theme=dark] .editor-mode-toggle .btn-outline-primary {
+        color: #93c5fd;
+        border-color: #3b82f6;
+        background: rgba(30, 41, 59, 0.5);
+    }
+
+    html[data-theme=dark] .editor-mode-toggle .btn-primary {
+        color: #ffffff;
     }
 
     /* =========================================
@@ -435,7 +507,7 @@
                                     Content * 
                                     <small class="text-muted">(Min 300 words recommended)</small>
                                 </label>
-                                <div class="btn-group" role="group">
+                                <div class="btn-group editor-mode-toggle" role="group">
                                     <button type="button" id="visualModeBtn" class="btn btn-sm btn-primary">
                                         <i class="fas fa-eye"></i> Visual
                                     </button>

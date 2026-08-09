@@ -111,8 +111,26 @@
         border-radius: 14px !important;
         border: 1px solid #dbe2ea !important;
         min-height: 52px !important;
-        padding: 8px !important;
+        padding: 6px 8px !important;
         background: #f9fafb !important;
+        display: flex !important;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .create-post-page .select2-container {
+        width: 100% !important;
+    }
+
+    .create-post-page .select2-container--default .select2-search--inline {
+        flex: 1 0 130px;
+    }
+
+    .create-post-page .select2-container--default .select2-search--inline .select2-search__field {
+        width: 100% !important;
+        min-width: 120px;
+        margin-top: 0 !important;
     }
 
     .select2-selection__choice{
@@ -122,6 +140,34 @@
         border-radius: 30px !important;
         padding: 6px 12px !important;
         font-size: 13px !important;
+    }
+
+    html[data-theme=dark] .create-post-page .select2-container--default .select2-selection--multiple {
+        background: rgba(30, 41, 59, 0.76) !important;
+        border-color: #475569 !important;
+    }
+
+    html[data-theme=dark] .create-post-page .select2-container--default .select2-selection__choice {
+        color: #ffffff !important;
+    }
+
+    html[data-theme=dark] .create-post-page .select2-container--default .select2-search--inline .select2-search__field {
+        color: #f8fafc !important;
+    }
+
+    html[data-theme=dark] .select2-dropdown {
+        background: #111827 !important;
+        color: #e2e8f0 !important;
+        border-color: #334155 !important;
+    }
+
+    html[data-theme=dark] .select2-results__option {
+        color: #e2e8f0 !important;
+    }
+
+    html[data-theme=dark] .select2-results__option--highlighted[aria-selected] {
+        background-color: #2563eb !important;
+        color: #ffffff !important;
     }
 
     /* =========================================
@@ -199,6 +245,32 @@
 
     .btn-group .btn{
         border-radius: 12px !important;
+    }
+
+    .editor-mode-toggle {
+        display: inline-flex;
+        gap: 10px;
+    }
+
+    .editor-mode-toggle .btn {
+        border-radius: 14px !important;
+        min-width: 102px;
+    }
+
+    .editor-mode-toggle .btn-outline-primary {
+        color: #2563eb;
+        border-color: #2563eb;
+        background: transparent;
+    }
+
+    html[data-theme=dark] .editor-mode-toggle .btn-outline-primary {
+        color: #93c5fd;
+        border-color: #3b82f6;
+        background: rgba(30, 41, 59, 0.5);
+    }
+
+    html[data-theme=dark] .editor-mode-toggle .btn-primary {
+        color: #ffffff;
     }
 
     /* =========================================
@@ -325,7 +397,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Tags</label>
-                                    <select name="tags[]" class="form-control" multiple>
+                                    <select name="tags[]" id="tagsSelect" class="form-control" multiple>
                                         @foreach($tags as $tag)
                                             <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags', [])) ? 'selected' : '' }}>{{ $tag->name }}</option>
                                         @endforeach
@@ -345,7 +417,7 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <label class="form-label mb-0">Content * <small class="text-muted">(Min 300 words recommended)</small></label>
-                                <div class="btn-group" role="group">
+                                <div class="btn-group editor-mode-toggle" role="group">
                                     <button type="button" id="visualModeBtn" class="btn btn-sm btn-primary">
                                         <i class="fas fa-eye"></i> Visual
                                     </button>
@@ -433,6 +505,14 @@
     let editorInstance;
     let isSourceMode = false;
     let editorTextarea = document.querySelector('#editor');
+
+    if (window.jQuery && $('#tagsSelect').length) {
+        $('#tagsSelect').select2({
+            placeholder: 'Select Tags',
+            width: '100%',
+            closeOnSelect: false
+        });
+    }
 
     // Custom Upload Adapter
     class MyUploadAdapter {

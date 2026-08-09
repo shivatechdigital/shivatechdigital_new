@@ -38,14 +38,14 @@
         </a>
       </li>
         <!-- Posts Management -->
-        <li class="dropdown">
-          <a href="javascript:void(0)">
+        <li class="dropdown {{ request()->routeIs('admin.posts.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.posts.*') ? 'active-page' : '' }}">
             <iconify-icon icon="solar:document-text-outline" class="menu-icon"></iconify-icon>
             <span>Posts</span>
           </a>
           <ul class="sidebar-submenu">
             <li>
-              <a href="{{ route('admin.posts.index') }}" class="{{ request()->routeIs('admin.posts.index') ? 'active-submenu' : '' }}">
+              <a href="{{ route('admin.posts.index') }}" class="{{ request()->routeIs('admin.posts.index') || request()->routeIs('admin.posts.edit') ? 'active-submenu' : '' }}">
                 <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> All Posts
               </a>
             </li>
