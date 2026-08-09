@@ -93,6 +93,12 @@ Route::prefix('services')->name('services.')->group(function () {
     Route::get('/mobile-app-development-gurgaon',   [ServicesController::class, 'mobileAppDevelopmentGurgaon'])->name('mobile-app-gurgaon');
     Route::get('/mobile-app-development-ghaziabad', [ServicesController::class, 'mobileAppDevelopmentGhaziabad'])->name('mobile-app-ghaziabad');
 
+    // City-specific cloud migration pages (SEO)
+    Route::get('/cloud-migration-noida',     [ServicesController::class, 'cloudMigrationNoida'])->name('cloud-migration-noida');
+    Route::get('/cloud-migration-delhi',     [ServicesController::class, 'cloudMigrationDelhi'])->name('cloud-migration-delhi');
+    Route::get('/cloud-migration-gurgaon',   [ServicesController::class, 'cloudMigrationGurgaon'])->name('cloud-migration-gurgaon');
+    Route::get('/cloud-migration-ghaziabad', [ServicesController::class, 'cloudMigrationGhaziabad'])->name('cloud-migration-ghaziabad');
+
     Route::get('/mobile-app-development', [ServicesController::class, 'mobileAppDevelopment'])->name('mobile-app');
     Route::get('/ui-ux-design', [ServicesController::class, 'uiUxDesign'])->name('ui-ux');
     Route::get('/ecommerce-development', [ServicesController::class, 'ecommerce'])->name('ecommerce');

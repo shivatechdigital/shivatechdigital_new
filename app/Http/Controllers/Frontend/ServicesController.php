@@ -148,6 +148,26 @@ class ServicesController extends Controller
         return view('website.pages.services.Gaziyabad.mobile-app-development-ghaziabad');
     }
 
+    public function cloudMigrationNoida()
+    {
+        return view('website.pages.services.Noida.cloud-migration-noida');
+    }
+
+    public function cloudMigrationDelhi()
+    {
+        return view('website.pages.services.Delhi.cloud-migration-delhi');
+    }
+
+    public function cloudMigrationGurgaon()
+    {
+        return view('website.pages.services.Gurgaon.cloud-migration-gurgaon');
+    }
+
+    public function cloudMigrationGhaziabad()
+    {
+        return view('website.pages.services.Gaziyabad.cloud-migration-ghaziabad');
+    }
+
     public function uiUxDesign()
     {
         $faqs = [
