@@ -613,7 +613,7 @@
 
 <!-- Edit Team Member Modal -->
 <div class="modal fade" id="editTeamModal" tabindex="-1">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <form id="editTeamForm" method="POST" enctype="multipart/form-data">
           @csrf
@@ -937,25 +937,72 @@
   }
 
   #editTeamModal .modal-content {
-    background: var(--about-surface);
-    color: var(--about-text);
-    border: 1px solid var(--about-border);
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #dbe5f2;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+  }
+
+  #editTeamModal .modal-body {
+    max-height: 72vh;
+    overflow-y: auto;
   }
 
   #editTeamModal .form-label,
   #editTeamModal .form-check-label {
-    color: var(--about-text) !important;
+    color: #0f172a !important;
+    font-weight: 600;
   }
 
   #editTeamModal .form-check-label small,
   #editTeamModal .text-muted,
   #editTeamModal small.text-muted {
-    color: var(--about-muted) !important;
+    color: #64748b !important;
+  }
+
+  #editTeamModal .form-control,
+  #editTeamModal .form-select {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #cbd5e1;
+  }
+
+  #editTeamModal .form-control::placeholder {
+    color: #94a3b8;
+  }
+
+  html[data-theme=dark] #editTeamModal .modal-content {
+    background: #111827;
+    color: #e2e8f0;
+    border-color: #334155;
+    box-shadow: 0 24px 60px rgba(2, 6, 23, 0.55);
+  }
+
+  html[data-theme=dark] #editTeamModal .form-label,
+  html[data-theme=dark] #editTeamModal .form-check-label {
+    color: #e2e8f0 !important;
+  }
+
+  html[data-theme=dark] #editTeamModal .form-check-label small,
+  html[data-theme=dark] #editTeamModal .text-muted,
+  html[data-theme=dark] #editTeamModal small.text-muted {
+    color: #94a3b8 !important;
+  }
+
+  html[data-theme=dark] #editTeamModal .form-control,
+  html[data-theme=dark] #editTeamModal .form-select {
+    background: #1f2937;
+    color: #f1f5f9;
+    border-color: #475569;
+  }
+
+  html[data-theme=dark] #editTeamModal .form-control::placeholder {
+    color: #94a3b8;
   }
 
   #editTeamModal .form-check-input {
     background-color: rgba(100, 116, 139, 0.35);
-    border-color: var(--about-border);
+    border-color: #94a3b8;
   }
 
   #editTeamModal .form-check-input:checked {
