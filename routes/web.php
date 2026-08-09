@@ -227,6 +227,7 @@ Route::middleware(['auth', 'admin'])->group(function(){
 | SERVICE CONTACT
 ===========================================*/
 
+    Route::delete('/admin/servicecontact/bulk-delete',[ServiceContractController::class,'bulkDelete'])->name('admin.servicecontact.bulk-delete');
     Route::resource('/admin/servicecontact',ServiceContractController::class)->names('admin.servicecontact');
 
 

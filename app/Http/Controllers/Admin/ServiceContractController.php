@@ -9,10 +9,47 @@ class ServiceContractController extends Controller
 {
     
     /* ---------------- SHOW ALL QUERIES ---------------- */
-    public function index()
+    public function index(Request $request)
     {
-        $queries = ServiceContract::latest()->paginate(10);
-        return view('adminDashboard.pages.servicequeries.index', compact('queries'));
+        $search = trim((string) $request->input('search', ''));
+        $sortBy = (string) $request->input('sort_by', 'created');
+        $sortOrder = strtolower((string) $request->input('sort_order', 'desc'));
+        $allowedPerPage = [10, 20, 50, 100];
+        $perPage = (int) $request->input('per_page', 10);
+
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 10;
+        }
+
+        if (!in_array($sortOrder, ['asc', 'desc'], true)) {
+            $sortOrder = 'desc';
+        }
+
+        $sortMap = [
+            'id' => 'id',
+            'name' => 'name',
+            'email' => 'email',
+            'contact' => 'contact',
+            'service' => 'service',
+            'created' => 'created_at',
+        ];
+
+        if (!array_key_exists($sortBy, $sortMap)) {
+            $sortBy = 'created';
+        }
+
+        $queries = $this->buildQueries($search)
+            ->orderBy($sortMap[$sortBy], $sortOrder)
+            ->paginate($perPage)
+            ->appends($request->query());
+
+        return view('adminDashboard.pages.servicequeries.index', compact(
+            'queries',
+            'search',
+            'sortBy',
+            'sortOrder',
+            'perPage'
+        ));
     }
 
     /* ---------------- EDIT PAGE ---------------- */
@@ -43,5 +80,34 @@ class ServiceContractController extends Controller
     {
         $servicecontact->delete();
         return back()->with('success','Query deleted');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $validated = $request->validate([
+            'query_ids' => 'required|array|min:1',
+            'query_ids.*' => 'exists:service_contracts,id',
+        ]);
+
+        ServiceContract::whereIn('id', $validated['query_ids'])->delete();
+
+        return redirect()->route('admin.servicecontact.index')
+            ->with('success', 'Selected queries deleted successfully');
+    }
+
+    private function buildQueries(string $search)
+    {
+        $query = ServiceContract::query();
+
+        if ($search !== '') {
+            $query->where(function ($innerQuery) use ($search) {
+                $innerQuery->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('contact', 'like', '%' . $search . '%')
+                    ->orWhere('service', 'like', '%' . $search . '%');
+            });
+        }
+
+        return $query;
     }
 }
