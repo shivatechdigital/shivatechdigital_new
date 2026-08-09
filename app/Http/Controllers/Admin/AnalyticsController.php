@@ -28,9 +28,13 @@ class AnalyticsController extends Controller
     }
 
     // -------------------------------------- DASHBOARD
-    public function dashboard()
-    {   
-        return view('adminDashboard.pages.homepage'); // 🔥 Update your Blade Name
+    public function dashboard(Request $request)
+    {
+        if ($this->toBoolean($request->query('format_json', '0')) || $request->expectsJson()) {
+            return $this->searchConsoleDashboard($request);
+        }
+
+        return view('adminDashboard.pages.homepage');
     }
 
     // -------------------------------------- REALTIME USERS

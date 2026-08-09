@@ -451,11 +451,21 @@ document.addEventListener('DOMContentLoaded', function () {
     function loadDashboard() {
         const query = buildQuery();
 
-        fetch('/gsc/dashboard?' + query)
+        fetch('/ga/dashboard?format_json=1&' + query, {
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error('Dashboard data could not be loaded.');
                 }
+
+                const contentType = response.headers.get('content-type') || '';
+                if (!contentType.includes('application/json')) {
+                    throw new Error('Dashboard endpoint returned HTML instead of JSON. Route cache clear required on server.');
+                }
+
                 return response.json();
             })
             .then(function (payload) {
