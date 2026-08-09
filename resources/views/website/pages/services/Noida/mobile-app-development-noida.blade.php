@@ -14,14 +14,14 @@
 <link rel="canonical" href="https://shivatechdigital.com/services/mobile-app-development-noida">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@@context": "https://schema.org",
+  "@@type": "LocalBusiness",
   "name": "Shiva Tech Digital",
   "url": "https://shivatechdigital.com/services/mobile-app-development-noida",
   "telephone": "+91-7007294764",
   "email": "info@shivatechdigital.com",
   "address": {
-    "@type": "PostalAddress",
+    "@@type": "PostalAddress",
     "streetAddress": "Sector 62",
     "addressLocality": "Noida",
     "addressRegion": "Uttar Pradesh",
@@ -29,7 +29,7 @@
     "addressCountry": "IN"
   },
   "geo": {
-    "@type": "GeoCoordinates",
+    "@@type": "GeoCoordinates",
     "latitude": 28.6139,
     "longitude": 77.3910
   },
@@ -39,25 +39,25 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://shivatechdigital.com/"},
-    {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://shivatechdigital.com/services"},
-    {"@type": "ListItem", "position": 3, "name": "Mobile App Development", "item": "https://shivatechdigital.com/services/mobile-app-development"},
-    {"@type": "ListItem", "position": 4, "name": "Mobile App Development Noida", "item": "https://shivatechdigital.com/services/mobile-app-development-noida"}
+    {"@@type": "ListItem", "position": 1, "name": "Home", "item": "https://shivatechdigital.com/"},
+    {"@@type": "ListItem", "position": 2, "name": "Services", "item": "https://shivatechdigital.com/services"},
+    {"@@type": "ListItem", "position": 3, "name": "Mobile App Development", "item": "https://shivatechdigital.com/services/mobile-app-development"},
+    {"@@type": "ListItem", "position": 4, "name": "Mobile App Development Noida", "item": "https://shivatechdigital.com/services/mobile-app-development-noida"}
   ]
 }
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
+  "@@context": "https://schema.org",
+  "@@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "How much does app development cost in Noida?", "acceptedAnswer": {"@type": "Answer", "text": "Simple apps usually start around INR 80,000 to 2,50,000. Final cost depends on features, platforms, integrations, and timeline."}},
-    {"@type": "Question", "name": "Do you build both Android and iOS apps?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We build native Android, native iOS, and cross-platform Flutter or React Native apps."}},
-    {"@type": "Question", "name": "Can you help with app launch?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we handle Play Store and App Store submissions including compliance checks and release planning."}},
-    {"@type": "Question", "name": "Do you provide support after delivery?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we offer maintenance retainers for bug fixes, updates, optimization, and feature enhancements."}}
+    {"@@type": "Question", "name": "How much does app development cost in Noida?", "acceptedAnswer": {"@@type": "Answer", "text": "Simple apps usually start around INR 80,000 to 2,50,000. Final cost depends on features, platforms, integrations, and timeline."}},
+    {"@@type": "Question", "name": "Do you build both Android and iOS apps?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes. We build native Android, native iOS, and cross-platform Flutter or React Native apps."}},
+    {"@@type": "Question", "name": "Can you help with app launch?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we handle Play Store and App Store submissions including compliance checks and release planning."}},
+    {"@@type": "Question", "name": "Do you provide support after delivery?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we offer maintenance retainers for bug fixes, updates, optimization, and feature enhancements."}}
   ]
 }
 </script>

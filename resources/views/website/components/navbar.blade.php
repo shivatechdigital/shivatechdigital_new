@@ -64,12 +64,12 @@
 .icon-web { background: #eff6ff; color: #2563eb; } .icon-app { background: #ecfdf5; color: #059669; } .icon-ui { background: #fdf4ff; color: #a21caf; } .icon-shop { background: #fff7ed; color: #ea580c; } .icon-bull { background: #fffbeb; color: #d97706; } .icon-seo { background: #ecfdf5; color: #065f46; } .icon-sm { background: #fdf2f8; color: #db2777; } .icon-cont { background: #f0f9ff; color: #0369a1; } .icon-cloud { background: #f0fdf4; color: #15803d; } .icon-maint { background: #fefce8; color: #854d0e; } .icon-brand { background: #fff1f2; color: #be123c; }
 .mega-item-text strong { display: block; font-size: 0.83rem; font-weight: 700; color: #0f172a; margin-bottom: 1px; }
 .mega-item-text span { font-size: 0.72rem; color: #94a3b8; }
-.location-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-.location-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; background: #ffffff; }
+.location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.location-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 8px; background: #ffffff; }
 .location-card-head { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; font-size: 0.82rem; font-weight: 700; color: #0f172a; }
 .location-card-head i { color: #7c3aed; }
-.location-link-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.location-link-chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 9px; border-radius: 999px; border: 1px solid #dbeafe; background: #f8fafc; color: #1e293b; font-size: 0.72rem; font-weight: 600; text-decoration: none; }
+.location-link-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.location-link-chip { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; border-radius: 999px; border: 1px solid #dbeafe; background: #f8fafc; color: #1e293b; font-size: 0.69rem; font-weight: 600; text-decoration: none; }
 .location-link-chip i { font-size: 0.7rem; }
 .location-link-chip:hover { color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; }
 .mega-col-cta { background: linear-gradient(160deg, #0f172a 0%, #1e3a8a 100%); padding: 24px 20px; }
@@ -87,7 +87,8 @@
 .mega-city-links p { font-size: 0.65rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
 .mega-city-links a { display: inline-block; font-size: 0.73rem; color: #60a5fa; margin-right: 8px; margin-bottom: 4px; text-decoration: none; }
 .mega-city-links a:hover { color: #93c5fd; text-decoration: underline; }
-@media (max-width: 991px) { .topbar { display: none !important; } .navbar { top: 0 !important; } .mega-menu { position: relative !important; border-radius: 12px !important; } .mega-menu-inner { grid-template-columns: 1fr; } .mega-col { padding: 12px 14px; border-right: none; border-bottom: 1px solid #f1f5f9; } }
+@media (max-width: 1200px) { .location-grid { grid-template-columns: 1fr; } }
+@media (max-width: 991px) { .navbar.scrolled{top: 0px !important} .topbar { display: none !important; } .navbar { top: 0 !important; } .mega-menu { position: relative !important; border-radius: 12px !important; } .mega-menu-inner { grid-template-columns: 1fr; } .mega-col { padding: 12px 14px; border-right: none; border-bottom: 1px solid #f1f5f9; } }
 </style>
 
 {{-- TOP BAR --}}
@@ -116,7 +117,7 @@
         <a class="navbar-brand" href="{{ route('home') }}">
             <img src="{{ asset('storage/settings/logos/' . basename($settings->site_logo ?? '')) }}" alt="{{ $settings->site_name ?? 'Shiva Tech Digital' }}" class="navbar-brand-icon">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation" style="background:white;">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">

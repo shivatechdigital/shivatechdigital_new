@@ -14,19 +14,19 @@
 <link rel="canonical" href="https://shivatechdigital.com/services/mobile-app-development-delhi">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@@context": "https://schema.org",
+  "@@type": "LocalBusiness",
   "name": "Shiva Tech Digital",
   "url": "https://shivatechdigital.com/services/mobile-app-development-delhi",
   "telephone": "+91-7007294764",
   "address": {
-    "@type": "PostalAddress",
+    "@@type": "PostalAddress",
     "addressLocality": "Delhi",
     "addressRegion": "Delhi",
     "addressCountry": "IN"
   },
   "geo": {
-    "@type": "GeoCoordinates",
+    "@@type": "GeoCoordinates",
     "latitude": 28.6139,
     "longitude": 77.2090
   },
@@ -36,25 +36,25 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://shivatechdigital.com/"},
-    {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://shivatechdigital.com/services"},
-    {"@type": "ListItem", "position": 3, "name": "Mobile App Development", "item": "https://shivatechdigital.com/services/mobile-app-development"},
-    {"@type": "ListItem", "position": 4, "name": "Mobile App Development Delhi", "item": "https://shivatechdigital.com/services/mobile-app-development-delhi"}
+    {"@@type": "ListItem", "position": 1, "name": "Home", "item": "https://shivatechdigital.com/"},
+    {"@@type": "ListItem", "position": 2, "name": "Services", "item": "https://shivatechdigital.com/services"},
+    {"@@type": "ListItem", "position": 3, "name": "Mobile App Development", "item": "https://shivatechdigital.com/services/mobile-app-development"},
+    {"@@type": "ListItem", "position": 4, "name": "Mobile App Development Delhi", "item": "https://shivatechdigital.com/services/mobile-app-development-delhi"}
   ]
 }
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
+  "@@context": "https://schema.org",
+  "@@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "How long does a mobile app take in Delhi?", "acceptedAnswer": {"@type": "Answer", "text": "Most MVP apps take 6-10 weeks. Full-featured apps can take 3-5 months depending on product scope."}},
-    {"@type": "Question", "name": "Do you offer fixed cost packages?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. We offer fixed-cost and milestone-based engagement models depending on requirement clarity."}},
-    {"@type": "Question", "name": "Can you improve my existing app?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we improve design, code quality, performance, security, and release stability for existing applications."}},
-    {"@type": "Question", "name": "Do you support post-launch growth?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we provide ASO support, analytics tracking, optimization, and ongoing feature development."}}
+    {"@@type": "Question", "name": "How long does a mobile app take in Delhi?", "acceptedAnswer": {"@@type": "Answer", "text": "Most MVP apps take 6-10 weeks. Full-featured apps can take 3-5 months depending on product scope."}},
+    {"@@type": "Question", "name": "Do you offer fixed cost packages?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes. We offer fixed-cost and milestone-based engagement models depending on requirement clarity."}},
+    {"@@type": "Question", "name": "Can you improve my existing app?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we improve design, code quality, performance, security, and release stability for existing applications."}},
+    {"@@type": "Question", "name": "Do you support post-launch growth?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we provide ASO support, analytics tracking, optimization, and ongoing feature development."}}
   ]
 }
 </script>

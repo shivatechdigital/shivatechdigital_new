@@ -14,19 +14,19 @@
 <link rel="canonical" href="https://shivatechdigital.com/services/mobile-app-development-ghaziabad">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@@context": "https://schema.org",
+  "@@type": "LocalBusiness",
   "name": "Shiva Tech Digital",
   "url": "https://shivatechdigital.com/services/mobile-app-development-ghaziabad",
   "telephone": "+91-7007294764",
   "address": {
-    "@type": "PostalAddress",
+    "@@type": "PostalAddress",
     "addressLocality": "Ghaziabad",
     "addressRegion": "Uttar Pradesh",
     "addressCountry": "IN"
   },
   "geo": {
-    "@type": "GeoCoordinates",
+    "@@type": "GeoCoordinates",
     "latitude": 28.6692,
     "longitude": 77.4538
   },
@@ -35,25 +35,25 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://shivatechdigital.com/"},
-    {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://shivatechdigital.com/services"},
-    {"@type": "ListItem", "position": 3, "name": "Mobile App Development", "item": "https://shivatechdigital.com/services/mobile-app-development"},
-    {"@type": "ListItem", "position": 4, "name": "Mobile App Development Ghaziabad", "item": "https://shivatechdigital.com/services/mobile-app-development-ghaziabad"}
+    {"@@type": "ListItem", "position": 1, "name": "Home", "item": "https://shivatechdigital.com/"},
+    {"@@type": "ListItem", "position": 2, "name": "Services", "item": "https://shivatechdigital.com/services"},
+    {"@@type": "ListItem", "position": 3, "name": "Mobile App Development", "item": "https://shivatechdigital.com/services/mobile-app-development"},
+    {"@@type": "ListItem", "position": 4, "name": "Mobile App Development Ghaziabad", "item": "https://shivatechdigital.com/services/mobile-app-development-ghaziabad"}
   ]
 }
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
+  "@@context": "https://schema.org",
+  "@@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "Do you build apps for local service businesses?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we build apps for clinics, coaching centers, retailers, logistics, and service providers in Ghaziabad."}},
-    {"@type": "Question", "name": "Can you integrate payment gateways?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we integrate major payment gateways with secure checkout and transaction tracking."}},
-    {"@type": "Question", "name": "Will my app be scalable for future growth?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we design scalable architecture to support new features, growth, and integrations."}},
-    {"@type": "Question", "name": "Do you provide AMC or support packages?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we provide support packages for updates, monitoring, bug fixes, and optimization."}}
+    {"@@type": "Question", "name": "Do you build apps for local service businesses?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we build apps for clinics, coaching centers, retailers, logistics, and service providers in Ghaziabad."}},
+    {"@@type": "Question", "name": "Can you integrate payment gateways?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we integrate major payment gateways with secure checkout and transaction tracking."}},
+    {"@@type": "Question", "name": "Will my app be scalable for future growth?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we design scalable architecture to support new features, growth, and integrations."}},
+    {"@@type": "Question", "name": "Do you provide AMC or support packages?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we provide support packages for updates, monitoring, bug fixes, and optimization."}}
   ]
 }
 </script>

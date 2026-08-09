@@ -14,19 +14,19 @@
 <link rel="canonical" href="https://shivatechdigital.com/services/mobile-app-development-gurgaon">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@@context": "https://schema.org",
+  "@@type": "LocalBusiness",
   "name": "Shiva Tech Digital",
   "url": "https://shivatechdigital.com/services/mobile-app-development-gurgaon",
   "telephone": "+91-7007294764",
   "address": {
-    "@type": "PostalAddress",
+    "@@type": "PostalAddress",
     "addressLocality": "Gurgaon",
     "addressRegion": "Haryana",
     "addressCountry": "IN"
   },
   "geo": {
-    "@type": "GeoCoordinates",
+    "@@type": "GeoCoordinates",
     "latitude": 28.4595,
     "longitude": 77.0266
   },
@@ -35,25 +35,25 @@
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://shivatechdigital.com/"},
-    {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://shivatechdigital.com/services"},
-    {"@type": "ListItem", "position": 3, "name": "Mobile App Development", "item": "https://shivatechdigital.com/services/mobile-app-development"},
-    {"@type": "ListItem", "position": 4, "name": "Mobile App Development Gurgaon", "item": "https://shivatechdigital.com/services/mobile-app-development-gurgaon"}
+    {"@@type": "ListItem", "position": 1, "name": "Home", "item": "https://shivatechdigital.com/"},
+    {"@@type": "ListItem", "position": 2, "name": "Services", "item": "https://shivatechdigital.com/services"},
+    {"@@type": "ListItem", "position": 3, "name": "Mobile App Development", "item": "https://shivatechdigital.com/services/mobile-app-development"},
+    {"@@type": "ListItem", "position": 4, "name": "Mobile App Development Gurgaon", "item": "https://shivatechdigital.com/services/mobile-app-development-gurgaon"}
   ]
 }
 </script>
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
+  "@@context": "https://schema.org",
+  "@@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "Can you build enterprise apps for Gurgaon companies?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we build secure enterprise applications with role permissions, integrations, and scalable architecture."}},
-    {"@type": "Question", "name": "What tech stack do you recommend?", "acceptedAnswer": {"@type": "Answer", "text": "We choose Kotlin or Swift for native apps and Flutter or React Native for cross-platform goals."}},
-    {"@type": "Question", "name": "Do you sign NDAs?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, NDA signing is a standard step before project discovery for confidential product ideas."}},
-    {"@type": "Question", "name": "Can you integrate with existing ERP or CRM?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, we create API connectors and middleware for ERP, CRM, payment, and analytics systems."}}
+    {"@@type": "Question", "name": "Can you build enterprise apps for Gurgaon companies?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we build secure enterprise applications with role permissions, integrations, and scalable architecture."}},
+    {"@@type": "Question", "name": "What tech stack do you recommend?", "acceptedAnswer": {"@@type": "Answer", "text": "We choose Kotlin or Swift for native apps and Flutter or React Native for cross-platform goals."}},
+    {"@@type": "Question", "name": "Do you sign NDAs?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, NDA signing is a standard step before project discovery for confidential product ideas."}},
+    {"@@type": "Question", "name": "Can you integrate with existing ERP or CRM?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we create API connectors and middleware for ERP, CRM, payment, and analytics systems."}}
   ]
 }
 </script>
