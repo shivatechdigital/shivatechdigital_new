@@ -128,6 +128,26 @@ class ServicesController extends Controller
         return view('website.pages.services.mobile-app-development', compact('faqs', 'relatedServices'));
     }
 
+    public function mobileAppDevelopmentNoida()
+    {
+        return view('website.pages.services.Noida.mobile-app-development-noida');
+    }
+
+    public function mobileAppDevelopmentDelhi()
+    {
+        return view('website.pages.services.Delhi.mobile-app-development-delhi');
+    }
+
+    public function mobileAppDevelopmentGurgaon()
+    {
+        return view('website.pages.services.Gurgaon.mobile-app-development-gurgaon');
+    }
+
+    public function mobileAppDevelopmentGhaziabad()
+    {
+        return view('website.pages.services.Gaziyabad.mobile-app-development-ghaziabad');
+    }
+
     public function uiUxDesign()
     {
         $faqs = [

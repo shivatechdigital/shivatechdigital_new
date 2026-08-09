@@ -86,6 +86,13 @@ Route::prefix('services')->name('services.')->group(function () {
     Route::get('/web-development-delhi',     [ServicesController::class, 'webDevelopmentDelhi'])->name('web-development-delhi');
     Route::get('/web-development-gurgaon',   [ServicesController::class, 'webDevelopmentGurgaon'])->name('web-development-gurgaon');
     Route::get('/web-development-ghaziabad', [ServicesController::class, 'webDevelopmentGhaziabad'])->name('web-development-ghaziabad');
+
+    // City-specific mobile app development pages (SEO)
+    Route::get('/mobile-app-development-noida',     [ServicesController::class, 'mobileAppDevelopmentNoida'])->name('mobile-app-noida');
+    Route::get('/mobile-app-development-delhi',     [ServicesController::class, 'mobileAppDevelopmentDelhi'])->name('mobile-app-delhi');
+    Route::get('/mobile-app-development-gurgaon',   [ServicesController::class, 'mobileAppDevelopmentGurgaon'])->name('mobile-app-gurgaon');
+    Route::get('/mobile-app-development-ghaziabad', [ServicesController::class, 'mobileAppDevelopmentGhaziabad'])->name('mobile-app-ghaziabad');
+
     Route::get('/mobile-app-development', [ServicesController::class, 'mobileAppDevelopment'])->name('mobile-app');
     Route::get('/ui-ux-design', [ServicesController::class, 'uiUxDesign'])->name('ui-ux');
     Route::get('/ecommerce-development', [ServicesController::class, 'ecommerce'])->name('ecommerce');

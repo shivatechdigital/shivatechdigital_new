@@ -149,6 +149,10 @@
                                     <a href="{{ route('services.web-development-delhi') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-laptop-code"></i></div><div class="mega-item-text"><strong>Web Dev — Delhi</strong><span>South, East & Central Delhi</span></div></a>
                                     <a href="{{ route('services.web-development-gurgaon') }}" class="mega-item"><div class="mega-item-icon icon-ui"><i class="fas fa-laptop-code"></i></div><div class="mega-item-text"><strong>Web Dev — Gurgaon</strong><span>Cyber City & DLF</span></div></a>
                                     <a href="{{ route('services.web-development-ghaziabad') }}" class="mega-item"><div class="mega-item-icon icon-shop"><i class="fas fa-laptop-code"></i></div><div class="mega-item-text"><strong>Web Dev — Ghaziabad</strong><span>Indirapuram & Vaishali</span></div></a>
+                                    <a href="{{ route('services.mobile-app-noida') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-mobile-alt"></i></div><div class="mega-item-text"><strong>App Dev — Noida</strong><span>Android, iOS, Flutter</span></div></a>
+                                    <a href="{{ route('services.mobile-app-delhi') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-mobile-alt"></i></div><div class="mega-item-text"><strong>App Dev — Delhi</strong><span>Startup & enterprise apps</span></div></a>
+                                    <a href="{{ route('services.mobile-app-gurgaon') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-mobile-alt"></i></div><div class="mega-item-text"><strong>App Dev — Gurgaon</strong><span>Product-led app teams</span></div></a>
+                                    <a href="{{ route('services.mobile-app-ghaziabad') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-mobile-alt"></i></div><div class="mega-item-text"><strong>App Dev — Ghaziabad</strong><span>Business automation apps</span></div></a>
                                     <a href="{{ route('services.maintenance') }}" class="mega-item"><div class="mega-item-icon icon-maint"><i class="fas fa-tools"></i></div><div class="mega-item-text"><strong>Maintenance & Support</strong><span>Ongoing support packages</span></div></a>
                                 </div>
                                 {{-- Column 4: CTA --}}
@@ -169,6 +173,10 @@
                                         <a href="{{ route('services.web-development-delhi') }}">Delhi</a>
                                         <a href="{{ route('services.web-development-gurgaon') }}">Gurgaon</a>
                                         <a href="{{ route('services.web-development-ghaziabad') }}">Ghaziabad</a>
+                                        <a href="{{ route('services.mobile-app-noida') }}">App Noida</a>
+                                        <a href="{{ route('services.mobile-app-delhi') }}">App Delhi</a>
+                                        <a href="{{ route('services.mobile-app-gurgaon') }}">App Gurgaon</a>
+                                        <a href="{{ route('services.mobile-app-ghaziabad') }}">App Ghaziabad</a>
                                     </div>
                                 </div>
                             </div>
