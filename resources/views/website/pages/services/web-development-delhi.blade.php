@@ -124,9 +124,9 @@
     </div>
 </section>
 
-<section class="py-5">
+<section class="py-5" style="background:white;">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="row align-items-center" style="background: white;">
             <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
                 <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=85" alt="Web Development Team serving Delhi - Shiva Tech Digital" class="img-fluid rounded-3" style="box-shadow:0 20px 60px rgba(0,0,0,0.1);">
             </div>
@@ -162,8 +162,8 @@
     </div>
 </section>
 
-<section class="py-5">
-    <div class="container text-center">
+<section class="py-5" style="background:white;">
+    <div class="container text-center" style="background:white;">
         <span class="sec-label">Tech Stack</span>
         <h2 class="sec-title">Technologies We Use</h2>
         <div class="mt-4">

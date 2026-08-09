@@ -215,9 +215,9 @@
 </section>
 
 {{-- WHY CHOOSE US IN NOIDA --}}
-<section class="py-5">
+<section class="py-5" style="background: white !important;">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="row align-items-center" style="background: white !important;">
             <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
                 <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=85" alt="Shiva Tech Digital Office Noida - Web Development Team" class="img-fluid rounded-3" style="box-shadow:0 20px 60px rgba(0,0,0,0.1);">
             </div>
@@ -258,7 +258,7 @@
 </section>
 
 {{-- TECH STACK --}}
-<section class="py-5">
+<section class="py-5" style="background: white !important;">
     <div class="container text-center">
         <span class="sec-label">Technologies</span>
         <h2 class="sec-title">Our Web Development Tech Stack</h2>

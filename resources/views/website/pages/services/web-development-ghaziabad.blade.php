@@ -122,9 +122,9 @@
     </div>
 </section>
 
-<section class="py-5">
+<section class="py-5" style="background:white;">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="row align-items-center" style="background:white;">
             <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
                 <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=85" alt="Affordable Web Development Ghaziabad" class="img-fluid rounded-3" style="box-shadow:0 20px 60px rgba(0,0,0,0.1);">
             </div>
@@ -152,8 +152,8 @@
     </div>
 </section>
 
-<section class="py-5">
-    <div class="container text-center">
+<section class="py-5" style="background:white;">
+    <div class="container text-center" style="background:white;">
         <span class="sec-label">Pricing</span>
         <h2 class="sec-title">Website Packages for Ghaziabad</h2>
         <p class="sec-subtitle mx-auto mb-5">Transparent pricing — no hidden charges. Best value in Ghaziabad.</p>
