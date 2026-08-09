@@ -134,14 +134,16 @@ class AboutPageController extends Controller
             ->with('active_tab', $request->input('active_tab', 'pills-team'));
     }
     
-    public function deleteTeamMember(TeamMember $teamMember)
+    public function deleteTeamMember(Request $request, TeamMember $teamMember)
     {
         if ($teamMember->image) {
             Storage::disk('public')->delete($teamMember->image);
         }
         
         $teamMember->delete();
-        return redirect()->back()->with('success', 'Team member deleted successfully!');
+        return redirect()->back()
+            ->with('success', 'Team member deleted successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-team'));
     }
 
     public function storeTimeline(Request $request)
@@ -181,10 +183,12 @@ class AboutPageController extends Controller
             ->with('active_tab', $request->input('active_tab', 'pills-timeline'));
     }
 
-    public function deleteTimeline(TimelineItem $timeline)
+    public function deleteTimeline(Request $request, TimelineItem $timeline)
     {
         $timeline->delete();
-        return redirect()->back()->with('success', 'Timeline item deleted successfully!');
+        return redirect()->back()
+            ->with('success', 'Timeline item deleted successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-timeline'));
     }
 
     public function storeCoreValue(Request $request)
@@ -222,9 +226,11 @@ class AboutPageController extends Controller
             ->with('active_tab', $request->input('active_tab', 'pills-values'));
     }
 
-    public function deleteCoreValue(CoreValue $coreValue)
+    public function deleteCoreValue(Request $request, CoreValue $coreValue)
     {
         $coreValue->delete();
-        return redirect()->back()->with('success', 'Core value deleted successfully!');
+        return redirect()->back()
+            ->with('success', 'Core value deleted successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-values'));
     }
 }

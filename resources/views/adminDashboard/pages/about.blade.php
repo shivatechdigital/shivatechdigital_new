@@ -613,61 +613,72 @@
 
 <!-- Edit Team Member Modal -->
 <div class="modal fade" id="editTeamModal" tabindex="-1">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <form id="editTeamForm" method="POST" enctype="multipart/form-data">
           @csrf
           @method('PUT')
-          <div class="modal-header">
-            <h5 class="modal-title">Edit Team Member</h5>
+          <div class="modal-header edit-team-modal-header">
+            <h5 class="modal-title mb-0 d-flex align-items-center gap-2">
+              <iconify-icon icon="solar:user-rounded-bold-duotone" class="text-xl"></iconify-icon>
+              Edit Team Member
+            </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Name <span class="text-danger">*</span></label>
-              <input type="text" name="name" id="edit_team_name" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Role <span class="text-danger">*</span></label>
-              <input type="text" name="role" id="edit_team_role" class="form-control" required>
-            </div>
-            
-            <div id="edit_team_current_image" class="mb-3"></div>
-            
-            <div class="mb-3">
-              <label class="form-label">Change Image</label>
-              <input type="file" name="image" id="edit_team_image" class="form-control" accept="image/*" onchange="previewImage(event, 'edit_team_preview')">
-              <div id="edit_team_preview" class="mt-2" style="display: none;">
-                <label class="form-label text-sm">New Image Preview:</label>
-                <div>
-                  <img src="" alt="Preview" style="max-width: 150px; max-height: 150px;" class="rounded">
+            <div class="row g-3">
+              <div class="col-md-7">
+                <div class="mb-3">
+                  <label class="form-label">Name <span class="text-danger">*</span></label>
+                  <input type="text" name="name" id="edit_team_name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Role <span class="text-danger">*</span></label>
+                  <input type="text" name="role" id="edit_team_role" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input type="email" name="email" id="edit_team_email" class="form-control" placeholder="email@example.com">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">LinkedIn URL</label>
+                  <input type="url" name="linkedin_url" id="edit_team_linkedin" class="form-control" placeholder="https://linkedin.com/in/username">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Twitter URL</label>
+                  <input type="url" name="twitter_url" id="edit_team_twitter" class="form-control" placeholder="https://twitter.com/username">
                 </div>
               </div>
-            </div>
-            
-            <div class="mb-3">
-              <label class="form-label">LinkedIn URL</label>
-              <input type="url" name="linkedin_url" id="edit_team_linkedin" class="form-control" placeholder="https://linkedin.com/in/username">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Twitter URL</label>
-              <input type="url" name="twitter_url" id="edit_team_twitter" class="form-control" placeholder="https://twitter.com/username">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Email</label>
-              <input type="email" name="email" id="edit_team_email" class="form-control" placeholder="email@example.com">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Display Order <span class="text-danger">*</span></label>
-              <input type="number" name="order" id="edit_team_order" class="form-control" min="0" required>
-              <small class="text-muted">Lower numbers appear first</small>
-            </div>
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" name="is_active" id="edit_team_active" value="1">
-              <label class="form-check-label" for="edit_team_active">
-                Active Status
-                <small class="d-block text-muted">Toggle to show/hide this member on the website</small>
-              </label>
+
+              <div class="col-md-5">
+                <div class="edit-team-preview-card">
+                  <div id="edit_team_current_image" class="mb-3"></div>
+                  <div class="mb-3">
+                    <label class="form-label">Change Image</label>
+                    <input type="file" name="image" id="edit_team_image" class="form-control" accept="image/*" onchange="previewImage(event, 'edit_team_preview')">
+                    <div id="edit_team_preview" class="mt-2" style="display: none;">
+                      <label class="form-label text-sm">New Image Preview:</label>
+                      <div>
+                        <img src="" alt="Preview" style="max-width: 150px; max-height: 150px;" class="rounded">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Display Order <span class="text-danger">*</span></label>
+                    <input type="number" name="order" id="edit_team_order" class="form-control" min="0" required>
+                    <small class="text-muted">Lower numbers appear first</small>
+                  </div>
+
+                  <div class="form-check form-switch mb-0">
+                    <input class="form-check-input" type="checkbox" name="is_active" id="edit_team_active" value="1">
+                    <label class="form-check-label" for="edit_team_active">
+                      Active Status
+                      <small class="d-block text-muted">Toggle to show/hide this member on the website</small>
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -913,6 +924,18 @@
     color: var(--about-muted);
   }
 
+  .edit-team-modal-header {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(124, 58, 237, 0.12));
+    border-bottom: 1px solid var(--about-border);
+  }
+
+  .edit-team-preview-card {
+    background: linear-gradient(180deg, rgba(99, 102, 241, 0.08), rgba(148, 163, 184, 0.08));
+    border: 1px solid var(--about-border);
+    border-radius: 12px;
+    padding: 12px;
+  }
+
   /* Tabs Wrapper */
   .tabs-wrapper {
     background: var(--about-tab-bg);
@@ -937,17 +960,29 @@
   /* Modern Nav Pills */
   .nav-pills-modern {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
     padding: 0;
     margin: 0;
     list-style: none;
     position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+  }
+
+  .nav-pills-modern::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .nav-pills-modern::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.35);
+    border-radius: 999px;
   }
 
   .nav-pills-modern .nav-item {
-    flex: 1;
-    min-width: 140px;
+    flex: 0 0 180px;
+    min-width: 180px;
   }
 
   /* Nav Link Base Styles */
@@ -1496,16 +1531,22 @@ function deleteTeamMember(id) {
       const csrfInput = document.createElement('input');
       csrfInput.type = 'hidden';
       csrfInput.name = '_token';
-      csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      csrfInput.value = '{{ csrf_token() }}';
       
       // Create method input
       const methodInput = document.createElement('input');
       methodInput.type = 'hidden';
       methodInput.name = '_method';
       methodInput.value = 'DELETE';
+
+      const activeTabInput = document.createElement('input');
+      activeTabInput.type = 'hidden';
+      activeTabInput.name = 'active_tab';
+      activeTabInput.value = 'pills-team';
       
       form.appendChild(csrfInput);
       form.appendChild(methodInput);
+      form.appendChild(activeTabInput);
       document.body.appendChild(form);
       form.submit();
     }
@@ -1540,8 +1581,9 @@ function deleteTimeline(id) {
       form.method = 'POST';
       form.action = `/admin/about/timeline/${id}`;
       form.innerHTML = `
-        @csrf
-        @method('DELETE')
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="active_tab" value="pills-timeline">
       `;
       document.body.appendChild(form);
       form.submit();
@@ -1576,8 +1618,9 @@ function deleteValue(id) {
       form.method = 'POST';
       form.action = `/admin/about/value/${id}`;
       form.innerHTML = `
-        @csrf
-        @method('DELETE')
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="active_tab" value="pills-values">
       `;
       document.body.appendChild(form);
       form.submit();
