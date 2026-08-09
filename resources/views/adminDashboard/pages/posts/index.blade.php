@@ -131,6 +131,27 @@
     .id-col { width: 70px; text-align: center; }
     .action-col { min-width: 100px; }
 
+    .post-select-checkbox {
+        appearance: auto !important;
+        -webkit-appearance: checkbox !important;
+        display: inline-block !important;
+        width: 16px;
+        height: 16px;
+        min-width: 16px;
+        min-height: 16px;
+        margin: 0;
+        cursor: pointer;
+        accent-color: #2563eb;
+        border: 1px solid #94a3b8;
+        background: #ffffff;
+        vertical-align: middle;
+    }
+
+    html[data-theme=dark] .post-select-checkbox {
+        border-color: #94a3b8;
+        background: #1f2937;
+    }
+
     .action-icon-btn {
         width: 34px;
         height: 34px;
@@ -295,7 +316,7 @@
                     <table class="table table-hover posts-table mb-0">
                         <thead>
                             <tr>
-                                <th class="select-col"><input type="checkbox" id="selectAllPosts"></th>
+                                <th class="select-col"><input type="checkbox" id="selectAllPosts" class="post-select-checkbox" aria-label="Select all posts"></th>
                                 <th class="id-col">
                                     <button type="button" class="sortable-header-btn" data-sort-key="id">
                                         ID
@@ -345,7 +366,7 @@
                         <tbody>
                             @forelse($posts as $post)
                             <tr>
-                                <td class="select-col"><input type="checkbox" class="post-row-checkbox" name="posts[]" value="{{ $post->id }}"></td>
+                                <td class="select-col"><input type="checkbox" class="post-row-checkbox post-select-checkbox" name="posts[]" value="{{ $post->id }}" aria-label="Select post {{ $post->id }}"></td>
                                 <td class="id-col">{{ ($posts->firstItem() ?? 1) + $loop->index }}</td>
                                 <td>
                                     @if($post->featured_image)
