@@ -1236,7 +1236,7 @@
                     
                     <!-- Testimonial 1 - Noida -->
                     <article class="testimonial-card-creative" itemscope itemtype="https://schema.org/Review">
-                        <meta itemprop="itemReviewed" content="Shiva Tech Digital Web Development Services">
+                        <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Service" class="visually-hidden"><meta itemprop="name" content="Shiva Tech Digital Web Development Services"></span>
                         <div class="testimonial-bg-glow" aria-hidden="true"></div>
                         <div class="client-info-creative mb-3">
                             <div class="client-avatar">
@@ -1272,7 +1272,7 @@
 
                     <!-- Testimonial 2 - Delhi NCR Business -->
                     <article class="testimonial-card-creative" itemscope itemtype="https://schema.org/Review">
-                        <meta itemprop="itemReviewed" content="Shiva Tech Digital Mobile App Development">
+                        <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Service" class="visually-hidden"><meta itemprop="name" content="Shiva Tech Digital Mobile App Development"></span>
                         <div class="testimonial-bg-glow" aria-hidden="true"></div>
                         <div class="client-info-creative mb-3">
                             <div class="client-avatar">
@@ -1308,7 +1308,7 @@
 
                     <!-- Testimonial 3 - Greater Noida -->
                     <article class="testimonial-card-creative" itemscope itemtype="https://schema.org/Review">
-                        <meta itemprop="itemReviewed" content="Shiva Tech Digital SEO Services">
+                        <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Service" class="visually-hidden"><meta itemprop="name" content="Shiva Tech Digital SEO Services"></span>
                         <div class="testimonial-bg-glow" aria-hidden="true"></div>
                         <div class="client-info-creative mb-3">
                             <div class="client-avatar">
@@ -1344,7 +1344,7 @@
 
                     <!-- Testimonial 4 - Gurgaon -->
                     <article class="testimonial-card-creative" itemscope itemtype="https://schema.org/Review">
-                        <meta itemprop="itemReviewed" content="Shiva Tech Digital App Development">
+                        <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Service" class="visually-hidden"><meta itemprop="name" content="Shiva Tech Digital App Development"></span>
                         <div class="testimonial-bg-glow" aria-hidden="true"></div>
                         <div class="client-info-creative mb-3">
                             <div class="client-avatar">

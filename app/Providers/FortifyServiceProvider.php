@@ -33,7 +33,7 @@ class FortifyServiceProvider extends ServiceProvider
         /* |----------------------- | Redirect Back To Same Page After Login/Register |---------------------- */ 
         Fortify::redirects('login', function () { 
             // Admin redirect 
-            if (auth()->check() && auth()->user()->email === 'shivatechdigitaladmin@shivatechdigital.com') {
+            if (auth()->check() && auth()->user()->role === 'admin') {
                 return '/index'; 
             } 
             // Normal user redirect 

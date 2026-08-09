@@ -133,7 +133,7 @@ Route::get('/dashboard', function ()
 { 
     if(auth()->user()->role === 'admin') 
     { 
-        return redirect('/index'); 
+        return redirect()->route('index'); 
         
     } 
     return redirect('/'); 
@@ -144,7 +144,7 @@ Route::get('/dashboard', function ()
 Route::middleware(['auth', 'admin'])->group(function(){
 
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/index',fn()=>view('adminDashboard.pages.homepage'))->name('index');
+    Route::get('/index', [AnalyticsController::class, 'dashboard'])->name('index');
 
 
 /*===========================================
@@ -270,6 +270,8 @@ Route::middleware(['auth', 'admin'])->group(function(){
         Route::get('/device',[AnalyticsController::class,'device']);
         Route::get('/monthly',[AnalyticsController::class,'monthly']);
     });
+
+    Route::get('/gsc/dashboard', [AnalyticsController::class, 'searchConsoleDashboard'])->name('gsc.dashboard');
     
     
     Route::get('{any}', function () {

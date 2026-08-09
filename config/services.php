@@ -39,4 +39,12 @@ return [
         'token' => env('CRM_API_TOKEN'),
     ],
 
+    'google' => [
+        'credentials_json_path' => env('GOOGLE_CREDENTIALS_JSON_PATH', 'storage/app/ga-credentials.json'),
+    ],
+
+    'search_console' => [
+        'site_url' => env('SEARCH_CONSOLE_SITE_URL', 'sc-domain:shivatechdigital.com'),
+    ],
+
 ];

@@ -104,7 +104,7 @@
                                 @foreach($recentPosts as $post)
                                 <tr>
                                     <td>{{ Str::limit($post->title, 40) }}</td>
-                                    <td><span class="badge bg-info">{{ $post->category->name }}</span></td>
+                                    <td><span class="badge bg-info">{{ $post->category->name ?? 'Uncategorized' }}</span></td>
                                     <td>
                                         @if($post->is_published)
                                             <span class="badge bg-success">Published</span>
@@ -141,7 +141,7 @@
                         </div>
                         <div class="progress" style="height: 10px;">
                             <div class="progress-bar" role="progressbar" 
-                                 style="width: {{ ($category->posts_count / $totalPosts) * 100 }}%">
+                                 style="width: {{ $totalPosts > 0 ? ($category->posts_count / $totalPosts) * 100 : 0 }}%">
                             </div>
                         </div>
                     </div>
@@ -206,8 +206,12 @@
                     <div class="mb-3 pb-3 {{ !$loop->last ? 'border-bottom' : '' }}">
                         <p class="mb-1 small">{{ Str::limit($comment->comment, 60) }}</p>
                         <small class="text-muted">
-                            <strong>{{ $comment->user->name }}</strong> on 
-                            <a href="{{ route('blog.show', $comment->post->slug) }}">{{ Str::limit($comment->post->title, 30) }}</a>
+                            <strong>{{ $comment->user->name ?? 'Unknown User' }}</strong> on 
+                            @if($comment->post)
+                                <a href="{{ route('blog.show', $comment->post->slug) }}">{{ Str::limit($comment->post->title, 30) }}</a>
+                            @else
+                                <span>Deleted Post</span>
+                            @endif
                         </small>
                     </div>
                     @endforeach
