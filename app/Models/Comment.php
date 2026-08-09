@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Post;
 
 class Comment extends Model
 {
@@ -16,6 +17,11 @@ class Comment extends Model
     public function post()
     {
         return $this->belongsTo(BlogPost::class, 'post_id');
+    }
+
+    public function legacyPost(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'post_id');
     }
 
     public function user(): BelongsTo

@@ -235,6 +235,11 @@ Route::middleware(['auth', 'admin'])->group(function(){
 ===========================================*/
 
     Route::get('/admin/comments',[AdminCommentController::class,'index'])->name('admin.comments.index');
+    Route::delete('/admin/comments/bulk-delete',[AdminCommentController::class,'bulkDelete'])->name('admin.comments.bulk-delete');
+    Route::get('/admin/comments/{comment}/reply',[AdminCommentController::class,'createReply'])->name('admin.comments.reply.create');
+    Route::post('/admin/comments/{comment}/reply',[AdminCommentController::class,'storeReply'])->name('admin.comments.reply.store');
+    Route::get('/admin/comments/{comment}/reply/{reply}/edit',[AdminCommentController::class,'editReply'])->name('admin.comments.reply.edit');
+    Route::put('/admin/comments/{comment}/reply/{reply}',[AdminCommentController::class,'updateReply'])->name('admin.comments.reply.update');
     Route::post('/admin/comments/{comment}/approve',[AdminCommentController::class,'approve'])->name('admin.comments.approve');
     Route::delete('/admin/comments/{comment}',[AdminCommentController::class,'destroy'])->name('admin.comments.destroy');
     
