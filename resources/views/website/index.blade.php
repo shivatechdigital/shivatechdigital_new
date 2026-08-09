@@ -267,7 +267,7 @@
     </header>
 
     {{-- Spacer for fixed topbar + navbar (desktop: 36px topbar + ~72px navbar = 108px, mobile: ~72px) --}}
-    <div class="navbar-spacer" style="height: 108px;"></div>
+    <div class="navbar-spacer" style="height: 90px;"></div>
     <style>
         @media (max-width: 991px) { .navbar-spacer { height: 72px !important; } }
     </style>

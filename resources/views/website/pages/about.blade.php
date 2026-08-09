@@ -363,22 +363,22 @@ What sets us apart is our personal approach - you get direct access to the found
                     </div>
                     
                     <div class="about-highlights" role="list" aria-label="Our key highlights">
-                        <article class="highlight-item" role="listitem">
-                            <i class="fas fa-rupee-sign" aria-hidden="true"></i>
+                        <article class="highlight-item" role="listitem" style="flex-direction:column;align-items:center;text-align:center;">
+                            <i class="fas fa-rupee-sign" aria-hidden="true" style="font-size:1.8rem;color:#2563eb;margin-bottom:10px;"></i>
                             <div>
                                 <h3 class="h5">{{ $about->highlight_1_title ?? 'Affordable Pricing' }}</h3>
                                 <p>{{ $about->highlight_1_text ?? '30-50% less than big agencies' }}</p>
                             </div>
                         </article>
-                        <article class="highlight-item" role="listitem">
-                            <i class="fas fa-user-tie" aria-hidden="true"></i>
+                        <article class="highlight-item" role="listitem" style="flex-direction:column;align-items:center;text-align:center;">
+                            <i class="fas fa-user-tie" aria-hidden="true" style="font-size:1.8rem;color:#2563eb;margin-bottom:10px;"></i>
                             <div>
                                 <h3 class="h5">{{ $about->highlight_2_title ?? 'Direct Founder Access' }}</h3>
                                 <p>{{ $about->highlight_2_text ?? 'Talk to decision makers' }}</p>
                             </div>
                         </article>
-                        <article class="highlight-item" role="listitem">
-                            <i class="fas fa-bolt" aria-hidden="true"></i>
+                        <article class="highlight-item" role="listitem" style="flex-direction:column;align-items:center;text-align:center;">
+                            <i class="fas fa-bolt" aria-hidden="true" style="font-size:1.8rem;color:#2563eb;margin-bottom:10px;"></i>
                             <div>
                                 <h3 class="h5">{{ $about->highlight_3_title ?? 'Fast Delivery' }}</h3>
                                 <p>{{ $about->highlight_3_text ?? 'Startup agility & speed' }}</p>

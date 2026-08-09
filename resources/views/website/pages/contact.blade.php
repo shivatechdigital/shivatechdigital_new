@@ -10,74 +10,80 @@
     /* Page Header */
     .page-header-creative {
         position: relative;
-        padding: 120px 0 80px;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        min-height: 340px;
+        display: flex;
+        align-items: center;
         overflow: hidden;
+        background:
+            linear-gradient(135deg, rgba(10,15,40,0.88) 0%, rgba(30,58,138,0.82) 100%),
+            url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1400&q=80') center/cover no-repeat;
+        padding: 110px 0 50px;
     }
 
-    .page-header-bg {
+    .page-header-creative::after {
+        content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        pointer-events: none;
     }
 
-    .header-orb {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(100px);
-        opacity: 0.3;
-    }
-
-    .header-orb.orb-1 {
-        width: 400px;
-        height: 400px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        top: -100px;
-        right: -100px;
-    }
-
-    .header-orb.orb-2 {
-        width: 300px;
-        height: 300px;
-        background: linear-gradient(135deg, #f093fb, #f5576c);
-        bottom: -50px;
-        left: -50px;
-    }
+    .page-header-bg { display: none; }
+    .page-header-creative .container { position: relative; z-index: 1; }
+    .contact-header-inner { max-width: 680px; }
 
     .page-badge {
-        display: inline-block;
-        padding: 8px 20px;
-        background: rgba(102, 126, 234, 0.2);
-        border: 1px solid rgba(102, 126, 234, 0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 18px;
+        background: rgba(99,102,241,0.2);
+        border: 1px solid rgba(99,102,241,0.4);
         border-radius: 50px;
-        color: #a8b5ff;
-        font-size: 0.875rem;
-        font-weight: 500;
-        margin-bottom: 20px;
+        color: #a5b4fc;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
     }
 
     .page-title {
-        font-size: 3rem;
-        font-weight: 700;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 800;
         color: #fff;
-        margin-bottom: 20px;
+        margin-bottom: 14px;
         line-height: 1.2;
     }
 
-    @media (max-width: 768px) {
-        .page-title {
-            font-size: 2rem;
-        }
+    .page-title span {
+        background: linear-gradient(90deg, #818cf8, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
+    @media (max-width: 768px) { .page-title { font-size: 1.8rem; } }
+
     .page-subtitle {
-        font-size: 1.125rem;
-        color: rgba(255, 255, 255, 0.8);
-        max-width: 600px;
+        font-size: 0.95rem;
+        color: rgba(255,255,255,0.72);
+        max-width: 520px;
+        line-height: 1.7;
+        margin-bottom: 26px;
     }
+
+    /* Hero quick contact pills */
+    .hero-contact-pills { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-pill {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 50px; padding: 7px 16px; color: #fff; text-decoration: none;
+        font-size: 0.82rem; font-weight: 600; transition: all 0.25s ease;
+        backdrop-filter: blur(6px);
+    }
+    .hero-pill:hover { background: rgba(37,99,235,0.4); border-color: rgba(37,99,235,0.6); color: #fff; }
+    .hero-pill i { font-size: 0.75rem; color: #60a5fa; }
 
     /* Quick Info */
     .contact-quick-info {
@@ -125,32 +131,37 @@
 
     /* Contact Info Card */
     .contact-info-creative {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        padding: 40px;
-        border-radius: 20px;
+        background: linear-gradient(160deg, #0f172a 0%, #1e3a8a 100%);
+        padding: 28px;
+        border-radius: 18px;
         height: 100%;
+        box-shadow: 0 8px 32px rgba(15,23,42,0.2);
     }
 
     .contact-info-creative h3 {
         color: #fff;
-        font-size: 2rem;
-        margin-bottom: 15px;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 6px;
     }
 
     .contact-info-creative > p {
-        color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 40px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 24px;
+        font-size: 0.82rem;
+        line-height: 1.6;
     }
 
     .contact-info-items {
-        margin-bottom: 40px;
+        margin-bottom: 22px;
     }
 
     .contact-info-item {
         display: flex;
-        gap: 20px;
-        padding: 25px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        gap: 14px;
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        align-items: flex-start;
     }
 
     .contact-info-item:last-child {
@@ -158,10 +169,11 @@
     }
 
     .info-icon {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        border-radius: 15px;
+        width: 40px;
+        height: 40px;
+        background: rgba(99,102,241,0.2);
+        border: 1px solid rgba(99,102,241,0.35);
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -169,46 +181,59 @@
     }
 
     .info-icon i {
-        font-size: 1.5rem;
-        color: #fff;
+        font-size: 0.95rem;
+        color: #818cf8;
     }
 
     .info-content h5 {
-        color: #a8b5ff;
-        font-size: 0.875rem;
-        margin-bottom: 8px;
+        color: #94a3b8;
+        font-size: 0.68rem;
+        margin-bottom: 4px;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.8px;
+        font-weight: 700;
     }
 
     .info-content p {
-        color: #fff;
+        color: rgba(255,255,255,0.9);
         margin: 0;
-        font-size: 1.1rem;
-        line-height: 1.6;
+        font-size: 0.85rem;
+        line-height: 1.55;
     }
+
+    .info-content a { color: rgba(255,255,255,0.9); text-decoration: none; }
+    .info-content a:hover { color: #60a5fa; }
+    .info-content small { color: rgba(255,255,255,0.45) !important; font-size: 0.72rem; }
+    .info-content strong { font-size: 0.82rem; color: rgba(255,255,255,0.75); }
 
     /* Social Links */
     .social-links-contact {
         display: flex;
-        gap: 15px;
+        gap: 10px;
+        margin-top: 20px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255,255,255,0.08);
     }
 
     .social-links-contact a {
-        width: 50px;
-        height: 50px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 15px;
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 9px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #fff;
-        transition: all 0.3s ease;
+        color: rgba(255,255,255,0.7);
+        font-size: 0.8rem;
+        transition: all 0.25s ease;
     }
 
     .social-links-contact a:hover {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        transform: translateY(-5px);
+        background: #2563eb;
+        border-color: #2563eb;
+        color: #fff;
+        transform: translateY(-3px);
     }
 
     /* Contact Form Card */
@@ -493,32 +518,19 @@
          PAGE HEADER - CONTACT
     ======================================== -->
     <section class="page-header-creative" aria-labelledby="page-heading">
-        <div class="page-header-bg" aria-hidden="true">
-            <div class="header-orb orb-1"></div>
-            <div class="header-orb orb-2"></div>
-        </div>
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8" data-aos="fade-right">
-                    <span class="page-badge">Get In Touch with Shiva Tech Digital Noida</span>
-                    <h1 class="page-title" id="page-heading">Contact Affordable Web Development Agency in Noida</h1>
-                    <p class="page-subtitle">Have a project in mind? We'd love to hear from you. Get free consultation for web development, mobile apps & digital marketing. Direct founder access, transparent pricing, fast response.</p>
-                </div>
-                <div class="col-lg-4" data-aos="fade-left">
-                    <div class="contact-quick-info">
-                        <div class="quick-info-item">
-                            <i class="fas fa-phone" aria-hidden="true"></i>
-                            <a href="tel:+917007294764" style="color: #fff; text-decoration: none;">
-                                <span>+91-7007294764</span>
-                            </a>
-                        </div>
-                        <div class="quick-info-item">
-                            <i class="fas fa-envelope" aria-hidden="true"></i>
-                            <a href="mailto:info@shivatechdigital.com" style="color: #fff; text-decoration: none;">
-                                <span>info@shivatechdigital.com</span>
-                            </a>
-                        </div>
-                    </div>
+            <div class="contact-header-inner" data-aos="fade-up">
+                <span class="page-badge"><i class="fas fa-headset"></i> Noida's Affordable Web Agency</span>
+                <h1 class="page-title" id="page-heading">
+                    Let's Build Something <span>Amazing</span> Together
+                </h1>
+                <p class="page-subtitle">
+                    Have a project in mind? Get a free consultation for web development, mobile apps & digital marketing. Direct founder access — no middlemen.
+                </p>
+                <div class="hero-contact-pills">
+                    <a href="tel:+917007294764" class="hero-pill"><i class="fas fa-phone"></i> +91-7007294764</a>
+                    <a href="mailto:info@shivatechdigital.com" class="hero-pill"><i class="fas fa-envelope"></i> info@shivatechdigital.com</a>
+                    <span class="hero-pill" style="cursor:default;"><i class="fas fa-map-marker-alt"></i> Sector 62, Noida</span>
                 </div>
             </div>
         </div>

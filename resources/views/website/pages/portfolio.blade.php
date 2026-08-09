@@ -6,7 +6,9 @@
     /* ========================================
        PORTFOLIO PAGE SPECIFIC STYLES
     ======================================== */
-    
+    .technologies-section{
+        background: white !important;
+    }
     /* Page Header */
     .page-header-creative {
         position: relative;
