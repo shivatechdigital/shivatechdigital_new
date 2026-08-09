@@ -936,6 +936,37 @@
     padding: 12px;
   }
 
+  #editTeamModal .modal-content {
+    background: var(--about-surface);
+    color: var(--about-text);
+    border: 1px solid var(--about-border);
+  }
+
+  #editTeamModal .form-label,
+  #editTeamModal .form-check-label {
+    color: var(--about-text) !important;
+  }
+
+  #editTeamModal .form-check-label small,
+  #editTeamModal .text-muted,
+  #editTeamModal small.text-muted {
+    color: var(--about-muted) !important;
+  }
+
+  #editTeamModal .form-check-input {
+    background-color: rgba(100, 116, 139, 0.35);
+    border-color: var(--about-border);
+  }
+
+  #editTeamModal .form-check-input:checked {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+  }
+
+  html[data-theme=dark] #editTeamModal .btn-close {
+    filter: invert(1) brightness(1.5);
+  }
+
   /* Tabs Wrapper */
   .tabs-wrapper {
     background: var(--about-tab-bg);
@@ -959,30 +990,18 @@
 
   /* Modern Nav Pills */
   .nav-pills-modern {
-    display: flex;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 8px;
     padding: 0;
     margin: 0;
     list-style: none;
     position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: thin;
-  }
-
-  .nav-pills-modern::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  .nav-pills-modern::-webkit-scrollbar-thumb {
-    background: rgba(99, 102, 241, 0.35);
-    border-radius: 999px;
+    overflow: visible;
   }
 
   .nav-pills-modern .nav-item {
-    flex: 0 0 180px;
-    min-width: 180px;
+    min-width: 0;
   }
 
   /* Nav Link Base Styles */
@@ -990,8 +1009,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     padding: 16px 12px;
+    min-height: 154px;
     border: 2px solid transparent;
     border-radius: 12px;
     background: var(--about-tab-glass);
@@ -1035,16 +1056,18 @@
   }
 
   .nav-link-title {
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.2;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
     transition: all 0.3s ease;
   }
 
   .nav-link-desc {
-    font-size: 11px;
+    font-size: 10px;
+    line-height: 1.2;
     color: var(--about-muted);
-    font-weight: 400;
+    font-weight: 500;
     transition: all 0.3s ease;
   }
 
@@ -1063,14 +1086,14 @@
 
   /* Hover State */
   .nav-pills-modern .nav-link:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
     border-color: var(--about-tab-hover-border);
   }
 
   .nav-pills-modern .nav-link:hover .nav-link-icon {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    transform: scale(1.1) rotate(-5deg);
+    transform: scale(1.04);
   }
 
   .nav-pills-modern .nav-link:hover .nav-link-icon .icon {
@@ -1092,7 +1115,7 @@
     color: white;
     border-color: transparent;
     box-shadow: 0 12px 28px rgba(79, 70, 229, 0.35);
-    transform: translateY(-4px);
+    transform: translateY(-2px);
   }
 
   .nav-pills-modern .nav-link.active::after {
@@ -1117,13 +1140,13 @@
 
   .nav-pills-modern .nav-link.active .nav-link-icon {
     background: rgba(255, 255, 255, 0.25);
-    transform: scale(1.1);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: scale(1.07);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2), 0 10px 18px rgba(0, 0, 0, 0.16);
   }
 
   .nav-pills-modern .nav-link.active .nav-link-icon .icon {
     color: white;
-    animation: iconPulse 2s ease-in-out infinite;
+    animation: iconPulse 2.4s ease-in-out infinite;
   }
 
   .nav-pills-modern .nav-link.active .nav-link-title {
@@ -1194,8 +1217,12 @@
 
   /* Responsive Design */
   @media (max-width: 1200px) {
+    .nav-pills-modern {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
     .nav-pills-modern .nav-item {
-      min-width: 120px;
+      min-width: 0;
     }
 
     .nav-link-icon {
@@ -1214,42 +1241,20 @@
     .nav-link-desc {
       font-size: 10px;
     }
+
+    .nav-pills-modern .nav-link {
+      min-height: 140px;
+    }
   }
 
   @media (max-width: 768px) {
     .nav-pills-modern {
-      flex-direction: column;
-    }
-
-    .nav-pills-modern .nav-item {
-      width: 100%;
-      min-width: unset;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .nav-pills-modern .nav-link {
-      flex-direction: row;
-      justify-content: flex-start;
-      text-align: left;
-      padding: 14px 16px;
-    }
-
-    .nav-link-content {
-      align-items: flex-start;
-      flex: 1;
-    }
-
-    .nav-link-indicator {
-      left: 0;
-      transform: translateX(0) scaleX(0);
-      width: 4px;
-      height: 100%;
-      top: 0;
-      border-radius: 0 3px 3px 0;
-    }
-
-    .nav-pills-modern .nav-link:hover .nav-link-indicator,
-    .nav-pills-modern .nav-link.active .nav-link-indicator {
-      transform: translateX(0) scaleY(1);
+      padding: 14px 10px;
+      min-height: 124px;
     }
   }
 
