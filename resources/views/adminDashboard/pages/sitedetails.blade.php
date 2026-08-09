@@ -2,6 +2,22 @@
 
 @section('adminDashboard.content')
 <style>
+    .site-settings-page {
+        --ss-text: #0f172a;
+        --ss-muted: #64748b;
+        --ss-panel-bg: #ffffff;
+        --ss-panel-border: #e2e8f0;
+        --ss-panel-header-bg: linear-gradient(90deg, #f8fafc, #f1f5f9);
+        --ss-preview-bg: #f8fafc;
+        --ss-preview-border: #cbd5e1;
+        --ss-input-bg: #ffffff;
+        --ss-input-border: #cbd5e1;
+        --ss-input-text: #0f172a;
+        --ss-input-placeholder: #94a3b8;
+        --ss-action-bg: #ffffff;
+        --ss-action-border: #e2e8f0;
+    }
+
     .settings-hero {
         background: linear-gradient(135deg, #0f172a, #1e293b 45%, #155e75);
         border-radius: 16px;
@@ -11,31 +27,32 @@
     }
 
     .settings-card {
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--ss-panel-border);
         border-radius: 14px;
         box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
-        background: #ffffff;
+        background: var(--ss-panel-bg);
+        color: var(--ss-text);
     }
 
     .settings-card .card-header {
-        border-bottom: 1px solid #eef2f7;
-        background: linear-gradient(90deg, #f8fafc, #f1f5f9);
+        border-bottom: 1px solid var(--ss-panel-border);
+        background: var(--ss-panel-header-bg);
         border-radius: 14px 14px 0 0;
         padding: 14px 20px;
     }
 
     .field-tip {
         font-size: 12px;
-        color: #64748b;
+        color: var(--ss-muted);
         margin-top: 6px;
         display: block;
     }
 
     .preview-box {
-        border: 1px dashed #cbd5e1;
+        border: 1px dashed var(--ss-preview-border);
         border-radius: 10px;
         padding: 12px;
-        background: #f8fafc;
+        background: var(--ss-preview-bg);
     }
 
     .section-chip {
@@ -64,33 +81,70 @@
     }
 
     .settings-actions {
-        position: sticky;
-        bottom: 12px;
-        z-index: 20;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(6px);
-        border: 1px solid #e2e8f0;
+        background: var(--ss-action-bg);
+        border: 1px solid var(--ss-action-border);
         border-radius: 12px;
         padding: 12px;
         box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
     }
 
-    .settings-form-grid {
-        padding-bottom: 84px;
+    .site-settings-page .form-control,
+    .site-settings-page .form-select,
+    .site-settings-page textarea {
+        background: var(--ss-input-bg);
+        border-color: var(--ss-input-border);
+        color: var(--ss-input-text);
+    }
+
+    .site-settings-page .form-control::placeholder,
+    .site-settings-page textarea::placeholder {
+        color: var(--ss-input-placeholder);
+    }
+
+    .site-settings-page .text-secondary-light {
+        color: var(--ss-muted) !important;
+    }
+
+    html[data-theme=dark] .site-settings-page {
+        --ss-text: #e2e8f0;
+        --ss-muted: #94a3b8;
+        --ss-panel-bg: #111827;
+        --ss-panel-border: #334155;
+        --ss-panel-header-bg: linear-gradient(90deg, #182334, #111827);
+        --ss-preview-bg: #0f172a;
+        --ss-preview-border: #334155;
+        --ss-input-bg: #0f172a;
+        --ss-input-border: #334155;
+        --ss-input-text: #e2e8f0;
+        --ss-input-placeholder: #64748b;
+        --ss-action-bg: #111827;
+        --ss-action-border: #334155;
+    }
+
+    html[data-theme=dark] .site-settings-page .meta-note {
+        background: rgba(14, 165, 233, 0.12);
+        color: #bfdbfe;
+        border-left-color: #38bdf8;
+    }
+
+    html[data-theme=dark] .site-settings-page .alert-success {
+        background: rgba(22, 163, 74, 0.12);
+        color: #86efac;
+        border-color: rgba(22, 163, 74, 0.3);
+    }
+
+    html[data-theme=dark] .site-settings-page .alert-danger {
+        background: rgba(220, 38, 38, 0.12);
+        color: #fca5a5;
+        border-color: rgba(220, 38, 38, 0.3);
     }
 
     @media (max-width: 767px) {
-        .settings-actions {
-            position: static;
-        }
-
-        .settings-form-grid {
-            padding-bottom: 0;
-        }
+        .settings-actions { padding: 10px; }
     }
 </style>
 
-<div class="dashboard-main-body">
+<div class="dashboard-main-body site-settings-page">
     <div class="settings-hero d-flex flex-wrap align-items-center justify-content-between gap-3">
         <div>
             <div class="section-chip mb-2">
@@ -134,7 +188,7 @@
     <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        <div class="row g-4 settings-form-grid">
+        <div class="row g-4">
             <div class="col-12">
                 <div class="settings-card card">
                     <div class="card-header">
