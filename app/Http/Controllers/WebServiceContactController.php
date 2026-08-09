@@ -15,7 +15,13 @@ class WebServiceContactController extends Controller
             'service' => 'nullable|string|max:255',
             'contact' => 'required|string|max:100'
         ]);
-        ServiceContract::create($request->all());
+        ServiceContract::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'service' => $request->service,
+            'contact' => $request->contact,
+            'status' => 'new',
+        ]);
         return back()->with('success', 'Thanks! We will contact you shortly.');
     }
 }

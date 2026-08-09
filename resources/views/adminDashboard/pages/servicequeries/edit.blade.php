@@ -114,6 +114,17 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Status *</label>
+                                <select name="status" class="form-control @error('status') is-invalid @enderror" required>
+                                    <option value="new" {{ old('status', $query->status ?? 'new') === 'new' ? 'selected' : '' }}>New</option>
+                                    <option value="resolved" {{ old('status', $query->status ?? 'new') === 'resolved' ? 'selected' : '' }}>Resolved</option>
+                                </select>
+                                @error('status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
                         <div class="d-flex gap-2 flex-wrap mt-2">

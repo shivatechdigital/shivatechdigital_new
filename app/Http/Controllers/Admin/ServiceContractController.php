@@ -12,6 +12,7 @@ class ServiceContractController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->input('search', ''));
+        $status = (string) $request->input('status', 'all');
         $sortBy = (string) $request->input('sort_by', 'created');
         $sortOrder = strtolower((string) $request->input('sort_order', 'desc'));
         $allowedPerPage = [10, 20, 50, 100];
@@ -31,6 +32,7 @@ class ServiceContractController extends Controller
             'email' => 'email',
             'contact' => 'contact',
             'service' => 'service',
+            'status' => 'status',
             'created' => 'created_at',
         ];
 
@@ -38,7 +40,7 @@ class ServiceContractController extends Controller
             $sortBy = 'created';
         }
 
-        $queries = $this->buildQueries($search)
+        $queries = $this->buildQueries($search, $status)
             ->orderBy($sortMap[$sortBy], $sortOrder)
             ->paginate($perPage)
             ->appends($request->query());
@@ -46,6 +48,7 @@ class ServiceContractController extends Controller
         return view('adminDashboard.pages.servicequeries.index', compact(
             'queries',
             'search',
+            'status',
             'sortBy',
             'sortOrder',
             'perPage'
@@ -67,9 +70,10 @@ class ServiceContractController extends Controller
             'email'   => 'required|email',
             'contact' => 'required|string|max:100',
             'service' => 'required|string|max:255',
+            'status'  => 'required|in:new,resolved',
         ]);
 
-        $servicecontact->update($request->only('name','email','contact','service'));
+        $servicecontact->update($request->only('name', 'email', 'contact', 'service', 'status'));
 
         return redirect()->route('admin.servicecontact.index')
                          ->with('success','Query Updated Successfully!');
@@ -95,7 +99,18 @@ class ServiceContractController extends Controller
             ->with('success', 'Selected queries deleted successfully');
     }
 
-    private function buildQueries(string $search)
+    public function toggleStatus(ServiceContract $servicecontact)
+    {
+        $nextStatus = $servicecontact->status === 'resolved' ? 'new' : 'resolved';
+
+        $servicecontact->update([
+            'status' => $nextStatus,
+        ]);
+
+        return back()->with('success', 'Query status updated successfully');
+    }
+
+    private function buildQueries(string $search, string $status)
     {
         $query = ServiceContract::query();
 
@@ -106,6 +121,12 @@ class ServiceContractController extends Controller
                     ->orWhere('contact', 'like', '%' . $search . '%')
                     ->orWhere('service', 'like', '%' . $search . '%');
             });
+        }
+
+        if ($status === 'new') {
+            $query->where('status', 'new');
+        } elseif ($status === 'resolved') {
+            $query->where('status', 'resolved');
         }
 
         return $query;

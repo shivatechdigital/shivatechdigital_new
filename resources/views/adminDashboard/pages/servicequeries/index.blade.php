@@ -49,7 +49,7 @@
 
     .queries-filter-grid {
         display: grid;
-        grid-template-columns: 2fr 120px;
+        grid-template-columns: 2fr 1fr 120px;
         gap: 10px;
         margin-bottom: 14px;
     }
@@ -177,6 +177,35 @@
         border-color: rgba(220, 38, 38, 0.38);
     }
 
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-pill.new {
+        color: #92400e;
+        background: #fef3c7;
+    }
+
+    .status-pill.resolved {
+        color: #065f46;
+        background: #d1fae5;
+    }
+
+    html[data-theme=dark] .status-pill.new {
+        color: #fbbf24;
+        background: rgba(120, 53, 15, 0.35);
+    }
+
+    html[data-theme=dark] .status-pill.resolved {
+        color: #34d399;
+        background: rgba(6, 95, 70, 0.35);
+    }
+
     @media (max-width: 992px) {
         .queries-filter-grid {
             grid-template-columns: 1fr 1fr;
@@ -215,6 +244,12 @@
                 <div class="queries-filter-grid">
                     <input type="text" name="search" class="form-control" placeholder="Search name, email, contact, service..." value="{{ $search }}">
 
+                    <select name="status" class="form-select auto-submit-filter">
+                        <option value="all" {{ $status === 'all' ? 'selected' : '' }}>All Status</option>
+                        <option value="new" {{ $status === 'new' ? 'selected' : '' }}>New</option>
+                        <option value="resolved" {{ $status === 'resolved' ? 'selected' : '' }}>Resolved</option>
+                    </select>
+
                     <select name="per_page" class="form-select auto-submit-filter">
                         <option value="10" {{ (int) $perPage === 10 ? 'selected' : '' }}>10</option>
                         <option value="20" {{ (int) $perPage === 20 ? 'selected' : '' }}>20</option>
@@ -245,6 +280,7 @@
                                 <th><button type="button" class="sortable-header-btn" data-sort-key="email">Email</button></th>
                                 <th><button type="button" class="sortable-header-btn" data-sort-key="contact">Phone Number</button></th>
                                 <th><button type="button" class="sortable-header-btn" data-sort-key="service">Services</button></th>
+                                <th><button type="button" class="sortable-header-btn" data-sort-key="status">Status</button></th>
                                 <th><button type="button" class="sortable-header-btn" data-sort-key="created">Created Date</button></th>
                                 <th class="action-col">Actions</th>
                             </tr>
@@ -260,6 +296,14 @@
                                 <td>{{ $query->email }}</td>
                                 <td>{{ $query->contact ?? '-' }}</td>
                                 <td>{{ $query->service }}</td>
+                                <td>
+                                    <form action="{{ route('admin.servicecontact.toggle-status', $query) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="status-pill {{ ($query->status ?? 'new') === 'resolved' ? 'resolved' : 'new' }} border-0">
+                                            {{ ($query->status ?? 'new') === 'resolved' ? 'Resolved' : 'New' }}
+                                        </button>
+                                    </form>
+                                </td>
                                 <td>{{ optional($query->created_at)->format('M d, Y h:i A') }}</td>
                                 <td>
                                     <a href="{{ route('admin.servicecontact.edit', $query) }}" class="action-icon-btn edit-btn" title="Edit">
@@ -272,7 +316,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="8" class="text-center text-soft py-4">No query found</td>
+                                <td colspan="9" class="text-center text-soft py-4">No query found</td>
                             </tr>
                             @endforelse
                         </tbody>
