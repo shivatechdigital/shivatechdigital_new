@@ -64,6 +64,14 @@
 .icon-web { background: #eff6ff; color: #2563eb; } .icon-app { background: #ecfdf5; color: #059669; } .icon-ui { background: #fdf4ff; color: #a21caf; } .icon-shop { background: #fff7ed; color: #ea580c; } .icon-bull { background: #fffbeb; color: #d97706; } .icon-seo { background: #ecfdf5; color: #065f46; } .icon-sm { background: #fdf2f8; color: #db2777; } .icon-cont { background: #f0f9ff; color: #0369a1; } .icon-cloud { background: #f0fdf4; color: #15803d; } .icon-maint { background: #fefce8; color: #854d0e; } .icon-brand { background: #fff1f2; color: #be123c; }
 .mega-item-text strong { display: block; font-size: 0.83rem; font-weight: 700; color: #0f172a; margin-bottom: 1px; }
 .mega-item-text span { font-size: 0.72rem; color: #94a3b8; }
+.location-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.location-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; background: #ffffff; }
+.location-card-head { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; font-size: 0.82rem; font-weight: 700; color: #0f172a; }
+.location-card-head i { color: #7c3aed; }
+.location-link-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.location-link-chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 9px; border-radius: 999px; border: 1px solid #dbeafe; background: #f8fafc; color: #1e293b; font-size: 0.72rem; font-weight: 600; text-decoration: none; }
+.location-link-chip i { font-size: 0.7rem; }
+.location-link-chip:hover { color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; }
 .mega-col-cta { background: linear-gradient(160deg, #0f172a 0%, #1e3a8a 100%); padding: 24px 20px; }
 .mega-cta-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(99,102,241,0.2); border: 1px solid rgba(99,102,241,0.3); border-radius: 50px; padding: 3px 10px; color: #a5b4fc; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
 .mega-cta-title { font-size: 1.05rem; font-weight: 800; color: #fff; line-height: 1.3; margin-bottom: 8px; }
@@ -145,14 +153,36 @@
                                 {{-- Column 3: City Pages --}}
                                 <div class="mega-col">
                                     <div class="mega-col-header"><div class="col-icon col-icon-purple"><i class="fas fa-map-marker-alt"></i></div><h6>By Location</h6></div>
-                                    <a href="{{ route('services.web-development-noida') }}" class="mega-item"><div class="mega-item-icon icon-web"><i class="fas fa-laptop-code"></i></div><div class="mega-item-text"><strong>Web Dev — Noida</strong><span>Sector 62 & all Noida</span></div></a>
-                                    <a href="{{ route('services.web-development-delhi') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-laptop-code"></i></div><div class="mega-item-text"><strong>Web Dev — Delhi</strong><span>South, East & Central Delhi</span></div></a>
-                                    <a href="{{ route('services.web-development-gurgaon') }}" class="mega-item"><div class="mega-item-icon icon-ui"><i class="fas fa-laptop-code"></i></div><div class="mega-item-text"><strong>Web Dev — Gurgaon</strong><span>Cyber City & DLF</span></div></a>
-                                    <a href="{{ route('services.web-development-ghaziabad') }}" class="mega-item"><div class="mega-item-icon icon-shop"><i class="fas fa-laptop-code"></i></div><div class="mega-item-text"><strong>Web Dev — Ghaziabad</strong><span>Indirapuram & Vaishali</span></div></a>
-                                    <a href="{{ route('services.mobile-app-noida') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-mobile-alt"></i></div><div class="mega-item-text"><strong>App Dev — Noida</strong><span>Android, iOS, Flutter</span></div></a>
-                                    <a href="{{ route('services.mobile-app-delhi') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-mobile-alt"></i></div><div class="mega-item-text"><strong>App Dev — Delhi</strong><span>Startup & enterprise apps</span></div></a>
-                                    <a href="{{ route('services.mobile-app-gurgaon') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-mobile-alt"></i></div><div class="mega-item-text"><strong>App Dev — Gurgaon</strong><span>Product-led app teams</span></div></a>
-                                    <a href="{{ route('services.mobile-app-ghaziabad') }}" class="mega-item"><div class="mega-item-icon icon-app"><i class="fas fa-mobile-alt"></i></div><div class="mega-item-text"><strong>App Dev — Ghaziabad</strong><span>Business automation apps</span></div></a>
+                                    <div class="location-grid">
+                                        <div class="location-card">
+                                            <div class="location-card-head"><i class="fas fa-map-pin"></i> Noida</div>
+                                            <div class="location-link-row">
+                                                <a href="{{ route('services.web-development-noida') }}" class="location-link-chip"><i class="fas fa-laptop-code"></i> Web Development</a>
+                                                <a href="{{ route('services.mobile-app-noida') }}" class="location-link-chip"><i class="fas fa-mobile-alt"></i> Android Development</a>
+                                            </div>
+                                        </div>
+                                        <div class="location-card">
+                                            <div class="location-card-head"><i class="fas fa-map-pin"></i> Delhi</div>
+                                            <div class="location-link-row">
+                                                <a href="{{ route('services.web-development-delhi') }}" class="location-link-chip"><i class="fas fa-laptop-code"></i> Web Development</a>
+                                                <a href="{{ route('services.mobile-app-delhi') }}" class="location-link-chip"><i class="fas fa-mobile-alt"></i> Android Development</a>
+                                            </div>
+                                        </div>
+                                        <div class="location-card">
+                                            <div class="location-card-head"><i class="fas fa-map-pin"></i> Gurgaon</div>
+                                            <div class="location-link-row">
+                                                <a href="{{ route('services.web-development-gurgaon') }}" class="location-link-chip"><i class="fas fa-laptop-code"></i> Web Development</a>
+                                                <a href="{{ route('services.mobile-app-gurgaon') }}" class="location-link-chip"><i class="fas fa-mobile-alt"></i> Android Development</a>
+                                            </div>
+                                        </div>
+                                        <div class="location-card">
+                                            <div class="location-card-head"><i class="fas fa-map-pin"></i> Ghaziabad</div>
+                                            <div class="location-link-row">
+                                                <a href="{{ route('services.web-development-ghaziabad') }}" class="location-link-chip"><i class="fas fa-laptop-code"></i> Web Development</a>
+                                                <a href="{{ route('services.mobile-app-ghaziabad') }}" class="location-link-chip"><i class="fas fa-mobile-alt"></i> Android Development</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <a href="{{ route('services.maintenance') }}" class="mega-item"><div class="mega-item-icon icon-maint"><i class="fas fa-tools"></i></div><div class="mega-item-text"><strong>Maintenance & Support</strong><span>Ongoing support packages</span></div></a>
                                 </div>
                                 {{-- Column 4: CTA --}}

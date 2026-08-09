@@ -188,17 +188,22 @@
     <h2 class="text-center mb-4" style="font-weight:800;">Gurgaon Mobile App FAQs</h2>
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        @foreach([
-          ['q'=>'Can you build enterprise apps for Gurgaon companies?','a'=>'Yes, we build secure enterprise apps with workflow automation, role permissions, and integrations.'],
-          ['q'=>'What tech stack do you recommend?','a'=>'Depends on your use case. We use Kotlin/Swift for native and Flutter/React Native for fast cross-platform delivery.'],
-          ['q'=>'Do you sign NDAs?','a'=>'Yes, NDA signing is standard before discovery for confidential product ideas.'],
-          ['q'=>'Can you integrate with existing ERP/CRM?','a'=>'Yes, we build API connectors and middleware for smooth integration with existing systems.']
-        ] as $faq)
         <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
-          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">{{ $faq['q'] }}</summary>
-          <div style="padding:0 16px 14px;color:#64748b;">{{ $faq['a'] }}</div>
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Can you build enterprise apps for Gurgaon companies?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes, we build secure enterprise apps with workflow automation, role permissions, and integrations.</div>
         </details>
-        @endforeach
+        <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">What tech stack do you recommend?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Depends on your use case. We use Kotlin and Swift for native apps, and Flutter or React Native for fast cross-platform delivery.</div>
+        </details>
+        <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Do you sign NDAs?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes, NDA signing is a standard step before project discovery for confidential product ideas.</div>
+        </details>
+        <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Can you integrate with existing ERP or CRM?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes, we build API connectors and middleware for smooth integration with ERP, CRM, payment, and analytics systems.</div>
+        </details>
       </div>
     </div>
   </div>

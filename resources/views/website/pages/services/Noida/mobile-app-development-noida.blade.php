@@ -237,17 +237,22 @@
           <span class="sec-label">FAQs</span>
           <h2 class="sec-title">Noida App Development Questions</h2>
         </div>
-        @foreach([
-          ['q'=>'How much does app development cost in Noida?','a'=>'Simple apps usually start around INR 80,000 to 2,50,000. Cost depends on features, platforms, integrations, and timeline.'],
-          ['q'=>'Do you build both Android and iOS apps?','a'=>'Yes. We provide native Android, native iOS, and cross-platform Flutter/React Native solutions based on business goals.'],
-          ['q'=>'Can you help with app launch?','a'=>'Yes, we handle Play Store and App Store submission, compliance checks, release notes, and launch assets.'],
-          ['q'=>'Do you provide support after delivery?','a'=>'Yes, we offer maintenance retainers including bug fixes, updates, performance optimization, and feature rollouts.']
-        ] as $faq)
         <details class="faq-item">
-          <summary>{{ $faq['q'] }}</summary>
-          <div class="ans">{{ $faq['a'] }}</div>
+          <summary>How much does app development cost in Noida?</summary>
+          <div class="ans">Simple apps usually start around INR 80,000 to 2,50,000. Final cost depends on features, platforms, integrations, and timeline.</div>
         </details>
-        @endforeach
+        <details class="faq-item">
+          <summary>Do you build both Android and iOS apps?</summary>
+          <div class="ans">Yes. We provide native Android, native iOS, and cross-platform Flutter or React Native solutions based on business goals.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can you help with app launch?</summary>
+          <div class="ans">Yes, we handle Play Store and App Store submission, compliance checks, release notes, and launch assets.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Do you provide support after delivery?</summary>
+          <div class="ans">Yes, we offer maintenance retainers including bug fixes, updates, performance optimization, and feature rollouts.</div>
+        </details>
       </div>
     </div>
   </div>

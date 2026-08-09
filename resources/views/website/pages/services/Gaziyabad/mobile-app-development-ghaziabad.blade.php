@@ -188,17 +188,22 @@
     <h2 class="text-center mb-4" style="font-weight:800;">Ghaziabad App Development FAQs</h2>
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        @foreach([
-          ['q'=>'Do you build apps for local service businesses?','a'=>'Yes, we build apps for clinics, coaching centers, retailers, logistics, and service providers in Ghaziabad.'],
-          ['q'=>'Can you integrate payment gateways?','a'=>'Yes, we integrate major payment gateways and secure checkout systems in mobile apps.'],
-          ['q'=>'Will my app be scalable for future growth?','a'=>'Yes, we design app architecture to support traffic growth, feature expansion, and integrations.'],
-          ['q'=>'Do you provide AMC or support packages?','a'=>'Yes, we offer monthly and quarterly support packages for updates, issue resolution, and monitoring.']
-        ] as $faq)
         <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
-          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">{{ $faq['q'] }}</summary>
-          <div style="padding:0 16px 14px;color:#64748b;">{{ $faq['a'] }}</div>
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Do you build apps for local service businesses?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes, we build apps for clinics, coaching centers, retailers, logistics, and service providers in Ghaziabad.</div>
         </details>
-        @endforeach
+        <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Can you integrate payment gateways?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes, we integrate major payment gateways and secure checkout systems in mobile apps.</div>
+        </details>
+        <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Will my app be scalable for future growth?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes, we design app architecture to support traffic growth, feature expansion, and integrations.</div>
+        </details>
+        <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Do you provide AMC or support packages?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes, we offer monthly and quarterly support packages for updates, issue resolution, and monitoring.</div>
+        </details>
       </div>
     </div>
   </div>

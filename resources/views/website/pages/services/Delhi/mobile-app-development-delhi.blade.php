@@ -194,17 +194,22 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <h2 class="text-center mb-4" style="font-weight:800;">FAQs for Delhi Mobile App Projects</h2>
-        @foreach([
-          ['q'=>'How long does a mobile app take in Delhi?','a'=>'Most MVP apps take 6-10 weeks. Full-featured apps can take 3-5 months depending on complexity.'],
-          ['q'=>'Do you offer fixed cost packages?','a'=>'Yes. We offer both milestone-based and fixed-cost engagement based on scope clarity.'],
-          ['q'=>'Can you improve my existing app?','a'=>'Yes, we do app redesigns, code refactoring, feature upgrades, and performance optimization.'],
-          ['q'=>'Do you support post-launch growth?','a'=>'Yes, we provide ASO support, analytics reviews, and monthly feature enhancement plans.']
-        ] as $faq)
         <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
-          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">{{ $faq['q'] }}</summary>
-          <div style="padding:0 16px 14px;color:#64748b;">{{ $faq['a'] }}</div>
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">How long does a mobile app take in Delhi?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Most MVP apps take 6 to 10 weeks. Full-featured apps can take 3 to 5 months depending on complexity.</div>
         </details>
-        @endforeach
+        <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Do you offer fixed cost packages?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes. We offer both milestone-based and fixed-cost engagement models based on scope clarity.</div>
+        </details>
+        <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Can you improve my existing app?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes, we do app redesigns, code refactoring, feature upgrades, and performance optimization.</div>
+        </details>
+        <details class="mb-3" style="border:1px solid #e2e8f0;border-radius:10px;background:#fff;">
+          <summary style="padding:14px 16px;font-weight:600;cursor:pointer;">Do you support post-launch growth?</summary>
+          <div style="padding:0 16px 14px;color:#64748b;">Yes, we provide ASO support, analytics reviews, and monthly feature enhancement plans.</div>
+        </details>
       </div>
     </div>
   </div>
