@@ -11,36 +11,63 @@
        PAGE SPACING
     ========================================= */
 
-    .container-fluid{
+    .edit-post-page.container-fluid{
         padding: 30px;
+        background: linear-gradient(135deg, #eff5ff 0%, #f9fbff 45%, #eef2ff 100%);
+        border-radius: 18px;
+    }
+
+    html[data-theme=dark] .edit-post-page.container-fluid {
+        background: radial-gradient(circle at top left, #1e293b 0%, #0f172a 45%, #111827 100%);
     }
 
     /* =========================================
        CARD DESIGN
     ========================================= */
 
-    .card{
+    .edit-post-page .card{
         border: none;
         border-radius: 22px;
         overflow: hidden;
         box-shadow: 0 10px 35px rgba(0,0,0,0.06);
-        background: #fff;
+        background: rgba(255, 255, 255, 0.92);
     }
 
-    .card-header{
+    html[data-theme=dark] .edit-post-page .card {
+        background: rgba(17, 24, 39, 0.84);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .edit-post-page .main-post-header{
         border: none;
         padding: 22px 28px;
         background: linear-gradient(135deg,#4f46e5,#7c3aed);
     }
 
-    .card-header h3,
-    .card-header h5{
+    .edit-post-page .card .card-header.bg-light {
+        background: rgba(241, 245, 249, 0.8) !important;
+        color: #0f172a;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    html[data-theme=dark] .edit-post-page .card .card-header.bg-light {
+        background: rgba(30, 41, 59, 0.82) !important;
+        color: #e2e8f0;
+        border-bottom-color: #334155;
+    }
+
+    .edit-post-page .main-post-header h3,
+    .edit-post-page .main-post-header h5{
         color: white;
         margin: 0;
         font-weight: 700;
     }
 
-    .card-body{
+    .edit-post-page .card .card-header.bg-light h5 {
+        color: inherit;
+    }
+
+    .edit-post-page .card-body{
         padding: 35px;
     }
 
@@ -48,9 +75,9 @@
        INPUTS
     ========================================= */
 
-    .form-control,
-    .form-select,
-    select{
+    .edit-post-page .form-control,
+    .edit-post-page .form-select,
+    .edit-post-page select{
         min-height: 54px;
         border-radius: 14px !important;
         border: 1px solid #dbe2ea !important;
@@ -64,22 +91,40 @@
         min-height: 120px;
     }
 
-    .form-control:focus,
-    .form-select:focus,
-    select:focus{
+    .edit-post-page .form-control:focus,
+    .edit-post-page .form-select:focus,
+    .edit-post-page select:focus{
         border-color: #4f46e5 !important;
         background: #fff !important;
         box-shadow: 0 0 0 4px rgba(79,70,229,.12) !important;
+    }
+
+    html[data-theme=dark] .edit-post-page .form-control,
+    html[data-theme=dark] .edit-post-page .form-select,
+    html[data-theme=dark] .edit-post-page select {
+        background: rgba(30, 41, 59, 0.76) !important;
+        color: #f8fafc !important;
+        border-color: #475569 !important;
+    }
+
+    html[data-theme=dark] .edit-post-page .form-control::placeholder {
+        color: #94a3b8;
     }
 
     /* =========================================
        LABELS
     ========================================= */
 
-    .form-label{
+    .edit-post-page .form-label{
         font-weight: 700;
         color: #111827;
         margin-bottom: 10px;
+    }
+
+    html[data-theme=dark] .edit-post-page .form-label,
+    html[data-theme=dark] .edit-post-page .text-muted,
+    html[data-theme=dark] .edit-post-page small.text-muted {
+        color: #cbd5e1 !important;
     }
 
     /* =========================================
@@ -99,8 +144,13 @@
     }
 
     .btn-primary:hover{
-        transform: translateY(-2px);
+        transform: none;
         box-shadow: 0 10px 25px rgba(79,70,229,.25);
+    }
+
+    .edit-post-page .btn {
+        position: relative;
+        top: 0;
     }
 
     /* =========================================
@@ -139,6 +189,26 @@
         padding: 20px !important;
         font-size: 14px;
         line-height: 1.8;
+    }
+
+    #editorContainer,
+    #sourceContainer {
+        min-height: 520px;
+    }
+
+    .edit-action-bar {
+        position: sticky;
+        bottom: 0;
+        z-index: 5;
+        background: rgba(255,255,255,0.95);
+        border-top: 1px solid #e2e8f0;
+        margin: 24px -35px -35px;
+        padding: 14px 35px;
+    }
+
+    html[data-theme=dark] .edit-action-bar {
+        background: rgba(15,23,42,0.95);
+        border-top-color: #334155;
     }
 
     /* =========================================
@@ -203,12 +273,18 @@
 
     @media(max-width:768px){
 
-        .container-fluid{
+        .edit-post-page.container-fluid{
             padding: 15px;
         }
 
-        .card-body{
+        .edit-post-page .card-body{
             padding: 20px;
+        }
+
+        .edit-action-bar {
+            margin: 20px -20px -20px;
+            padding: 12px 20px;
+            position: static;
         }
 
     }
@@ -216,11 +292,11 @@
 </style>
 
 @endpush
-<div class="container-fluid">
+<div class="container-fluid edit-post-page">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header main-post-header d-flex justify-content-between align-items-center">
                     <h3><i class="fas fa-edit"></i> Edit Post</h3>
                     <div>
                         <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary btn-sm">
@@ -449,15 +525,10 @@
                             <div class="card-header bg-light">
                                 <h5 class="mb-0">
                                     <i class="fas fa-search"></i> SEO Settings
-                                    <button class="btn btn-sm btn-link float-end" 
-                                            type="button" 
-                                            data-bs-toggle="collapse" 
-                                            data-bs-target="#seoCollapse">
-                                        <i class="fas fa-chevron-down"></i>
-                                    </button>
+                                    <span class="badge bg-primary-600 float-end">Always Visible</span>
                                 </h5>
                             </div>
-                            <div class="collapse show" id="seoCollapse">
+                            <div id="seoCollapse">
                                 <div class="card-body">
                                     {{-- Meta Title --}}
                                     <div class="mb-3">
@@ -611,7 +682,7 @@
                         </div>
 
                         {{-- Action Buttons --}}
-                        <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div class="d-flex justify-content-between align-items-center mt-4 edit-action-bar">
                             <div>
                                 <button type="submit" class="btn btn-primary btn-lg">
                                     <i class="fas fa-save"></i> Update Post

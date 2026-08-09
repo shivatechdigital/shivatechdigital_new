@@ -163,16 +163,29 @@
         appearance: auto !important;
         -webkit-appearance: checkbox !important;
         display: inline-block !important;
-        width: 16px;
-        height: 16px;
-        min-width: 16px;
-        min-height: 16px;
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        min-height: 20px;
         margin: 0;
         cursor: pointer;
         accent-color: #2563eb;
         border: 1px solid #94a3b8;
         background: #ffffff;
         vertical-align: middle;
+    }
+
+    .posts-table tbody tr.post-row-selectable {
+        cursor: pointer;
+        transition: background-color 0.18s ease;
+    }
+
+    .posts-table tbody tr.post-row-selectable.row-selected {
+        background: rgba(37, 99, 235, 0.14) !important;
+    }
+
+    html[data-theme=dark] .posts-table tbody tr.post-row-selectable.row-selected {
+        background: rgba(59, 130, 246, 0.2) !important;
     }
 
     html[data-theme=dark] .post-select-checkbox {
@@ -375,6 +388,7 @@
                         <option value="delete">Delete Selected</option>
                     </select>
                     <button type="submit" class="btn btn-danger-600">Apply Selected</button>
+                    <span class="badge bg-primary-600 align-self-center" id="selectedPostsCount">0 selected</span>
                 </div>
 
                 <div class="table-responsive">
@@ -430,7 +444,7 @@
                         </thead>
                         <tbody>
                             @forelse($posts as $post)
-                            <tr>
+                            <tr class="post-row-selectable">
                                 <td class="select-col"><input type="checkbox" class="post-row-checkbox post-select-checkbox" name="posts[]" value="{{ $post->id }}" aria-label="Select post {{ $post->id }}"></td>
                                 <td class="id-col">{{ ($posts->firstItem() ?? 1) + $loop->index }}</td>
                                 <td>
@@ -497,7 +511,28 @@ document.addEventListener('DOMContentLoaded', function () {
     const sortButtons = document.querySelectorAll('.sortable-header-btn[data-sort-key]');
     const selectAll = document.getElementById('selectAllPosts');
     const rowCheckboxes = Array.from(document.querySelectorAll('.post-row-checkbox'));
+    const selectableRows = Array.from(document.querySelectorAll('.post-row-selectable'));
     const bulkPostsForm = document.getElementById('bulkPostsForm');
+    const selectedCountBadge = document.getElementById('selectedPostsCount');
+        function syncSelectedUI() {
+            const selectedCount = rowCheckboxes.filter(function (item) { return item.checked; }).length;
+
+            if (selectedCountBadge) {
+                selectedCountBadge.textContent = selectedCount + ' selected';
+            }
+
+            selectableRows.forEach(function (row) {
+                const rowCheckbox = row.querySelector('.post-row-checkbox');
+                row.classList.toggle('row-selected', !!rowCheckbox && rowCheckbox.checked);
+            });
+
+            if (selectAll) {
+                selectAll.checked = rowCheckboxes.length > 0 && rowCheckboxes.every(function (item) {
+                    return item.checked;
+                });
+            }
+        }
+
     const deleteButtons = document.querySelectorAll('.delete-single-post');
     const singleDeleteForm = document.getElementById('singleDeleteForm');
 
@@ -543,19 +578,33 @@ document.addEventListener('DOMContentLoaded', function () {
             rowCheckboxes.forEach(function (checkbox) {
                 checkbox.checked = selectAll.checked;
             });
+            syncSelectedUI();
         });
     }
 
     rowCheckboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', function () {
-            if (!selectAll) {
-                return;
-            }
-            selectAll.checked = rowCheckboxes.length > 0 && rowCheckboxes.every(function (item) {
-                return item.checked;
-            });
+            syncSelectedUI();
         });
     });
+
+    selectableRows.forEach(function (row) {
+        row.addEventListener('click', function (event) {
+            if (event.target.closest('a, button, input, .action-icon-btn')) {
+                return;
+            }
+
+            const rowCheckbox = row.querySelector('.post-row-checkbox');
+            if (!rowCheckbox) {
+                return;
+            }
+
+            rowCheckbox.checked = !rowCheckbox.checked;
+            syncSelectedUI();
+        });
+    });
+
+    syncSelectedUI();
 
     if (bulkPostsForm) {
         bulkPostsForm.addEventListener('submit', async function (event) {

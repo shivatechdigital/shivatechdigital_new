@@ -5,32 +5,43 @@
        PAGE
     ========================================= */
 
-    .container-fluid{
+    .create-post-page.container-fluid{
         padding: 30px;
+        background: linear-gradient(135deg, #eff5ff 0%, #f9fbff 45%, #eef2ff 100%);
+        border-radius: 18px;
     }
 
-    .card{
+    html[data-theme=dark] .create-post-page.container-fluid {
+        background: radial-gradient(circle at top left, #1e293b 0%, #0f172a 45%, #111827 100%);
+    }
+
+    .create-post-page .card{
         border: none;
         border-radius: 20px;
         overflow: hidden;
-        background: #ffffff;
+        background: rgba(255, 255, 255, 0.92);
         box-shadow: 0 10px 40px rgba(0,0,0,0.06);
     }
 
-    .card-header{
+    html[data-theme=dark] .create-post-page .card {
+        background: rgba(17, 24, 39, 0.82);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .create-post-page .card-header{
         background: linear-gradient(135deg,#4f46e5,#7c3aed);
         padding: 22px 30px;
         border: none;
     }
 
-    .card-header h3{
+    .create-post-page .card-header h3{
         color: #fff;
         font-size: 28px;
         font-weight: 700;
         margin: 0;
     }
 
-    .card-body{
+    .create-post-page .card-body{
         padding: 35px;
     }
 
@@ -38,20 +49,26 @@
        LABELS
     ========================================= */
 
-    .form-label{
+    .create-post-page .form-label{
         font-weight: 600;
         color: #111827;
         margin-bottom: 10px;
         font-size: 15px;
     }
 
+    html[data-theme=dark] .create-post-page .form-label,
+    html[data-theme=dark] .create-post-page h5,
+    html[data-theme=dark] .create-post-page .text-muted {
+        color: #e2e8f0 !important;
+    }
+
     /* =========================================
        INPUTS
     ========================================= */
 
-    .form-control,
-    .form-select,
-    select{
+    .create-post-page .form-control,
+    .create-post-page .form-select,
+    .create-post-page select{
         min-height: 52px;
         border-radius: 14px !important;
         border: 1px solid #dbe2ea !important;
@@ -66,12 +83,24 @@
         min-height: 120px;
     }
 
-    .form-control:focus,
-    .form-select:focus,
-    select:focus{
+    .create-post-page .form-control:focus,
+    .create-post-page .form-select:focus,
+    .create-post-page select:focus{
         border-color: #4f46e5 !important;
         background: #fff !important;
         box-shadow: 0 0 0 4px rgba(79,70,229,.12) !important;
+    }
+
+    html[data-theme=dark] .create-post-page .form-control,
+    html[data-theme=dark] .create-post-page .form-select,
+    html[data-theme=dark] .create-post-page select {
+        background: rgba(30, 41, 59, 0.76) !important;
+        color: #f8fafc !important;
+        border-color: #475569 !important;
+    }
+
+    html[data-theme=dark] .create-post-page .form-control::placeholder {
+        color: #94a3b8;
     }
 
     /* =========================================
@@ -131,6 +160,11 @@
         min-height: 500px;
     }
 
+    #editorContainer,
+    #sourceContainer {
+        min-height: 520px;
+    }
+
     /* =========================================
        BUTTONS
     ========================================= */
@@ -148,8 +182,13 @@
     }
 
     .btn-primary:hover{
-        transform: translateY(-2px);
+        transform: none;
         box-shadow: 0 10px 25px rgba(79,70,229,.25);
+    }
+
+    .create-post-page .btn {
+        position: relative;
+        top: 0;
     }
 
     .btn-secondary{
@@ -166,7 +205,7 @@
        HEADINGS
     ========================================= */
 
-    h5{
+    .create-post-page h5{
         font-size: 24px;
         font-weight: 700;
         color: #111827;
@@ -177,7 +216,7 @@
        FILE INPUT
     ========================================= */
 
-    input[type="file"]{
+    .create-post-page input[type="file"]{
         padding: 12px;
         background: #f9fafb;
     }
@@ -186,13 +225,13 @@
        CHECKBOX
     ========================================= */
 
-    .form-check-input{
+    .create-post-page .form-check-input{
         width: 20px;
         height: 20px;
         margin-top: 2px;
     }
 
-    .form-check-label{
+    .create-post-page .form-check-label{
         margin-left: 10px;
         font-weight: 600;
     }
@@ -201,9 +240,27 @@
        WORD COUNT
     ========================================= */
 
-    #wordCount{
+    .create-post-page #wordCount{
         font-weight: 700;
         color: #4f46e5;
+    }
+
+    .create-action-bar {
+        position: sticky;
+        bottom: 0;
+        z-index: 5;
+        background: rgba(255,255,255,0.95);
+        border-top: 1px solid #e2e8f0;
+        margin: 24px -35px -35px;
+        padding: 14px 35px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    html[data-theme=dark] .create-action-bar {
+        background: rgba(15,23,42,0.95);
+        border-top-color: #334155;
     }
 
     /* =========================================
@@ -212,21 +269,27 @@
 
     @media(max-width:768px){
 
-        .container-fluid{
+        .create-post-page.container-fluid{
             padding: 15px;
         }
 
-        .card-body{
+        .create-post-page .card-body{
             padding: 20px;
         }
 
-        .row{
+        .create-post-page .row{
             flex-direction: column;
+        }
+
+        .create-action-bar {
+            margin: 20px -20px -20px;
+            padding: 12px 20px;
+            position: static;
         }
 
     }
 </style>
-<div class="container-fluid">
+<div class="container-fluid create-post-page">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -334,10 +397,12 @@
                             <label class="form-check-label" for="published">Publish Now</label>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Create Post
-                        </button>
-                        <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Cancel</a>
+                        <div class="create-action-bar">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Create Post
+                            </button>
+                            <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
                     </form>
                 </div>
             </div>
