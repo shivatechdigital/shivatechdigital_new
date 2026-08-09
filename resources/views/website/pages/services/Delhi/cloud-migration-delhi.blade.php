@@ -2,8 +2,8 @@
 
 @section('title', 'Cloud Migration Services in Delhi | Enterprise Cloud Consulting')
 @section('meta_title', 'Cloud Migration Company in Delhi | Shiva Tech Digital')
-@section('meta_description', 'Leading cloud migration services in Delhi for AWS, Azure and GCP. We deliver secure cloud transition, architecture modernization and cost optimization for enterprises and startups.')
-@section('meta_keywords', 'cloud migration delhi, aws migration delhi, azure migration delhi, gcp migration delhi, enterprise cloud consulting delhi')
+@section('meta_description', 'Best, affordable, and secure cloud migration services in Delhi. AWS Azure GCP migration, architecture modernization, cost optimization, and managed cloud support.')
+@section('meta_keywords', 'best cloud migration company delhi, affordable cloud migration delhi, aws migration delhi, azure migration delhi, gcp migration delhi, enterprise cloud consulting delhi, cloud modernization delhi, managed cloud support delhi, low risk cloud migration delhi, cloud transformation delhi')
 
 @section('canonical')
 <link rel="canonical" href="https://shivatechdigital.com/services/cloud-migration-delhi">
@@ -63,6 +63,8 @@
 	]
 }
 </script>
+
+@include('website.pages.services.partials.location-seo-kit', ['mode' => 'schema', 'serviceKey' => 'cloud', 'cityKey' => 'delhi'])
 @endpush
 
 @push('styles')
@@ -414,6 +416,7 @@
 	}
 }
 </style>
+
 @endpush
 
 @section('website.content')
@@ -571,4 +574,48 @@
 		</div>
 	</div>
 </section>
+
+<!-- SEO-INTENT-SECTION-START -->
+<section class="py-5" style="background:linear-gradient(180deg,#fff7ed 0%,#ffffff 100%); border-top:1px solid #fed7aa; border-bottom:1px solid #ffedd5;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span style="display:inline-block; padding:6px 14px; border-radius:999px; background:#ffedd5; color:#9a3412; font-size:.75rem; font-weight:700; letter-spacing:.4px; text-transform:uppercase;">Intent SEO Coverage</span>
+	<h2 style="font-weight:800; color:#7c2d12; margin-top:12px;">Best, Affordable and Enterprise-Ready Cloud Migration in Delhi</h2>
+      <p class="text-secondary mx-auto" style="max-width:760px; line-height:1.75;">This page is intentionally built to cover high-intent variations like best, affordable, and attractive without creating thin duplicate pages. This improves relevance and helps search engines trust one strong location URL.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Cloud Migration in Delhi.Blade</h3>
+          <p class="mb-0 text-secondary">For users searching quality-first solutions, we highlight architecture quality, delivery process, case-driven outcomes, and long-term reliability.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Cloud Migration in Delhi.Blade</h3>
+          <p class="mb-0 text-secondary">For budget intent, we explain transparent pricing, phase-wise execution, optimized tech stack choices, and cost-efficient maintenance options.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Cloud Migration in Delhi.Blade</h3>
+          <p class="mb-0 text-secondary">For design-focused intent, we cover modern UI standards, conversion-focused UX patterns, responsive performance, and brand-aligned visual systems.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 p-4" style="background:#fff; border:1px dashed #fb923c; border-radius:12px;">
+      <p class="mb-2" style="color:#7c2d12; font-weight:700;">Why this helps SEO:</p>
+      <ul class="mb-0 text-secondary" style="line-height:1.8;">
+        <li>One strong location page captures multiple same-intent keyword variants.</li>
+        <li>Better topical depth, lower cannibalization risk, and stronger internal linking signals.</li>
+        <li>Improved ranking potential for both primary and long-tail commercial keywords.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- SEO-INTENT-SECTION-END -->
+
+@include('website.pages.services.partials.location-seo-kit', ['mode' => 'content', 'serviceKey' => 'cloud', 'cityKey' => 'delhi'])
 @endsection

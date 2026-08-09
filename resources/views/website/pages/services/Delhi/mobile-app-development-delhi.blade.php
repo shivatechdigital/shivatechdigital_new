@@ -2,8 +2,8 @@
 
 @section('title', 'Mobile App Development Company in Delhi | Android & iOS App Experts')
 @section('meta_title', 'Mobile App Development Company in Delhi | Shiva Tech Digital')
-@section('meta_description', 'Trusted mobile app development company in Delhi for Android, iOS, Flutter and React Native projects. Build scalable apps with fast delivery and local business understanding.')
-@section('meta_keywords', 'mobile app development delhi, app developer delhi, android app company delhi, ios app development delhi, flutter app delhi, react native delhi')
+@section('meta_description', 'Best, affordable, and attractive mobile app development services in Delhi. Android iOS app design, scalable backend, QA testing, and app growth support for startups and brands.')
+@section('meta_keywords', 'best mobile app development company delhi, affordable app development delhi, android app development delhi, ios app development delhi, flutter app development delhi, react native app developer delhi, startup app development delhi, scalable mobile app company delhi, ui ux app design delhi, custom app developer delhi')
 
 @section('canonical')
 <link rel="canonical" href="https://shivatechdigital.com/services/mobile-app-development-delhi">
@@ -46,18 +46,7 @@
   ]
 }
 </script>
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "FAQPage",
-  "mainEntity": [
-    {"@@type": "Question", "name": "How long does a mobile app take in Delhi?", "acceptedAnswer": {"@@type": "Answer", "text": "Most MVP apps take 6-10 weeks. Full-featured apps can take 3-5 months depending on product scope."}},
-    {"@@type": "Question", "name": "Do you offer fixed cost packages?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes. We offer fixed-cost and milestone-based engagement models depending on requirement clarity."}},
-    {"@@type": "Question", "name": "Can you improve my existing app?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we improve design, code quality, performance, security, and release stability for existing applications."}},
-    {"@@type": "Question", "name": "Do you support post-launch growth?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we provide ASO support, analytics tracking, optimization, and ongoing feature development."}}
-  ]
-}
-</script>
+@include('website.pages.services.partials.location-seo-kit', ['mode' => 'schema', 'serviceKey' => 'mobile', 'cityKey' => 'delhi'])
 @endpush
 
 @section('schema-markup')
@@ -214,4 +203,48 @@
     </div>
   </div>
 </section>
+
+<!-- SEO-INTENT-SECTION-START -->
+<section class="py-5" style="background:linear-gradient(180deg,#fff7ed 0%,#ffffff 100%); border-top:1px solid #fed7aa; border-bottom:1px solid #ffedd5;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span style="display:inline-block; padding:6px 14px; border-radius:999px; background:#ffedd5; color:#9a3412; font-size:.75rem; font-weight:700; letter-spacing:.4px; text-transform:uppercase;">Intent SEO Coverage</span>
+      <h2 style="font-weight:800; color:#7c2d12; margin-top:12px;">Best, Affordable and Product-Ready Mobile App Development in Delhi</h2>
+      <p class="text-secondary mx-auto" style="max-width:760px; line-height:1.75;">This page is intentionally built to cover high-intent variations like best, affordable, and attractive without creating thin duplicate pages. This improves relevance and helps search engines trust one strong location URL.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Mobile App Development in Delhi.Blade</h3>
+          <p class="mb-0 text-secondary">For users searching quality-first solutions, we highlight architecture quality, delivery process, case-driven outcomes, and long-term reliability.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Mobile App Development in Delhi.Blade</h3>
+          <p class="mb-0 text-secondary">For budget intent, we explain transparent pricing, phase-wise execution, optimized tech stack choices, and cost-efficient maintenance options.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Mobile App Development in Delhi.Blade</h3>
+          <p class="mb-0 text-secondary">For design-focused intent, we cover modern UI standards, conversion-focused UX patterns, responsive performance, and brand-aligned visual systems.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 p-4" style="background:#fff; border:1px dashed #fb923c; border-radius:12px;">
+      <p class="mb-2" style="color:#7c2d12; font-weight:700;">Why this helps SEO:</p>
+      <ul class="mb-0 text-secondary" style="line-height:1.8;">
+        <li>One strong location page captures multiple same-intent keyword variants.</li>
+        <li>Better topical depth, lower cannibalization risk, and stronger internal linking signals.</li>
+        <li>Improved ranking potential for both primary and long-tail commercial keywords.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- SEO-INTENT-SECTION-END -->
+
+@include('website.pages.services.partials.location-seo-kit', ['mode' => 'content', 'serviceKey' => 'mobile', 'cityKey' => 'delhi'])
 @endsection

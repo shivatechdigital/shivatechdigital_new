@@ -2,8 +2,8 @@
 
 @section('title', 'Web Development Company in Gurgaon | Best Website Developers | Shiva Tech Digital')
 @section('meta_title', 'Web Development Company in Gurgaon (Gurugram) | Shiva Tech Digital')
-@section('meta_description', 'Top web development company in Gurgaon (Gurugram). Custom websites, React, Laravel, enterprise web apps for Cyber City, Golf Course Road businesses. Affordable pricing. Free quote!')
-@section('meta_keywords', 'web development company gurgaon, website development gurgaon, web developer gurgaon, web development gurugram, custom website gurgaon, laravel gurgaon, react developer gurgaon, ecommerce gurgaon, cyber city web development')
+@section('meta_description', 'Best, affordable, and attractive web development services in Gurgaon. SEO-ready custom websites, ecommerce builds, UI UX, and long-term maintenance for business growth.')
+@section('meta_keywords', 'best web development company gurgaon, affordable website development gurgaon, custom website development gurgaon, ecommerce website development gurgaon, responsive web design gurgaon, laravel development gurgaon, react web developer gurgaon, web development gurugram, seo friendly website company gurgaon, cyber city web development')
 
 @section('canonical')
 <link rel="canonical" href="https://shivatechdigital.com/services/web-development-gurgaon">
@@ -51,6 +51,7 @@
 .sec-title { font-size: clamp(1.8rem,3.5vw,2.6rem); font-weight: 800; color: #0f172a; margin-bottom: 16px; }
 .sec-subtitle { color: #64748b; font-size: 1rem; line-height: 1.7; max-width: 600px; }
 </style>
+@include('website.pages.services.partials.location-seo-kit', ['mode' => 'schema', 'serviceKey' => 'web', 'cityKey' => 'gurgaon'])
 @endpush
 
 @section('schema-markup')
@@ -191,4 +192,48 @@
     </div>
 </section>
 
+
+<!-- SEO-INTENT-SECTION-START -->
+<section class="py-5" style="background:linear-gradient(180deg,#fff7ed 0%,#ffffff 100%); border-top:1px solid #fed7aa; border-bottom:1px solid #ffedd5;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span style="display:inline-block; padding:6px 14px; border-radius:999px; background:#ffedd5; color:#9a3412; font-size:.75rem; font-weight:700; letter-spacing:.4px; text-transform:uppercase;">Intent SEO Coverage</span>
+    <h2 style="font-weight:800; color:#7c2d12; margin-top:12px;">Best, Affordable and Growth-Ready Web Development in Gurgaon</h2>
+      <p class="text-secondary mx-auto" style="max-width:760px; line-height:1.75;">This page is intentionally built to cover high-intent variations like best, affordable, and attractive without creating thin duplicate pages. This improves relevance and helps search engines trust one strong location URL.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Web Development in Gurgaon.Blade</h3>
+          <p class="mb-0 text-secondary">For users searching quality-first solutions, we highlight architecture quality, delivery process, case-driven outcomes, and long-term reliability.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Web Development in Gurgaon.Blade</h3>
+          <p class="mb-0 text-secondary">For budget intent, we explain transparent pricing, phase-wise execution, optimized tech stack choices, and cost-efficient maintenance options.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Web Development in Gurgaon.Blade</h3>
+          <p class="mb-0 text-secondary">For design-focused intent, we cover modern UI standards, conversion-focused UX patterns, responsive performance, and brand-aligned visual systems.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 p-4" style="background:#fff; border:1px dashed #fb923c; border-radius:12px;">
+      <p class="mb-2" style="color:#7c2d12; font-weight:700;">Why this helps SEO:</p>
+      <ul class="mb-0 text-secondary" style="line-height:1.8;">
+        <li>One strong location page captures multiple same-intent keyword variants.</li>
+        <li>Better topical depth, lower cannibalization risk, and stronger internal linking signals.</li>
+        <li>Improved ranking potential for both primary and long-tail commercial keywords.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- SEO-INTENT-SECTION-END -->
+
+@include('website.pages.services.partials.location-seo-kit', ['mode' => 'content', 'serviceKey' => 'web', 'cityKey' => 'gurgaon'])
 @endsection

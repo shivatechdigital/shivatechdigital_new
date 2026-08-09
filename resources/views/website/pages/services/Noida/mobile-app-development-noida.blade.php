@@ -2,8 +2,8 @@
 
 @section('title', 'Mobile App Development Company in Noida | Android & iOS App Developers')
 @section('meta_title', 'Mobile App Development Company in Noida | Shiva Tech Digital')
-@section('meta_description', 'Top mobile app development company in Noida for Android, iOS, Flutter and React Native apps. Build scalable business apps with local support in Noida and NCR.')
-@section('meta_keywords', 'mobile app development noida, app developer noida, android app development noida, ios app development noida, flutter app development noida, react native noida')
+@section('meta_description', 'Best, affordable, and attractive mobile app development services in Noida. Android iOS app design, scalable backend, QA testing, and app growth support for startups and brands.')
+@section('meta_keywords', 'best mobile app development company noida, affordable app development noida, android app development noida, ios app development noida, flutter app development noida, react native app developer noida, startup app development noida, custom mobile app company noida, scalable app development noida, ui ux app design noida')
 
 @section('canonical')
 <link rel="canonical" href="https://shivatechdigital.com/services/mobile-app-development-noida">
@@ -49,18 +49,7 @@
   ]
 }
 </script>
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "FAQPage",
-  "mainEntity": [
-    {"@@type": "Question", "name": "How much does app development cost in Noida?", "acceptedAnswer": {"@@type": "Answer", "text": "Simple apps usually start around INR 80,000 to 2,50,000. Final cost depends on features, platforms, integrations, and timeline."}},
-    {"@@type": "Question", "name": "Do you build both Android and iOS apps?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes. We build native Android, native iOS, and cross-platform Flutter or React Native apps."}},
-    {"@@type": "Question", "name": "Can you help with app launch?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we handle Play Store and App Store submissions including compliance checks and release planning."}},
-    {"@@type": "Question", "name": "Do you provide support after delivery?", "acceptedAnswer": {"@@type": "Answer", "text": "Yes, we offer maintenance retainers for bug fixes, updates, optimization, and feature enhancements."}}
-  ]
-}
-</script>
+@include('website.pages.services.partials.location-seo-kit', ['mode' => 'schema', 'serviceKey' => 'mobile', 'cityKey' => 'noida'])
 @endpush
 
 @push('styles')
@@ -88,6 +77,7 @@
 .faq-item summary::-webkit-details-marker { display:none; }
 .faq-item .ans { padding:0 20px 16px; color:#64748b; line-height:1.7; }
 </style>
+
 @endpush
 
 @section('schema-markup')
@@ -265,4 +255,48 @@
     <a href="{{ route('contact') }}" class="btn-primary-city"><i class="fas fa-paper-plane"></i> Start Your Project</a>
   </div>
 </section>
+
+<!-- SEO-INTENT-SECTION-START -->
+<section class="py-5" style="background:linear-gradient(180deg,#fff7ed 0%,#ffffff 100%); border-top:1px solid #fed7aa; border-bottom:1px solid #ffedd5;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span style="display:inline-block; padding:6px 14px; border-radius:999px; background:#ffedd5; color:#9a3412; font-size:.75rem; font-weight:700; letter-spacing:.4px; text-transform:uppercase;">Intent SEO Coverage</span>
+      <h2 style="font-weight:800; color:#7c2d12; margin-top:12px;">Best, Affordable and Scalable Mobile App Development in Noida</h2>
+      <p class="text-secondary mx-auto" style="max-width:760px; line-height:1.75;">This page is intentionally built to cover high-intent variations like best, affordable, and attractive without creating thin duplicate pages. This improves relevance and helps search engines trust one strong location URL.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Mobile App Development in Noida.Blade</h3>
+          <p class="mb-0 text-secondary">For users searching quality-first solutions, we highlight architecture quality, delivery process, case-driven outcomes, and long-term reliability.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Mobile App Development in Noida.Blade</h3>
+          <p class="mb-0 text-secondary">For budget intent, we explain transparent pricing, phase-wise execution, optimized tech stack choices, and cost-efficient maintenance options.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Mobile App Development in Noida.Blade</h3>
+          <p class="mb-0 text-secondary">For design-focused intent, we cover modern UI standards, conversion-focused UX patterns, responsive performance, and brand-aligned visual systems.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 p-4" style="background:#fff; border:1px dashed #fb923c; border-radius:12px;">
+      <p class="mb-2" style="color:#7c2d12; font-weight:700;">Why this helps SEO:</p>
+      <ul class="mb-0 text-secondary" style="line-height:1.8;">
+        <li>One strong location page captures multiple same-intent keyword variants.</li>
+        <li>Better topical depth, lower cannibalization risk, and stronger internal linking signals.</li>
+        <li>Improved ranking potential for both primary and long-tail commercial keywords.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- SEO-INTENT-SECTION-END -->
+
+@include('website.pages.services.partials.location-seo-kit', ['mode' => 'content', 'serviceKey' => 'mobile', 'cityKey' => 'noida'])
 @endsection
