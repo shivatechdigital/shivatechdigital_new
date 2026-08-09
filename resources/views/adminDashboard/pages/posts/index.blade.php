@@ -60,8 +60,12 @@
     }
 
     .posts-stat h3 {
-        font-size: 2rem;
+        font-size: 2rem !important;
         line-height: 1.1;
+    }
+
+    .posts-stat h6{
+        font-size: 15px !important;
     }
 
     .posts-stat-icon {
@@ -164,7 +168,7 @@
 <div class="container-fluid posts-glass-page">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
         <div>
-            <h1 class="mb-0" style="font-size: 30px; font-weight: 700;">All Posts</h1>
+            <h1 class="mb-0" style="font-size: 30px !important; font-weight: 700;">All Posts</h1>
             <p class="text-soft mb-0">Blog dashboard merged with complete post management</p>
         </div>
         <a href="{{ route('admin.posts.create') }}" class="btn btn-primary-600 radius-8 px-20 py-10">
