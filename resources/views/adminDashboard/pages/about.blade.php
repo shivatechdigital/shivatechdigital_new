@@ -1,6 +1,6 @@
 @extends('adminDashboard.index')
 @section('adminDashboard.content')
-<div class="dashboard-main-body">
+<div class="dashboard-main-body about-glass-page" data-server-tab="{{ old('active_tab', session('active_tab', '')) }}">
   <!-- Breadcrumb -->
   <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
     <h6 class="fw-semibold mb-0">About Page Management</h6>
@@ -141,6 +141,7 @@
 </div>
   <form action="{{ route('about.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
+    <input type="hidden" name="active_tab" id="activeTabInput" value="pills-header">
     
     <div class="tab-content" id="pills-tabContent">
       <!-- Page Header Tab -->
@@ -848,12 +849,76 @@
 </div>
 
 <style>
+  .about-glass-page {
+    --about-surface: #ffffff;
+    --about-surface-2: #f8fbff;
+    --about-border: #dbe5f2;
+    --about-text: #0f172a;
+    --about-muted: #64748b;
+    --about-tab-bg: linear-gradient(135deg, #8aa4ff 0%, #6f7cff 45%, #8a56f7 100%);
+    --about-tab-glass: rgba(255, 255, 255, 0.92);
+    --about-tab-hover-border: rgba(99, 102, 241, 0.28);
+    --about-tab-indicator: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+    --about-tab-active: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --about-card-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  }
+
+  html[data-theme=dark] .about-glass-page {
+    --about-surface: #111827;
+    --about-surface-2: #1f2937;
+    --about-border: #334155;
+    --about-text: #e2e8f0;
+    --about-muted: #94a3b8;
+    --about-tab-bg: linear-gradient(135deg, #2d3a7a 0%, #463f8f 45%, #5a3495 100%);
+    --about-tab-glass: rgba(17, 24, 39, 0.82);
+    --about-tab-hover-border: rgba(129, 140, 248, 0.35);
+    --about-tab-indicator: linear-gradient(90deg, #7c3aed 0%, #a855f7 100%);
+    --about-tab-active: linear-gradient(135deg, #5b4dd8 0%, #7c3aed 100%);
+    --about-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .about-glass-page .card {
+    background: var(--about-surface);
+    border: 1px solid var(--about-border);
+    box-shadow: var(--about-card-shadow);
+    border-radius: 14px;
+  }
+
+  .about-glass-page .card-header {
+    background: linear-gradient(90deg, var(--about-surface-2), var(--about-surface));
+    border-bottom: 1px solid var(--about-border);
+    color: var(--about-text);
+  }
+
+  .about-glass-page .form-label,
+  .about-glass-page .text-primary-light {
+    color: var(--about-text) !important;
+  }
+
+  .about-glass-page .text-muted,
+  .about-glass-page .text-secondary-light {
+    color: var(--about-muted) !important;
+  }
+
+  .about-glass-page .form-control,
+  .about-glass-page .form-select,
+  .about-glass-page textarea {
+    background: var(--about-surface);
+    color: var(--about-text);
+    border-color: var(--about-border);
+  }
+
+  .about-glass-page .form-control::placeholder,
+  .about-glass-page textarea::placeholder {
+    color: var(--about-muted);
+  }
+
   /* Tabs Wrapper */
   .tabs-wrapper {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--about-tab-bg);
     padding: 8px;
     border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+    box-shadow: var(--about-card-shadow);
     position: relative;
     overflow: hidden;
   }
@@ -894,8 +959,8 @@
     padding: 16px 12px;
     border: 2px solid transparent;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.95);
-    color: #64748b;
+    background: var(--about-tab-glass);
+    color: var(--about-muted);
     font-weight: 500;
     text-align: center;
     cursor: pointer;
@@ -914,7 +979,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    background: linear-gradient(135deg, var(--about-surface-2) 0%, var(--about-surface) 100%);
     transition: all 0.4s ease;
     position: relative;
     z-index: 1;
@@ -943,7 +1008,7 @@
 
   .nav-link-desc {
     font-size: 11px;
-    color: #94a3b8;
+    color: var(--about-muted);
     font-weight: 400;
     transition: all 0.3s ease;
   }
@@ -956,7 +1021,7 @@
     transform: translateX(-50%) scaleX(0);
     width: 80%;
     height: 3px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    background: var(--about-tab-indicator);
     border-radius: 3px 3px 0 0;
     transition: transform 0.3s ease;
   }
@@ -965,7 +1030,7 @@
   .nav-pills-modern .nav-link:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-    border-color: rgba(102, 126, 234, 0.2);
+    border-color: var(--about-tab-hover-border);
   }
 
   .nav-pills-modern .nav-link:hover .nav-link-icon {
@@ -979,7 +1044,7 @@
   }
 
   .nav-pills-modern .nav-link:hover .nav-link-title {
-    color: #334155;
+    color: var(--about-text);
   }
 
   .nav-pills-modern .nav-link:hover .nav-link-indicator {
@@ -988,11 +1053,31 @@
 
   /* Active State */
   .nav-pills-modern .nav-link.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--about-tab-active);
     color: white;
     border-color: transparent;
-    box-shadow: 0 12px 28px rgba(102, 126, 234, 0.35);
+    box-shadow: 0 12px 28px rgba(79, 70, 229, 0.35);
     transform: translateY(-4px);
+  }
+
+  .nav-pills-modern .nav-link.active::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.45);
+    animation: tabGlowPulse 1.8s ease-out infinite;
+    pointer-events: none;
+  }
+
+  .nav-pills-modern .nav-link.has-unsaved .nav-link-title::after {
+    content: '•';
+    color: #f97316;
+    margin-left: 6px;
+    font-size: 18px;
+    line-height: 0;
+    vertical-align: middle;
   }
 
   .nav-pills-modern .nav-link.active .nav-link-icon {
@@ -1133,22 +1218,6 @@
     }
   }
 
-  /* Dark Mode Support (Optional) */
-  @media (prefers-color-scheme: dark) {
-    .nav-pills-modern .nav-link {
-      background: rgba(30, 41, 59, 0.95);
-      color: #cbd5e1;
-    }
-
-    .nav-link-icon {
-      background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
-    }
-
-    .nav-pills-modern .nav-link:hover {
-      border-color: rgba(102, 126, 234, 0.3);
-    }
-  }
-
   /* Loading State (Optional Enhancement) */
   .nav-link.loading::after {
     content: '';
@@ -1167,6 +1236,18 @@
     }
     100% {
       transform: translateX(100%);
+    }
+  }
+
+  @keyframes tabGlowPulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(167, 139, 250, 0.42);
+    }
+    70% {
+      box-shadow: 0 0 0 12px rgba(167, 139, 250, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(167, 139, 250, 0);
     }
   }
 
@@ -1193,6 +1274,164 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const tabButtons = Array.from(document.querySelectorAll('#pills-tab button[data-bs-toggle="pill"]'));
+  const tabInput = document.getElementById('activeTabInput');
+  const pageRoot = document.querySelector('.about-glass-page');
+  const serverTab = pageRoot?.dataset.serverTab;
+  const storageKey = 'about_active_tab';
+  const dirtyTabs = new Set();
+  let hasUnsavedChanges = false;
+  let allowTabSwitch = false;
+  let confirmedTabButton = null;
+
+  function sanitizeTabId(value) {
+    if (!value) {
+      return null;
+    }
+    const clean = String(value).replace(/^#/, '');
+    return document.getElementById(clean) ? clean : null;
+  }
+
+  function activateTab(tabId) {
+    const paneId = sanitizeTabId(tabId);
+    if (!paneId) {
+      return;
+    }
+
+    const trigger = document.querySelector(`#pills-tab button[data-bs-target="#${paneId}"]`);
+    if (!trigger) {
+      return;
+    }
+
+    const tab = new bootstrap.Tab(trigger);
+    tab.show();
+  }
+
+  const urlHashTab = sanitizeTabId(window.location.hash);
+  const rememberedTab = sanitizeTabId(localStorage.getItem(storageKey));
+  const initialTab = sanitizeTabId(serverTab) || urlHashTab || rememberedTab || 'pills-header';
+  activateTab(initialTab);
+
+  tabButtons.forEach(function (button) {
+    button.addEventListener('click', function (event) {
+      if (allowTabSwitch) {
+        return;
+      }
+
+      const currentActiveButton = document.querySelector('#pills-tab .nav-link.active');
+      const currentTarget = currentActiveButton?.getAttribute('data-bs-target') || '#pills-header';
+      const currentPaneId = sanitizeTabId(currentTarget);
+      const nextPaneId = sanitizeTabId(button.getAttribute('data-bs-target'));
+
+      if (!currentPaneId || !nextPaneId || currentPaneId === nextPaneId) {
+        return;
+      }
+
+      if (!dirtyTabs.has(currentPaneId)) {
+        return;
+      }
+
+      event.preventDefault();
+      confirmedTabButton = button;
+
+      Swal.fire({
+        title: 'Unsaved changes',
+        text: 'You have unsaved changes in this section. Switch tab without saving?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f59e0b',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Switch anyway',
+        cancelButtonText: 'Stay here'
+      }).then((result) => {
+        if (result.isConfirmed && confirmedTabButton) {
+          allowTabSwitch = true;
+          new bootstrap.Tab(confirmedTabButton).show();
+          allowTabSwitch = false;
+          confirmedTabButton = null;
+        }
+      });
+    });
+
+    button.addEventListener('shown.bs.tab', function (event) {
+      const target = event.target.getAttribute('data-bs-target') || '';
+      const paneId = sanitizeTabId(target);
+      if (!paneId) {
+        return;
+      }
+
+      localStorage.setItem(storageKey, paneId);
+      if (tabInput) {
+        tabInput.value = paneId;
+      }
+      history.replaceState(null, '', '#' + paneId);
+    });
+  });
+
+  function refreshDirtyIndicators() {
+    hasUnsavedChanges = dirtyTabs.size > 0;
+    tabButtons.forEach(function (button) {
+      const paneId = sanitizeTabId(button.getAttribute('data-bs-target'));
+      button.classList.toggle('has-unsaved', !!paneId && dirtyTabs.has(paneId));
+    });
+  }
+
+  document.querySelectorAll('.tab-pane input, .tab-pane textarea, .tab-pane select').forEach(function (field) {
+    field.addEventListener('input', function () {
+      const pane = field.closest('.tab-pane');
+      if (!pane?.id) {
+        return;
+      }
+      dirtyTabs.add(pane.id);
+      refreshDirtyIndicators();
+    });
+
+    field.addEventListener('change', function () {
+      const pane = field.closest('.tab-pane');
+      if (!pane?.id) {
+        return;
+      }
+      dirtyTabs.add(pane.id);
+      refreshDirtyIndicators();
+    });
+  });
+
+  window.addEventListener('beforeunload', function (event) {
+    if (!hasUnsavedChanges) {
+      return;
+    }
+
+    event.preventDefault();
+    event.returnValue = '';
+  });
+
+  document.querySelectorAll('form').forEach(function (form) {
+    form.addEventListener('submit', function () {
+      const activeButton = document.querySelector('#pills-tab .nav-link.active');
+      const activeTarget = activeButton?.getAttribute('data-bs-target') || '#pills-header';
+      const activePaneId = sanitizeTabId(activeTarget) || 'pills-header';
+      localStorage.setItem(storageKey, activePaneId);
+
+      let hidden = form.querySelector('input[name="active_tab"]');
+      if (!hidden) {
+        hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'active_tab';
+        form.appendChild(hidden);
+      }
+      hidden.value = activePaneId;
+
+      if (activePaneId) {
+        dirtyTabs.delete(activePaneId);
+      }
+      refreshDirtyIndicators();
+    });
+  });
+
+  refreshDirtyIndicators();
+});
+
 // Image Preview
 function previewImage(event, previewId) {
   const input = event.target;

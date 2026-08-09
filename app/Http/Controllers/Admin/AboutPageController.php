@@ -78,7 +78,9 @@ class AboutPageController extends Controller
             AboutPage::create($validated);
         }
 
-        return redirect()->back()->with('success', 'About page updated successfully!');
+        return redirect()->back()
+            ->with('success', 'About page updated successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-header'));
     }
 
     public function storeTeamMember(Request $request)
@@ -99,7 +101,9 @@ class AboutPageController extends Controller
 
         TeamMember::create($validated);
 
-        return redirect()->back()->with('success', 'Team member added successfully!');
+        return redirect()->back()
+            ->with('success', 'Team member added successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-team'));
     }
 
     public function updateTeamMember(Request $request, TeamMember $teamMember)
@@ -125,7 +129,9 @@ class AboutPageController extends Controller
         }
         
         $teamMember->update($validated);
-        return redirect()->back()->with('success', 'Team member updated successfully!');
+        return redirect()->back()
+            ->with('success', 'Team member updated successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-team'));
     }
     
     public function deleteTeamMember(TeamMember $teamMember)
@@ -150,7 +156,9 @@ class AboutPageController extends Controller
 
         TimelineItem::create($validated);
 
-        return redirect()->back()->with('success', 'Timeline item added successfully!');
+        return redirect()->back()
+            ->with('success', 'Timeline item added successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-timeline'));
     }
 
     public function updateTimeline(Request $request, TimelineItem $timeline)
@@ -168,7 +176,9 @@ class AboutPageController extends Controller
         
         $timeline->update($validated);
 
-        return redirect()->back()->with('success', 'Timeline item updated successfully!');
+        return redirect()->back()
+            ->with('success', 'Timeline item updated successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-timeline'));
     }
 
     public function deleteTimeline(TimelineItem $timeline)
@@ -188,7 +198,9 @@ class AboutPageController extends Controller
 
         CoreValue::create($validated);
 
-        return redirect()->back()->with('success', 'Core value added successfully!');
+        return redirect()->back()
+            ->with('success', 'Core value added successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-values'));
     }
 
     public function updateCoreValue(Request $request, CoreValue $coreValue)
@@ -205,7 +217,9 @@ class AboutPageController extends Controller
         
         $coreValue->update($validated);
 
-        return redirect()->back()->with('success', 'Core value updated successfully!');
+        return redirect()->back()
+            ->with('success', 'Core value updated successfully!')
+            ->with('active_tab', $request->input('active_tab', 'pills-values'));
     }
 
     public function deleteCoreValue(CoreValue $coreValue)
