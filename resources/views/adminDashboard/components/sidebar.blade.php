@@ -139,46 +139,6 @@
         </a>
     </li>
 
-
-
-        
-        <!-- Media Library -->
-        <li>
-          <a href="javascript:void(0)">
-            <iconify-icon icon="solar:gallery-outline" class="menu-icon"></iconify-icon>
-            <span>Media Library</span>
-          </a>
-        </li>
-        
-        <!-- Analytics & Reports -->
-        <li class="dropdown">
-          <a href="javascript:void(0)">
-            <iconify-icon icon="solar:chart-outline" class="menu-icon"></iconify-icon>
-            <span>Analytics</span>
-          </a>
-          <ul class="sidebar-submenu">
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Overview
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Popular Posts
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Traffic Sources
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> User Engagement
-              </a>
-            </li>
-          </ul>
-        </li>
         
         <!-- Users Management -->
         <li class="dropdown">
@@ -210,81 +170,7 @@
           </ul>
         </li>
         
-        <!-- Settings -->
-        <li class="dropdown">
-          <a href="javascript:void(0)">
-            <iconify-icon icon="solar:settings-outline" class="menu-icon"></iconify-icon>
-            <span>Settings</span>
-          </a>
-          <ul class="sidebar-submenu">
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> General Settings
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> SEO Settings
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Email Settings
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Social Media
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> Appearance
-              </a>
-            </li>
-          </ul>
-        </li>
-        
-        <!-- Divider -->
-        <li class="sidebar-menu-group-title">External</li>
-        
-        <!-- View Website -->
-        <li>
-          <a href="{{ route('blog.index') }}" target="_blank">
-            <iconify-icon icon="solar:external-link-outline" class="menu-icon"></iconify-icon>
-            <span>View Website</span>
-          </a>
-        </li>
-        
-        <!-- Help & Support -->
-        <li class="dropdown">
-          <a href="javascript:void(0)">
-            <iconify-icon icon="solar:help-outline" class="menu-icon"></iconify-icon>
-            <span>Help & Support</span>
-          </a>
-          <ul class="sidebar-submenu">
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Documentation
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Video Tutorials
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-info-main w-auto"></i> FAQs
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Contact Support
-              </a>
-            </li>
-          </ul>
-        </li>
+
       <!-- <li class="dropdown">
         <a href="javascript:void(0)">
           <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
