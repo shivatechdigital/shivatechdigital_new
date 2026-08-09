@@ -10,13 +10,101 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with(['category', 'user', 'tags'])
-            ->latest()
-            ->paginate(10);
-        
-        return view('adminDashboard.pages.posts.index', compact('posts'));
+        $search = trim((string) $request->input('search', ''));
+        $status = (string) $request->input('status', 'all');
+        $categoryId = (string) $request->input('category_id', '');
+        $authorId = (string) $request->input('author_id', '');
+        $sortBy = (string) $request->input('sort_by', 'date');
+        $sortOrder = strtolower((string) $request->input('sort_order', 'desc'));
+        $allowedPerPage = [10, 20, 50, 100];
+        $perPage = (int) $request->input('per_page', 10);
+
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 10;
+        }
+
+        if (!in_array($sortOrder, ['asc', 'desc'], true)) {
+            $sortOrder = 'desc';
+        }
+
+        $sortMap = [
+            'id' => 'id',
+            'title' => 'title',
+            'category' => 'category_id',
+            'status' => 'is_published',
+            'views' => 'views',
+            'date' => 'created_at',
+            'action' => 'id',
+        ];
+
+        if (!array_key_exists($sortBy, $sortMap)) {
+            $sortBy = 'date';
+        }
+
+        $postsQuery = Post::with(['category', 'user', 'tags']);
+
+        if ($search !== '') {
+            $postsQuery->where(function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('excerpt', 'like', '%' . $search . '%')
+                    ->orWhere('content', 'like', '%' . $search . '%')
+                    ->orWhere('author_name', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($status === 'published') {
+            $postsQuery->where(function ($query) {
+                $query->where('is_published', true)
+                    ->orWhere('status', 'published');
+            });
+        } elseif ($status === 'draft') {
+            $postsQuery->where(function ($query) {
+                $query->where('is_published', false)
+                    ->orWhere('status', 'draft')
+                    ->orWhereNull('status');
+            });
+        } elseif ($status === 'scheduled') {
+            $postsQuery->where('status', 'scheduled');
+        }
+
+        if ($categoryId !== '') {
+            $postsQuery->where('category_id', $categoryId);
+        }
+
+        if ($authorId !== '') {
+            $postsQuery->where('user_id', $authorId);
+        }
+
+        $posts = $postsQuery
+            ->orderBy($sortMap[$sortBy], $sortOrder)
+            ->paginate($perPage)
+            ->appends($request->query());
+
+        $totalPosts = Post::count();
+        $publishedPosts = Post::where('is_published', true)->count();
+        $totalViews = Post::sum('views');
+        $totalComments = \App\Models\Comment::count();
+        $categories = Category::orderBy('name')->get();
+        $authors = \App\Models\User::orderBy('name')->get(['id', 'name']);
+
+        return view('adminDashboard.pages.posts.index', compact(
+            'posts',
+            'totalPosts',
+            'publishedPosts',
+            'totalViews',
+            'totalComments',
+            'categories',
+            'authors',
+            'search',
+            'status',
+            'categoryId',
+            'authorId',
+            'sortBy',
+            'sortOrder',
+            'perPage'
+        ));
     }
 
     public function create()

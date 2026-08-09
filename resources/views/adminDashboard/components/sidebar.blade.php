@@ -37,14 +37,6 @@
           <span>About Us</span>
         </a>
       </li>
-      <!-- Blog Management Sidebar -->
-        <li>
-          <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
-            <span>Blog Dashboard</span>
-          </a>
-        </li>
-        
         <!-- Posts Management -->
         <li class="dropdown">
           <a href="javascript:void(0)">
@@ -60,16 +52,6 @@
             <li>
               <a href="{{ route('admin.posts.create') }}" class="{{ request()->routeIs('admin.posts.create') ? 'active-submenu' : '' }}">
                 <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add New Post
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('admin.posts.index', ['status' => 'published']) }}">
-                <i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Published
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('admin.posts.index', ['status' => 'draft']) }}">
-                <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Drafts
               </a>
             </li>
           </ul>
