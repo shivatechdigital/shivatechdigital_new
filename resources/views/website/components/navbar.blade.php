@@ -29,7 +29,7 @@
     box-shadow: 0 2px 16px rgba(0,0,0,0.07);
 }
 .navbar-brand-icon { height: 52px !important; width: auto; }
-.navbar-nav .nav-link { color: #1e293b !important; font-weight: 600; font-size: 0.875rem; padding: 12px 14px !important; position: relative; transition: all 0.25s ease; }
+.navbar-nav .nav-link { color:white !important; font-weight: 600; font-size: 0.875rem; padding: 12px 14px !important; position: relative; transition: all 0.25s ease; }
 .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active { color: #2563eb !important; }
 .navbar-nav .nav-link::after { content: ''; position: absolute; bottom: 6px; left: 14px; right: 14px; height: 2px; background: #2563eb; border-radius: 2px; transform: scaleX(0); transition: transform 0.3s ease; border: none; vertical-align: unset; display: block; }
 .navbar-nav .nav-link:hover::after, .navbar-nav .nav-link.active::after { transform: scaleX(1); }
