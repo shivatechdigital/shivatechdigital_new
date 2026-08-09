@@ -257,7 +257,7 @@
     @stack('styles')
 </head>
 
-<body itemscope itemtype="https://schema.org/WebPage">
+<body itemscope itemtype="https://schema.org/WebPage" style="padding-top: 0;">
     {{-- Skip to main content --}}
     <a href="#main-content" class="skip-link visually-hidden-focusable">Skip to main content</a>
 
@@ -265,6 +265,12 @@
     <header role="banner">
         @include('website.components.navbar')
     </header>
+
+    {{-- Spacer for fixed topbar + navbar (desktop: 36px topbar + ~72px navbar = 108px, mobile: ~72px) --}}
+    <div class="navbar-spacer" style="height: 108px;"></div>
+    <style>
+        @media (max-width: 991px) { .navbar-spacer { height: 72px !important; } }
+    </style>
 
     {{-- Main Content --}}
     <main id="main-content" role="main" itemprop="mainContentOfPage">

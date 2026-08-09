@@ -10,102 +10,143 @@
     /* Page Header */
     .page-header-creative {
         position: relative;
-        padding: 120px 0 80px;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        min-height: 88vh;
+        display: flex;
+        align-items: center;
         overflow: hidden;
+        background:
+            linear-gradient(135deg, rgba(10,15,40,0.85) 0%, rgba(30,58,138,0.78) 100%),
+            url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&q=85') center/cover no-repeat;
+        padding: 110px 0 70px;
     }
 
-    .page-header-bg {
+    .page-header-creative::before {
+        content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+        inset: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
     }
 
-    .header-orb {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(100px);
-        opacity: 0.3;
-    }
+    .page-header-creative .container { position: relative; z-index: 1; }
+    .portfolio-header-inner { text-align: center; max-width: 860px; margin: 0 auto; }
 
-    .header-orb.orb-1 {
-        width: 400px;
-        height: 400px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        top: -100px;
-        right: -100px;
-    }
-
-    .header-orb.orb-2 {
-        width: 300px;
-        height: 300px;
-        background: linear-gradient(135deg, #f093fb, #f5576c);
-        bottom: -50px;
-        left: -50px;
-    }
+    .page-header-bg { display: none; }
 
     .page-badge {
-        display: inline-block;
-        padding: 8px 20px;
-        background: rgba(102, 126, 234, 0.2);
-        border: 1px solid rgba(102, 126, 234, 0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 22px;
+        background: rgba(99,102,241,0.2);
+        border: 1px solid rgba(99,102,241,0.45);
         border-radius: 50px;
-        color: #a8b5ff;
-        font-size: 0.875rem;
-        font-weight: 500;
-        margin-bottom: 20px;
+        color: #a5b4fc;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 24px;
     }
 
     .page-title {
-        font-size: 3rem;
-        font-weight: 700;
+        font-size: clamp(2.2rem, 5vw, 3.8rem);
+        font-weight: 800;
         color: #fff;
         margin-bottom: 20px;
-        line-height: 1.2;
+        line-height: 1.15;
     }
 
-    @media (max-width: 768px) {
-        .page-title {
-            font-size: 2rem;
-        }
+    .page-title span {
+        background: linear-gradient(90deg, #818cf8, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .page-subtitle {
-        font-size: 1.125rem;
-        color: rgba(255, 255, 255, 0.8);
-        max-width: 600px;
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, 0.75);
+        max-width: 640px;
+        margin: 0 auto 50px;
+        line-height: 1.75;
     }
 
-    /* Header Stats */
-    .header-stats-vertical {
+    /* Stats bar */
+    .portfolio-stats-bar {
         display: flex;
-        flex-direction: column;
-        gap: 20px;
+        justify-content: center;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 20px;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        max-width: 700px;
+        margin: 0 auto 40px;
     }
 
     .header-stat-item {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 25px 30px;
-        border-radius: 15px;
+        flex: 1;
+        padding: 22px 18px;
         text-align: center;
+        border-right: 1px solid rgba(255,255,255,0.1);
+        background: transparent;
+        border-radius: 0;
     }
+    .header-stat-item:last-child { border-right: none; }
+
+    .header-stat-item .stat-icon {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+        display: block;
+    }
+    .stat-icon-1 { color: #818cf8; }
+    .stat-icon-2 { color: #34d399; }
+    .stat-icon-3 { color: #fbbf24; }
+    .stat-icon-4 { color: #f472b6; }
 
     .header-stat-item .stat-number {
-        font-size: 2.5rem;
-        font-weight: 700;
+        font-size: 2rem;
+        font-weight: 800;
         color: #fff;
-        margin-bottom: 5px;
+        margin-bottom: 4px;
+        line-height: 1;
     }
 
     .header-stat-item p {
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.6);
         margin: 0;
-        font-size: 0.9rem;
+        font-size: 0.72rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Tech chips */
+    .portfolio-tech-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .tech-chip {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 6px 14px; background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15); border-radius: 50px;
+        color: rgba(255,255,255,0.8); font-size: 0.75rem; font-weight: 600;
+        transition: all 0.25s ease;
+    }
+    .tech-chip:hover { background: rgba(99,102,241,0.3); border-color: rgba(99,102,241,0.5); color: #fff; }
+    .tech-chip i { font-size: 0.72rem; color: #818cf8; }
+
+    /* Scroll hint */
+    .header-scroll-hint {
+        position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+        display: flex; flex-direction: column; align-items: center; gap: 5px;
+        color: rgba(255,255,255,0.45); font-size: 0.72rem; animation: bounceHint 2s ease-in-out infinite; z-index: 2;
+    }
+    @keyframes bounceHint { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+    @media (max-width: 768px) {
+        .page-header-creative { min-height: auto; padding: 110px 0 60px; }
+        .portfolio-stats-bar { flex-wrap: wrap; }
+        .header-stat-item { min-width: 45%; }
     }
 
     /* Filter Section */
@@ -589,30 +630,64 @@
          PAGE HEADER
     ======================================== -->
     <section class="page-header-creative" aria-labelledby="page-heading">
-        <div class="page-header-bg" aria-hidden="true">
-            <div class="header-orb orb-1"></div>
-            <div class="header-orb orb-2"></div>
-        </div>
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8" data-aos="fade-right">
-                    <span class="page-badge">Our Portfolio - Shiva Tech Digital Noida</span>
-                    <h1 class="page-title" id="page-heading">Web Development Projects & Success Stories</h1>
-                    <p class="page-subtitle">Showcasing our best work in web development, mobile apps, e-commerce & digital marketing. Real results delivered for startups and businesses across Noida, Delhi NCR and globally.</p>
-                </div>
-                <div class="col-lg-4" data-aos="fade-left">
-                    <div class="header-stats-vertical" role="list" aria-label="Our achievements">
-                        <div class="header-stat-item" role="listitem">
-                            <h2 class="stat-number" data-count="50" aria-label="50+ Completed Projects">0+</h2>
-                            <p>Completed Projects</p>
-                        </div>
-                        <div class="header-stat-item" role="listitem">
-                            <h2 class="stat-number" data-count="30" aria-label="30+ Satisfied Clients">0+</h2>
-                            <p>Satisfied Clients</p>
-                        </div>
+            <div class="portfolio-header-inner" data-aos="fade-up">
+
+                <span class="page-badge">
+                    <i class="fas fa-briefcase"></i>
+                    Our Portfolio — Shiva Tech Digital, Noida
+                </span>
+
+                <h1 class="page-title" id="page-heading">
+                    Web Development <span>Projects &</span><br>Success Stories
+                </h1>
+
+                <p class="page-subtitle">
+                    Showcasing our best work in web development, mobile apps, e-commerce & digital marketing.
+                    Real results delivered for startups and businesses across Noida, Delhi NCR and globally.
+                </p>
+
+                <!-- Stats bar -->
+                <div class="portfolio-stats-bar" role="list" aria-label="Our achievements">
+                    <div class="header-stat-item" role="listitem">
+                        <span class="stat-icon stat-icon-1"><i class="fas fa-laptop-code"></i></span>
+                        <h2 class="stat-number" data-count="50">0+</h2>
+                        <p>Projects Done</p>
+                    </div>
+                    <div class="header-stat-item" role="listitem">
+                        <span class="stat-icon stat-icon-2"><i class="fas fa-users"></i></span>
+                        <h2 class="stat-number" data-count="30">0+</h2>
+                        <p>Happy Clients</p>
+                    </div>
+                    <div class="header-stat-item" role="listitem">
+                        <span class="stat-icon stat-icon-3"><i class="fas fa-star"></i></span>
+                        <h2 class="stat-number">4.9★</h2>
+                        <p>Google Rating</p>
+                    </div>
+                    <div class="header-stat-item" role="listitem">
+                        <span class="stat-icon stat-icon-4"><i class="fas fa-globe"></i></span>
+                        <h2 class="stat-number">10+</h2>
+                        <p>Countries Served</p>
                     </div>
                 </div>
+
+                <!-- Tech chips -->
+                <div class="portfolio-tech-chips">
+                    <span class="tech-chip"><i class="fab fa-laravel"></i> Laravel</span>
+                    <span class="tech-chip"><i class="fab fa-react"></i> React.js</span>
+                    <span class="tech-chip"><i class="fab fa-vuejs"></i> Vue.js</span>
+                    <span class="tech-chip"><i class="fas fa-mobile-alt"></i> Flutter</span>
+                    <span class="tech-chip"><i class="fab fa-wordpress"></i> WordPress</span>
+                    <span class="tech-chip"><i class="fas fa-shopping-cart"></i> E-commerce</span>
+                    <span class="tech-chip"><i class="fas fa-search"></i> SEO</span>
+                </div>
+
             </div>
+        </div>
+
+        <div class="header-scroll-hint" aria-hidden="true">
+            <i class="fas fa-chevron-down"></i>
+            <span>View Projects</span>
         </div>
     </section>
 

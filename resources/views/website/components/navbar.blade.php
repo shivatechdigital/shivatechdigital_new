@@ -5,7 +5,7 @@
 ================================================ */
 
 /* ---- TOP BAR ---- */
-.topbar { background: linear-gradient(90deg, #0f172a, #1e3a8a) !important; padding: 6px 0; font-size: 0.78rem; }
+.topbar { background: linear-gradient(90deg, #0f172a, #1e3a8a) !important; padding: 6px 0; font-size: 0.78rem; position: fixed; top: 0; left: 0; right: 0; z-index: 1032; width: 100%; }
 .topbar-left { display: flex; align-items: center; gap: 18px; }
 .topbar-left a { color: rgba(255,255,255,0.75); text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
 .topbar-left a:hover { color: #60a5fa; }
@@ -21,12 +21,14 @@
         transition: all 0.3s ease;
         background: rgba(15, 23, 42, 0.95) !important;
         box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+        top: 36px !important; /* Below topbar on desktop */
     }
 .navbar.scrolled {
     padding: 0.6rem 0;
     transition: all 0.3s ease;
     background: rgba(15, 23, 42, 0.95) !important;
     box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    top: 36px !important;
 }
 .navbar-brand-icon { height: 52px !important; width: auto; }
 .navbar-nav .nav-link { color:white !important; font-weight: 600; font-size: 0.875rem; padding: 12px 14px !important; position: relative; transition: all 0.25s ease; }
@@ -77,7 +79,7 @@
 .mega-city-links p { font-size: 0.65rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
 .mega-city-links a { display: inline-block; font-size: 0.73rem; color: #60a5fa; margin-right: 8px; margin-bottom: 4px; text-decoration: none; }
 .mega-city-links a:hover { color: #93c5fd; text-decoration: underline; }
-@media (max-width: 991px) { .topbar { display: none !important; } .mega-menu { position: relative !important; border-radius: 12px !important; } .mega-menu-inner { grid-template-columns: 1fr; } .mega-col { padding: 12px 14px; border-right: none; border-bottom: 1px solid #f1f5f9; } }
+@media (max-width: 991px) { .topbar { display: none !important; } .navbar { top: 0 !important; } .mega-menu { position: relative !important; border-radius: 12px !important; } .mega-menu-inner { grid-template-columns: 1fr; } .mega-col { padding: 12px 14px; border-right: none; border-bottom: 1px solid #f1f5f9; } }
 </style>
 
 {{-- TOP BAR --}}
