@@ -213,6 +213,7 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::delete('/admin/categories/bulk-delete', [CategoryController::class, 'bulkDelete'])->name('admin.categories.bulk-delete');
     Route::post('/admin/categories/import', [CategoryController::class, 'import'])->name('admin.categories.import');
     Route::get('/admin/categories/export', [CategoryController::class, 'export'])->name('admin.categories.export');
+    Route::delete('/admin/tags/bulk-delete', [TagController::class, 'bulkDelete'])->name('admin.tags.bulk-delete');
     Route::resource('/admin/tags',TagController::class)->names('admin.tags');
     Route::resource('/admin/posts',PostController::class)->names('admin.posts');
     Route::post('/admin/posts/{post}/toggle-publish', [BlogPostController::class, 'togglePublish'])->name('admin.posts.toggle-publish');

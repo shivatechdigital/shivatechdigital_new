@@ -99,14 +99,14 @@
         </li>
         
         <!-- Tags Management -->
-        <li class="dropdown">
-          <a href="javascript:void(0)">
+        <li class="dropdown {{ request()->routeIs('admin.tags.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.tags.*') ? 'active-page' : '' }}">
             <iconify-icon icon="solar:tag-outline" class="menu-icon"></iconify-icon>
             <span>Tags</span>
           </a>
           <ul class="sidebar-submenu">
             <li>
-              <a href="{{ route('admin.tags.index') }}" class="{{ request()->routeIs('admin.tags.index') ? 'active-submenu' : '' }}">
+              <a href="{{ route('admin.tags.index') }}" class="{{ request()->routeIs('admin.tags.index') || request()->routeIs('admin.tags.edit') ? 'active-submenu' : '' }}">
                 <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> All Tags
               </a>
             </li>

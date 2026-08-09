@@ -7,10 +7,46 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tags = Tag::withCount('posts')->paginate(15);
-        return view('adminDashboard.pages.tags.index', compact('tags'));
+        $search = trim((string) $request->input('search', ''));
+        $sortBy = (string) $request->input('sort_by', 'created');
+        $sortOrder = strtolower((string) $request->input('sort_order', 'desc'));
+        $allowedPerPage = [10, 20, 50, 100];
+        $perPage = (int) $request->input('per_page', 10);
+
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 10;
+        }
+
+        if (!in_array($sortOrder, ['asc', 'desc'], true)) {
+            $sortOrder = 'desc';
+        }
+
+        $sortMap = [
+            'number' => 'id',
+            'name' => 'name',
+            'slug' => 'slug',
+            'posts_count' => 'posts_count',
+            'created' => 'created_at',
+        ];
+
+        if (!array_key_exists($sortBy, $sortMap)) {
+            $sortBy = 'created';
+        }
+
+        $tags = $this->buildTagsQuery($search)
+            ->orderBy($sortMap[$sortBy], $sortOrder)
+            ->paginate($perPage)
+            ->appends($request->query());
+
+        return view('adminDashboard.pages.tags.index', compact(
+            'tags',
+            'search',
+            'sortBy',
+            'sortOrder',
+            'perPage'
+        ));
     }
 
     public function create()
@@ -32,7 +68,7 @@ class TagController extends Controller
 
     public function edit(Tag $tag)
     {
-        return view('admin.tags.edit', compact('tag'));
+        return view('adminDashboard.pages.tags.edit', compact('tag'));
     }
 
     public function update(Request $request, Tag $tag)
@@ -53,5 +89,32 @@ class TagController extends Controller
 
         return redirect()->route('admin.tags.index')
             ->with('success', 'Tag deleted successfully');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $validated = $request->validate([
+            'tag_ids' => 'required|array|min:1',
+            'tag_ids.*' => 'exists:tags,id',
+        ]);
+
+        Tag::whereIn('id', $validated['tag_ids'])->delete();
+
+        return redirect()->route('admin.tags.index')
+            ->with('success', 'Selected tags deleted successfully');
+    }
+
+    private function buildTagsQuery(string $search)
+    {
+        $query = Tag::withCount('posts');
+
+        if ($search !== '') {
+            $query->where(function ($innerQuery) use ($search) {
+                $innerQuery->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('slug', 'like', '%' . $search . '%');
+            });
+        }
+
+        return $query;
     }
 }
