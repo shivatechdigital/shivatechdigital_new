@@ -58,6 +58,36 @@
         border-radius: 8px;
         font-size: 13px;
     }
+
+    .settings-stack .settings-card {
+        margin-bottom: 16px;
+    }
+
+    .settings-actions {
+        position: sticky;
+        bottom: 12px;
+        z-index: 20;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(6px);
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    .settings-form-grid {
+        padding-bottom: 84px;
+    }
+
+    @media (max-width: 767px) {
+        .settings-actions {
+            position: static;
+        }
+
+        .settings-form-grid {
+            padding-bottom: 0;
+        }
+    }
 </style>
 
 <div class="dashboard-main-body">
@@ -104,7 +134,7 @@
     <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        <div class="row g-4">
+        <div class="row g-4 settings-form-grid">
             <div class="col-12">
                 <div class="settings-card card">
                     <div class="card-header">
@@ -187,7 +217,7 @@
             </div>
 
             <div class="col-lg-6">
-                <div class="settings-card card h-100">
+                <div class="settings-card card">
                     <div class="card-header">
                         <h6 class="mb-0 fw-semibold">Brand Assets</h6>
                     </div>
@@ -254,8 +284,8 @@
                 </div>
             </div>
 
-            <div class="col-lg-6">
-                <div class="settings-card card h-100 mb-4">
+            <div class="col-lg-6 settings-stack">
+                <div class="settings-card card">
                     <div class="card-header">
                         <h6 class="mb-0 fw-semibold">Social Media Links</h6>
                     </div>
@@ -290,7 +320,7 @@
                     </div>
                 </div>
 
-                <div class="settings-card card h-100">
+                <div class="settings-card card">
                     <div class="card-header">
                         <h6 class="mb-0 fw-semibold">SEO and Tracking</h6>
                     </div>
@@ -367,7 +397,7 @@
             </div>
 
             <div class="col-12">
-                <div class="d-flex align-items-center justify-content-end gap-3 mb-2">
+                <div class="settings-actions d-flex flex-wrap align-items-center justify-content-end gap-3">
                     <button type="button" class="btn btn-outline-danger radius-8 px-20 py-11" onclick="confirmReset()">
                         <iconify-icon icon="solar:restart-bold" class="icon"></iconify-icon>
                         Reset to Default
