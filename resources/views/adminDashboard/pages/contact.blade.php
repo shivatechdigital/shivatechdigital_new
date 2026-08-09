@@ -305,7 +305,9 @@
           <form id="bulkActionForm" method="POST">
             @csrf
             <input type="hidden" name="status" id="bulkStatusInput" value="">
-            <div class="table-responsive">
+          </form>
+
+          <div class="table-responsive">
               <table class="table bordered-table mb-0" id="contactsTable" data-datatable="false">
                 <thead>
                   <tr>
@@ -330,7 +332,7 @@
                   <tr class="{{ $contact->status == 'new' ? 'bg-warning-focus' : '' }}">
                     <td>
                       <div class="form-check style-check d-flex align-items-center">
-                        <input class="form-check-input contact-checkbox" type="checkbox" name="contact_ids[]" value="{{ $contact->id }}">
+                        <input class="form-check-input contact-checkbox" type="checkbox" name="contact_ids[]" value="{{ $contact->id }}" form="bulkActionForm">
                         <label class="form-check-label">{{ $loop->iteration + ($contacts->currentPage() - 1) * $contacts->perPage() }}</label>
                       </div>
                     </td>
@@ -420,7 +422,6 @@
                 </tbody>
               </table>
             </div>
-          </form>
 
           <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mt-24" id="contactsPaginationWrap">
             <p class="text-sm text-secondary-light mb-0" id="contactsSummaryLine">
