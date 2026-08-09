@@ -24,11 +24,13 @@ class GenerateSitemap extends Command
                 ->setChangeFrequency('daily')
         );
 
-        // ✅ Static pages
+        // ✅ Static pages + legal pages
         $staticPages = [
-            '/about'   => ['priority' => 0.8, 'freq' => 'monthly'],
+            '/about' => ['priority' => 0.8, 'freq' => 'monthly'],
             '/contact' => ['priority' => 0.7, 'freq' => 'monthly'],
             '/services' => ['priority' => 0.9, 'freq' => 'weekly'],
+            '/privacy-policy' => ['priority' => 0.4, 'freq' => 'yearly'],
+            '/terms-of-service' => ['priority' => 0.4, 'freq' => 'yearly'],
         ];
 
         foreach ($staticPages as $path => $meta) {
@@ -36,6 +38,55 @@ class GenerateSitemap extends Command
                 Url::create($path)
                     ->setPriority($meta['priority'])
                     ->setChangeFrequency($meta['freq'])
+            );
+        }
+
+        // ✅ Core service pages
+        $servicePages = [
+            '/services/web-development' => ['priority' => 0.85, 'freq' => 'weekly'],
+            '/services/mobile-app-development' => ['priority' => 0.85, 'freq' => 'weekly'],
+            '/services/ui-ux-design' => ['priority' => 0.8, 'freq' => 'weekly'],
+            '/services/ecommerce-development' => ['priority' => 0.8, 'freq' => 'weekly'],
+            '/services/digital-marketing' => ['priority' => 0.8, 'freq' => 'weekly'],
+            '/services/seo-services' => ['priority' => 0.8, 'freq' => 'weekly'],
+            '/services/social-media-marketing' => ['priority' => 0.75, 'freq' => 'weekly'],
+            '/services/content-marketing' => ['priority' => 0.75, 'freq' => 'weekly'],
+            '/services/cloud-solutions' => ['priority' => 0.8, 'freq' => 'weekly'],
+            '/services/maintenance-support' => ['priority' => 0.7, 'freq' => 'monthly'],
+            '/services/branding-services' => ['priority' => 0.75, 'freq' => 'monthly'],
+            '/services/graphic-design' => ['priority' => 0.7, 'freq' => 'monthly'],
+            '/services/video-production' => ['priority' => 0.65, 'freq' => 'monthly'],
+        ];
+
+        foreach ($servicePages as $path => $meta) {
+            $sitemap->add(
+                Url::create($path)
+                    ->setPriority($meta['priority'])
+                    ->setChangeFrequency($meta['freq'])
+            );
+        }
+
+        // ✅ City service landing pages
+        $cityServicePages = [
+            '/services/web-development-noida',
+            '/services/web-development-delhi',
+            '/services/web-development-gurgaon',
+            '/services/web-development-ghaziabad',
+            '/services/mobile-app-development-noida',
+            '/services/mobile-app-development-delhi',
+            '/services/mobile-app-development-gurgaon',
+            '/services/mobile-app-development-ghaziabad',
+            '/services/cloud-migration-noida',
+            '/services/cloud-migration-delhi',
+            '/services/cloud-migration-gurgaon',
+            '/services/cloud-migration-ghaziabad',
+        ];
+
+        foreach ($cityServicePages as $path) {
+            $sitemap->add(
+                Url::create($path)
+                    ->setPriority(0.78)
+                    ->setChangeFrequency('weekly')
             );
         }
 
