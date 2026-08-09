@@ -57,8 +57,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy;{{$settings->footer_text ?? ''}} | <a href="#">Privacy Policy</a> | <a href="#">Terms of
-                        Service</a></p>
+                <p>&copy;{{$settings->footer_text ?? ''}} | <a href="{{ route('privacy-policy') }}">Privacy Policy</a> | <a href="{{ route('terms-of-service') }}">Terms of
+                    Service</a></p>
             </div>
         </div>
     </footer>

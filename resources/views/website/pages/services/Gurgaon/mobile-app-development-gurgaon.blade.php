@@ -21,14 +21,14 @@
   "telephone": "+91-7007294764",
   "address": {
     "@@type": "PostalAddress",
-    "addressLocality": "Gurgaon",
-    "addressRegion": "Haryana",
+    "addressLocality": "Noida",
+    "addressRegion": "Uttar Pradesh",
     "addressCountry": "IN"
   },
   "geo": {
     "@@type": "GeoCoordinates",
-    "latitude": 28.4595,
-    "longitude": 77.0266
+    "latitude": 28.6271,
+    "longitude": 77.3779
   },
   "areaServed": ["Gurgaon","DLF Cyber City","Manesar","Delhi NCR"]
 }
@@ -47,25 +47,6 @@
 </script>
 @include('website.pages.services.partials.location-seo-kit', ['mode' => 'schema', 'serviceKey' => 'mobile', 'cityKey' => 'gurgaon'])
 @endpush
-
-@section('schema-markup')
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "LocalBusiness",
-  "name": "Shiva Tech Digital",
-  "description": "Gurgaon mobile app development services for Android, iOS and cross-platform products.",
-  "url": "https://shivatechdigital.com/services/mobile-app-development-gurgaon",
-  "telephone": "+91-7007294764",
-  "address": {
-    "@@type": "PostalAddress",
-    "addressLocality": "Gurgaon",
-    "addressRegion": "Haryana",
-    "addressCountry": "IN"
-  }
-}
-</script>
-@endsection
 
 @section('website.content')
 <section class="py-2" style="background:#f8fafc;">
@@ -210,19 +191,19 @@
     <div class="row g-4">
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Mobile App Development in Gurgaon.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Mobile App Development in Gurgaon</h3>
           <p class="mb-0 text-secondary">For users searching quality-first solutions, we highlight architecture quality, delivery process, case-driven outcomes, and long-term reliability.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Mobile App Development in Gurgaon.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Mobile App Development in Gurgaon</h3>
           <p class="mb-0 text-secondary">For budget intent, we explain transparent pricing, phase-wise execution, optimized tech stack choices, and cost-efficient maintenance options.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Mobile App Development in Gurgaon.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Mobile App Development in Gurgaon</h3>
           <p class="mb-0 text-secondary">For design-focused intent, we cover modern UI standards, conversion-focused UX patterns, responsive performance, and brand-aligned visual systems.</p>
         </div>
       </div>

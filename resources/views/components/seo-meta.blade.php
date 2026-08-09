@@ -26,11 +26,11 @@
 <link rel="alternate" hreflang="en-in" href="{{ $meta['canonical'] }}">
 <link rel="alternate" hreflang="x-default" href="{{ $meta['canonical'] }}">
 
-{{-- Local SEO Geo Tags (Noida) --}}
-<meta name="geo.region" content="IN-UP">
-<meta name="geo.placename" content="Noida, Uttar Pradesh, India">
-<meta name="geo.position" content="28.6271;77.3779">
-<meta name="ICBM" content="28.6271, 77.3779">
+{{-- Page-level Geo Targeting --}}
+<meta name="geo.region" content="{{ $geo['region'] }}">
+<meta name="geo.placename" content="{{ $geo['placename'] }}">
+<meta name="geo.position" content="{{ $geo['position'] }}">
+<meta name="ICBM" content="{{ $geo['icbm'] }}">
 
 {{-- Open Graph / Facebook --}}
 <meta property="og:type" content="{{ $meta['og_type'] }}">

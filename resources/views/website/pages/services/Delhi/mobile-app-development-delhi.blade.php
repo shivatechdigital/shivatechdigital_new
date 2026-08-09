@@ -21,14 +21,14 @@
   "telephone": "+91-7007294764",
   "address": {
     "@@type": "PostalAddress",
-    "addressLocality": "Delhi",
-    "addressRegion": "Delhi",
+    "addressLocality": "Noida",
+    "addressRegion": "Uttar Pradesh",
     "addressCountry": "IN"
   },
   "geo": {
     "@@type": "GeoCoordinates",
-    "latitude": 28.6139,
-    "longitude": 77.2090
+    "latitude": 28.6271,
+    "longitude": 77.3779
   },
   "areaServed": ["Delhi","South Delhi","East Delhi","Central Delhi"],
   "priceRange": "$$"
@@ -49,30 +49,6 @@
 @include('website.pages.services.partials.location-seo-kit', ['mode' => 'schema', 'serviceKey' => 'mobile', 'cityKey' => 'delhi'])
 @endpush
 
-@section('schema-markup')
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "LocalBusiness",
-  "name": "Shiva Tech Digital",
-  "description": "Mobile app development services in Delhi for Android, iOS and cross-platform applications.",
-  "url": "https://shivatechdigital.com/services/mobile-app-development-delhi",
-  "telephone": "+91-7007294764",
-  "address": {
-    "@@type": "PostalAddress",
-    "addressLocality": "Delhi",
-    "addressRegion": "Delhi",
-    "addressCountry": "IN"
-  },
-  "areaServed": [
-    {"@@type": "City", "name": "Delhi"},
-    {"@@type": "City", "name": "South Delhi"},
-    {"@@type": "City", "name": "East Delhi"}
-  ]
-}
-</script>
-@endsection
-
 @section('website.content')
 <section class="py-2" style="background:#f8fafc;">
   <div class="container">
@@ -91,7 +67,7 @@
   <div class="container py-4">
     <span class="badge mb-3" style="background:#10b981;">Delhi Mobile App Services</span>
     <h1 class="text-white" style="font-weight:800;">Mobile App Development Company in Delhi</h1>
-    <p class="text-white-50" style="max-width:760px;">We help Delhi startups, D2C brands, and enterprises launch robust Android and iOS applications. Our team handles product planning, UI/UX, development, testing, and app-store deployment.</p>
+    <p class="text-white-50" style="max-width:760px;">We help Delhi startups, D2C brands, and enterprise teams launch robust Android and iOS applications. From Connaught Place and Nehru Place to South Delhi and Dwarka, our team handles product planning, UI/UX, development, QA, and app-store deployment with compliance-ready workflows.</p>
     <div class="d-flex gap-3 flex-wrap mt-3">
       <a href="{{ route('contact') }}" class="btn btn-success btn-lg">Get Free Quote</a>
       <a href="tel:+917007294764" class="btn btn-outline-light btn-lg">Call +91-7007294764</a>
@@ -103,7 +79,7 @@
   <div class="container">
     <div class="text-center mb-5">
       <h2 style="font-weight:800;">Our Mobile App Delivery Process in Delhi</h2>
-      <p class="text-secondary">A proven process that reduces risk and speeds up launch for Delhi startups and brands.</p>
+      <p class="text-secondary">A governance-friendly process for Delhi teams that need clarity on scope, approvals, and time-to-market.</p>
     </div>
     <div class="row g-4">
       @foreach([
@@ -216,19 +192,19 @@
     <div class="row g-4">
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Mobile App Development in Delhi.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Mobile App Development in Delhi</h3>
           <p class="mb-0 text-secondary">For users searching quality-first solutions, we highlight architecture quality, delivery process, case-driven outcomes, and long-term reliability.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Mobile App Development in Delhi.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Mobile App Development in Delhi</h3>
           <p class="mb-0 text-secondary">For budget intent, we explain transparent pricing, phase-wise execution, optimized tech stack choices, and cost-efficient maintenance options.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Mobile App Development in Delhi.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Mobile App Development in Delhi</h3>
           <p class="mb-0 text-secondary">For design-focused intent, we cover modern UI standards, conversion-focused UX patterns, responsive performance, and brand-aligned visual systems.</p>
         </div>
       </div>

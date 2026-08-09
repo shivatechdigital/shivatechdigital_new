@@ -13,6 +13,7 @@ class SeoMeta extends Component
     public array $meta;
     public string $pageSlug;
     public ?ServiceMeta $pageMeta;
+    public array $geo;
 
     /**
      * Create a new component instance.
@@ -36,6 +37,8 @@ class SeoMeta extends Component
             'image' => $defaultImage ?? url('/web_assets/img/og-default.jpg'),
             'keywords' => $defaultKeywords ?? 'web development, digital marketing, noida',
         ]);
+
+        $this->geo = $this->inferGeoData($pageSlug);
     }
 
     /**
@@ -83,7 +86,7 @@ class SeoMeta extends Component
                 'schema' => null,
                 'breadcrumb_schema' => null,
                 'faq_schema' => null,
-                'focus_keyword' => null,
+                'focus_keyword' => $this->inferFocusKeyword($this->pageSlug),
                 'h1' => null,
             ];
         }
@@ -106,9 +109,83 @@ class SeoMeta extends Component
             'schema' => $this->pageMeta->schema_markup,
             'breadcrumb_schema' => $this->pageMeta->breadcrumb_schema,
             'faq_schema' => $this->pageMeta->faq_schema,
-            'focus_keyword' => $this->pageMeta->focus_keyword,
+            'focus_keyword' => $this->pageMeta->focus_keyword ?: $this->inferFocusKeyword($this->pageSlug),
             'h1' => $this->pageMeta->h1_tag,
         ];
+    }
+
+    private function inferGeoData(string $slug): array
+    {
+        $targets = [
+            'delhi' => [
+                'region' => 'IN-DL',
+                'placename' => 'Delhi, India',
+                'position' => '28.6139;77.2090',
+                'icbm' => '28.6139, 77.2090',
+            ],
+            'gurgaon' => [
+                'region' => 'IN-HR',
+                'placename' => 'Gurgaon, Haryana, India',
+                'position' => '28.4595;77.0266',
+                'icbm' => '28.4595, 77.0266',
+            ],
+            'ghaziabad' => [
+                'region' => 'IN-UP',
+                'placename' => 'Ghaziabad, Uttar Pradesh, India',
+                'position' => '28.6692;77.4538',
+                'icbm' => '28.6692, 77.4538',
+            ],
+            'noida' => [
+                'region' => 'IN-UP',
+                'placename' => 'Noida, Uttar Pradesh, India',
+                'position' => '28.6271;77.3779',
+                'icbm' => '28.6271, 77.3779',
+            ],
+        ];
+
+        foreach ($targets as $key => $data) {
+            if (str_contains($slug, $key)) {
+                return $data;
+            }
+        }
+
+        return $targets['noida'];
+    }
+
+    private function inferFocusKeyword(string $slug): ?string
+    {
+        $cityMap = [
+            'noida' => 'noida',
+            'delhi' => 'delhi',
+            'gurgaon' => 'gurgaon',
+            'ghaziabad' => 'ghaziabad',
+        ];
+
+        $city = null;
+        foreach ($cityMap as $key => $value) {
+            if (str_contains($slug, $key)) {
+                $city = $value;
+                break;
+            }
+        }
+
+        if (!$city) {
+            return null;
+        }
+
+        if (str_contains($slug, 'web-development')) {
+            return 'web development company in ' . $city;
+        }
+
+        if (str_contains($slug, 'mobile-app-development')) {
+            return 'mobile app development company in ' . $city;
+        }
+
+        if (str_contains($slug, 'cloud-migration')) {
+            return 'cloud migration services in ' . $city;
+        }
+
+        return null;
     }
 
     /**

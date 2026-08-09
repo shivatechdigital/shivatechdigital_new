@@ -64,8 +64,20 @@
     "description": "Best web development company in Delhi offering custom websites, web apps, Laravel, React at affordable prices.",
     "url": "https://shivatechdigital.com/services/web-development-delhi",
     "telephone": "+91-7007294764",
-    "address": { "@@type": "PostalAddress", "addressLocality": "Delhi", "addressRegion": "Delhi", "addressCountry": "IN" },
+    "address": { "@@type": "PostalAddress", "addressLocality": "Noida", "addressRegion": "Uttar Pradesh", "addressCountry": "IN" },
     "areaServed": [{"@@type": "City", "name": "Delhi"}, {"@@type": "City", "name": "South Delhi"}, {"@@type": "City", "name": "East Delhi"}]
+}
+</script>
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "BreadcrumbList",
+    "itemListElement": [
+        {"@@type": "ListItem", "position": 1, "name": "Home", "item": "https://shivatechdigital.com/"},
+        {"@@type": "ListItem", "position": 2, "name": "Services", "item": "https://shivatechdigital.com/services"},
+        {"@@type": "ListItem", "position": 3, "name": "Web Development", "item": "https://shivatechdigital.com/services/web-development"},
+        {"@@type": "ListItem", "position": 4, "name": "Web Development Delhi", "item": "https://shivatechdigital.com/services/web-development-delhi"}
+    ]
 }
 </script>
 @endsection
@@ -213,19 +225,19 @@
     <div class="row g-4">
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Web Development in Delhi.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Web Development in Delhi</h3>
           <p class="mb-0 text-secondary">For users searching quality-first solutions, we highlight architecture quality, delivery process, case-driven outcomes, and long-term reliability.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Web Development in Delhi.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Web Development in Delhi</h3>
           <p class="mb-0 text-secondary">For budget intent, we explain transparent pricing, phase-wise execution, optimized tech stack choices, and cost-efficient maintenance options.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Web Development in Delhi.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Web Development in Delhi</h3>
           <p class="mb-0 text-secondary">For design-focused intent, we cover modern UI standards, conversion-focused UX patterns, responsive performance, and brand-aligned visual systems.</p>
         </div>
       </div>

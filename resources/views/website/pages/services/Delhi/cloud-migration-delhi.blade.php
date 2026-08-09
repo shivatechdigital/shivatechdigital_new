@@ -21,14 +21,14 @@
 	"telephone": "+91-7007294764",
 	"address": {
 		"@@type": "PostalAddress",
-		"addressLocality": "Delhi",
-		"addressRegion": "Delhi",
+		"addressLocality": "Noida",
+		"addressRegion": "Uttar Pradesh",
 		"addressCountry": "IN"
 	},
 	"geo": {
 		"@@type": "GeoCoordinates",
-		"latitude": 28.6139,
-		"longitude": 77.2090
+		"latitude": 28.6271,
+		"longitude": 77.3779
 	},
 	"areaServed": [
 		"Delhi",
@@ -587,19 +587,19 @@
     <div class="row g-4">
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Cloud Migration in Delhi.Blade</h3>
+		  <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Cloud Migration in Delhi</h3>
           <p class="mb-0 text-secondary">For users searching quality-first solutions, we highlight architecture quality, delivery process, case-driven outcomes, and long-term reliability.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Cloud Migration in Delhi.Blade</h3>
+		  <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Cloud Migration in Delhi</h3>
           <p class="mb-0 text-secondary">For budget intent, we explain transparent pricing, phase-wise execution, optimized tech stack choices, and cost-efficient maintenance options.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Cloud Migration in Delhi.Blade</h3>
+		  <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Cloud Migration in Delhi</h3>
           <p class="mb-0 text-secondary">For design-focused intent, we cover modern UI standards, conversion-focused UX patterns, responsive performance, and brand-aligned visual systems.</p>
         </div>
       </div>

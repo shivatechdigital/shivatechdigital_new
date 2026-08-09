@@ -127,7 +127,7 @@
 
                 {{-- SERVICES MEGA MENU --}}
                 <li class="nav-item dropdown mega-dropdown">
-                    <a class="nav-link {{ request()->routeIs('services.*') ? 'active' : '' }}" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs('services.*') ? 'active' : '' }}" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" aria-haspopup="true">
                         <span class="dropdown-toggle-icon">Services <i class="fas fa-chevron-down chevron ms-1"></i></span>
                     </a>
                     <div class="dropdown-menu mega-menu">

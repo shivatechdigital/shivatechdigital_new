@@ -21,14 +21,14 @@
   "telephone": "+91-7007294764",
   "address": {
     "@@type": "PostalAddress",
-    "addressLocality": "Ghaziabad",
+    "addressLocality": "Noida",
     "addressRegion": "Uttar Pradesh",
     "addressCountry": "IN"
   },
   "geo": {
     "@@type": "GeoCoordinates",
-    "latitude": 28.6692,
-    "longitude": 77.4538
+    "latitude": 28.6271,
+    "longitude": 77.3779
   },
   "areaServed": ["Ghaziabad","Indirapuram","Vaishali","Delhi NCR"]
 }
@@ -48,25 +48,6 @@
 @include('website.pages.services.partials.location-seo-kit', ['mode' => 'schema', 'serviceKey' => 'mobile', 'cityKey' => 'ghaziabad'])
 @endpush
 
-@section('schema-markup')
-<script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "LocalBusiness",
-  "name": "Shiva Tech Digital",
-  "description": "Mobile app development services in Ghaziabad for Android, iOS, and cross-platform apps.",
-  "url": "https://shivatechdigital.com/services/mobile-app-development-ghaziabad",
-  "telephone": "+91-7007294764",
-  "address": {
-    "@@type": "PostalAddress",
-    "addressLocality": "Ghaziabad",
-    "addressRegion": "Uttar Pradesh",
-    "addressCountry": "IN"
-  }
-}
-</script>
-@endsection
-
 @section('website.content')
 <section class="py-2" style="background:#f8fafc;">
   <div class="container">
@@ -85,7 +66,7 @@
   <div class="container py-4">
     <span class="badge mb-3" style="background:#3b82f6;">Ghaziabad Mobile App Solutions</span>
     <h1 class="text-white" style="font-weight:800;">Mobile App Development in Ghaziabad</h1>
-    <p class="text-white-50" style="max-width:760px;">We help Ghaziabad businesses launch reliable, user-friendly mobile apps for customer engagement, operations, and revenue growth. End-to-end app development from idea to scale.</p>
+    <p class="text-white-50" style="max-width:760px;">We help Ghaziabad SMEs and local brands launch reliable, user-friendly mobile apps for customer engagement, field operations, and revenue growth. Across Indirapuram, Vaishali, Raj Nagar Extension, and Sahibabad, we deliver end-to-end app development from idea to scale with practical budgets.</p>
     <div class="d-flex gap-3 flex-wrap mt-3">
       <a href="{{ route('contact') }}" class="btn btn-primary btn-lg">Get Project Estimate</a>
       <a href="tel:+917007294764" class="btn btn-outline-light btn-lg">Call Now</a>
@@ -97,7 +78,7 @@
   <div class="container">
     <div class="text-center mb-5">
       <h2 style="font-weight:800;">Our App Development Process in Ghaziabad</h2>
-      <p class="text-secondary">Detailed planning and execution model to ship stable mobile products faster.</p>
+      <p class="text-secondary">A practical execution model focused on business outcomes, predictable cost, and stable releases for growing Ghaziabad teams.</p>
     </div>
     <div class="row g-4">
       @foreach([
@@ -210,19 +191,19 @@
     <div class="row g-4">
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Mobile App Development in Ghaziabad.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Best Mobile App Development in Ghaziabad</h3>
           <p class="mb-0 text-secondary">For users searching quality-first solutions, we highlight architecture quality, delivery process, case-driven outcomes, and long-term reliability.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Mobile App Development in Ghaziabad.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Affordable Mobile App Development in Ghaziabad</h3>
           <p class="mb-0 text-secondary">For budget intent, we explain transparent pricing, phase-wise execution, optimized tech stack choices, and cost-efficient maintenance options.</p>
         </div>
       </div>
       <div class="col-lg-4 col-md-6">
         <div class="h-100 p-4" style="background:#ffffff; border:1px solid #fdba74; border-radius:14px; box-shadow:0 10px 24px rgba(124,45,18,.08);">
-          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Mobile App Development in Ghaziabad.Blade</h3>
+          <h3 style="font-size:1.05rem; font-weight:700; color:#7c2d12;">Attractive and Modern Mobile App Development in Ghaziabad</h3>
           <p class="mb-0 text-secondary">For design-focused intent, we cover modern UI standards, conversion-focused UX patterns, responsive performance, and brand-aligned visual systems.</p>
         </div>
       </div>
