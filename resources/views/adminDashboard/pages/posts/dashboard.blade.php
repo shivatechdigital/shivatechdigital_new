@@ -97,6 +97,16 @@
         vertical-align: middle;
     }
 
+    .glass-table .select-col {
+        width: 44px;
+        text-align: center;
+    }
+
+    .glass-table .id-col {
+        width: 70px;
+        text-align: center;
+    }
+
     .category-track {
         height: 10px;
         border-radius: 999px;
@@ -108,18 +118,6 @@
         height: 100%;
         border-radius: 999px;
         background: linear-gradient(90deg, #3b82f6 0%, #6366f1 55%, #8b5cf6 100%);
-    }
-
-    .comment-item {
-        border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-        padding-bottom: 12px;
-        margin-bottom: 12px;
-    }
-
-    .comment-item:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
     }
 
     .recent-post-tools {
@@ -135,6 +133,14 @@
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .recent-post-tools .bulk-form {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
         width: 100%;
     }
 
@@ -161,6 +167,10 @@
 
     .recent-post-tools .per-page-select {
         width: 120px;
+    }
+
+    .recent-post-tools .bulk-action-select {
+        width: 190px;
     }
 
     .glass-pagination .pagination {
@@ -258,7 +268,7 @@
     <!-- Charts and Lists -->
     <div class="row g-3 mt-1">
         <!-- Recent Posts -->
-        <div class="col-lg-8">
+        <div class="col-12">
             <div class="card glass-card">
                 <div class="card-header">
                     <h5 class="mb-0">Recent Posts</h5>
@@ -281,12 +291,35 @@
                             <button type="submit" class="btn btn-primary-600">Apply</button>
                             <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">Reset</a>
                         </form>
+
+                        <form method="POST" action="{{ route('admin.posts.bulk-action') }}" class="bulk-form" id="bulkPostsForm">
+                            @csrf
+                            <select name="action" class="form-select bulk-action-select" id="bulkActionSelect">
+                                <option value="">Bulk Action</option>
+                                <option value="publish">Publish Selected</option>
+                                <option value="unpublish">Unpublish Selected</option>
+                                <option value="featured">Mark Featured</option>
+                                <option value="delete">Delete Selected</option>
+                            </select>
+                            <button type="submit" class="btn btn-danger-600" id="applyBulkBtn">Apply Selected</button>
+
+                            <input type="hidden" name="search" value="{{ $search ?? '' }}">
+                            <input type="hidden" name="status" value="{{ $status ?? 'all' }}">
+                            <input type="hidden" name="per_page" value="{{ (int) ($perPage ?? 10) }}">
+                        </form>
                     </div>
 
-                    <div class="table-responsive">
+                    <form method="POST" action="{{ route('admin.posts.bulk-action') }}" id="bulkPostsTableForm">
+                        @csrf
+                        <input type="hidden" name="action" id="bulkActionMirror">
+                        <div class="table-responsive">
                         <table class="table table-hover glass-table">
                             <thead>
                                 <tr>
+                                    <th class="select-col">
+                                        <input type="checkbox" id="selectAllPosts">
+                                    </th>
+                                    <th class="id-col">ID</th>
                                     <th>Title</th>
                                     <th>Category</th>
                                     <th>Status</th>
@@ -298,6 +331,10 @@
                             <tbody>
                                 @forelse($recentPosts as $post)
                                 <tr>
+                                    <td class="select-col">
+                                        <input type="checkbox" class="post-row-checkbox" name="posts[]" value="{{ $post->id }}">
+                                    </td>
+                                    <td class="id-col">{{ ($recentPosts->firstItem() ?? 1) + $loop->index }}</td>
                                     <td>{{ Str::limit($post->title, 40) }}</td>
                                     <td><span class="badge bg-info">{{ $post->category->name ?? 'Uncategorized' }}</span></td>
                                     <td>
@@ -317,12 +354,13 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="6" class="text-center text-soft py-4">No blog posts available.</td>
+                                    <td colspan="8" class="text-center text-soft py-4">No blog posts available.</td>
                                 </tr>
                                 @endforelse
                             </tbody>
                         </table>
-                    </div>
+                        </div>
+                    </form>
 
                     @if(method_exists($recentPosts, 'links'))
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 glass-pagination">
@@ -358,32 +396,130 @@
             </div>
         </div>
 
-        <!-- Sidebar -->
-        <div class="col-lg-4">
-            <!-- Recent Comments -->
-            <div class="card glass-card">
-                <div class="card-header">
-                    <h5 class="mb-0">Recent Comments</h5>
-                </div>
-                <div class="card-body">
-                    @forelse($recentComments as $comment)
-                    <div class="comment-item">
-                        <p class="mb-1 small">{{ Str::limit($comment->comment, 95) }}</p>
-                        <small class="text-soft">
-                            <strong>{{ $comment->user->name ?? 'Unknown User' }}</strong> on 
-                            @if($comment->post)
-                                <a href="{{ route('blog.show', $comment->post->slug) }}">{{ Str::limit($comment->post->title, 30) }}</a>
-                            @else
-                                <span>Deleted Post</span>
-                            @endif
-                        </small>
-                    </div>
-                    @empty
-                    <p class="text-soft mb-0">No recent comments.</p>
-                    @endforelse
-                </div>
-            </div>
-        </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const selectAll = document.getElementById('selectAllPosts');
+    const rowCheckboxes = Array.from(document.querySelectorAll('.post-row-checkbox'));
+    const bulkForm = document.getElementById('bulkPostsForm');
+    const tableForm = document.getElementById('bulkPostsTableForm');
+    const bulkActionSelect = document.getElementById('bulkActionSelect');
+    const bulkActionMirror = document.getElementById('bulkActionMirror');
+
+    if (!selectAll || rowCheckboxes.length === 0) {
+        return;
+    }
+
+    selectAll.addEventListener('change', function () {
+        rowCheckboxes.forEach(function (checkbox) {
+            checkbox.checked = selectAll.checked;
+        });
+    });
+
+    rowCheckboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            const allChecked = rowCheckboxes.every(function (item) {
+                return item.checked;
+            });
+            selectAll.checked = allChecked;
+        });
+    });
+
+    if (bulkForm && tableForm && bulkActionSelect && bulkActionMirror) {
+        bulkForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const selected = rowCheckboxes.filter(function (item) {
+                return item.checked;
+            });
+
+            const action = bulkActionSelect.value;
+
+            const showMessage = async function (title, text, icon) {
+                if (window.Swal) {
+                    await Swal.fire({
+                        title: title,
+                        text: text,
+                        icon: icon,
+                        confirmButtonColor: '#4f46e5'
+                    });
+                    return;
+                }
+
+                alert(text);
+            };
+
+            if (!action) {
+                await showMessage('Action Required', 'Please select a bulk action first.', 'warning');
+                return;
+            }
+
+            if (selected.length === 0) {
+                await showMessage('No Posts Selected', 'Please select at least one post.', 'warning');
+                return;
+            }
+
+            bulkActionMirror.value = action;
+
+            if (action === 'delete') {
+                if (window.Swal) {
+                    const result = await Swal.fire({
+                        title: 'Delete selected posts?',
+                        text: 'This action cannot be undone.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc2626',
+                        cancelButtonColor: '#64748b',
+                        confirmButtonText: 'Yes, delete',
+                        cancelButtonText: 'Cancel'
+                    });
+
+                    if (!result.isConfirmed) {
+                        return;
+                    }
+                } else {
+                    const ok = confirm('Are you sure you want to delete selected posts?');
+                    if (!ok) {
+                        return;
+                    }
+                }
+            } else if (window.Swal) {
+                const result = await Swal.fire({
+                    title: 'Apply bulk action?',
+                    text: `Action: ${action} on ${selected.length} selected post(s).`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#4f46e5',
+                    cancelButtonColor: '#64748b',
+                    confirmButtonText: 'Apply',
+                    cancelButtonText: 'Cancel'
+                });
+
+                if (!result.isConfirmed) {
+                    return;
+                }
+            }
+
+            tableForm.submit();
+        });
+    }
+
+    @if(session('success'))
+    if (window.Swal) {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: @json(session('success')),
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+        });
+    }
+    @endif
+});
+</script>
 @endsection

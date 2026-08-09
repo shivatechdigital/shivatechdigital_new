@@ -84,6 +84,7 @@ class DashboardController extends Controller
 
         // Category wise posts
         $categoryPosts = Category::withCount('posts')
+            ->has('posts')
             ->orderBy('posts_count', 'desc')
             ->get();
 
