@@ -76,22 +76,22 @@ class ServicesController extends Controller
 
     public function webDevelopmentNoida()
     {
-        return view('website.pages.services.web-development-noida');
+        return view('website.pages.services.Noida.web-development-noida');
     }
 
     public function webDevelopmentDelhi()
     {
-        return view('website.pages.services.web-development-delhi');
+        return view('website.pages.services.Delhi.web-development-delhi');
     }
 
     public function webDevelopmentGurgaon()
     {
-        return view('website.pages.services.web-development-gurgaon');
+        return view('website.pages.services.Gurgaon.web-development-gurgaon');
     }
 
     public function webDevelopmentGhaziabad()
     {
-        return view('website.pages.services.web-development-ghaziabad');
+        return view('website.pages.services.Gaziyabad.web-development-ghaziabad');
     }
 
     public function mobileAppDevelopment()
