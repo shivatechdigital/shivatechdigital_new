@@ -256,6 +256,8 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::put('/admin/partners/{partner}', [PartnerController::class, 'update'])
         ->name('partners.update');
 
+    Route::delete('/admin/partners/bulk-delete', [PartnerController::class, 'bulkDelete'])
+        ->name('partners.bulk-delete');
     Route::delete('/admin/partners/{partner}', [PartnerController::class, 'destroy'])
         ->name('partners.destroy');
 

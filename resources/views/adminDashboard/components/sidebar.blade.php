@@ -79,14 +79,14 @@
         
         
         <!-- Partners Management -->
-        <li class="dropdown">
-          <a href="javascript:void(0)">
+        <li class="dropdown {{ request()->routeIs('partners.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('partners.*') ? 'active-page' : '' }}">
             <iconify-icon icon="solar:folder-outline" class="menu-icon"></iconify-icon>
             <span>Partners</span>
           </a>
           <ul class="sidebar-submenu">
             <li>
-              <a href="{{ route('partners.index') }}" class="{{ request()->routeIs('partners.index') ? 'active-submenu' : '' }}">
+              <a href="{{ route('partners.index') }}" class="{{ request()->routeIs('partners.index') || request()->routeIs('partners.edit') ? 'active-submenu' : '' }}">
                 <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> All Partners
               </a>
             </li>
