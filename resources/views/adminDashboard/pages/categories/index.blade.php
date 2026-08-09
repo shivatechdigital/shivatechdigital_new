@@ -131,12 +131,6 @@
         padding: 0;
     }
 
-    .sortable-header-btn .sort-indicator {
-        font-size: 11px;
-        color: var(--cat-muted);
-        min-width: 12px;
-    }
-
     .category-select-checkbox {
         appearance: auto !important;
         -webkit-appearance: checkbox !important;
@@ -183,10 +177,6 @@
         border-color: rgba(220, 38, 38, 0.38);
     }
 
-    .import-modal .modal-content {
-        border-radius: 14px;
-    }
-
     @media (max-width: 992px) {
         .categories-filter-grid {
             grid-template-columns: 1fr 1fr;
@@ -203,16 +193,10 @@
 <div class="container-fluid categories-page">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
         <div>
-            <h1 class="mb-0" style="font-size: 30px; font-weight: 700;">Categories</h1>
-            <p class="text-soft mb-0">Manage categories with filters, sorting, import/export, and bulk actions</p>
+            <h1 class="mb-0" style="font-size: 30px !important; font-weight: 700;">Categories</h1>
+            <p class="text-soft mb-0">Manage categories with filters, sorting, and bulk actions</p>
         </div>
         <div class="d-flex flex-wrap gap-2">
-            <a href="{{ route('admin.categories.export', request()->query()) }}" class="btn btn-success-600 radius-8 px-16 py-10">
-                <i class="fas fa-file-export"></i> Export CSV
-            </a>
-            <button type="button" class="btn btn-info-600 radius-8 px-16 py-10" data-bs-toggle="modal" data-bs-target="#importCategoriesModal">
-                <i class="fas fa-file-import"></i> Import CSV
-            </button>
             <a href="{{ route('admin.categories.create') }}" class="btn btn-primary-600 radius-8 px-16 py-10">
                 <i class="fas fa-plus"></i> Add New Category
             </a>
@@ -270,32 +254,27 @@
                                 <th class="num-col">
                                     <button type="button" class="sortable-header-btn" data-sort-key="number">
                                         #
-                                        <span class="sort-indicator">{{ $sortBy === 'number' ? ($sortOrder === 'asc' ? '^' : 'v') : '<>' }}</span>
                                     </button>
                                 </th>
                                 <th>Image</th>
                                 <th>
                                     <button type="button" class="sortable-header-btn" data-sort-key="name">
                                         Name
-                                        <span class="sort-indicator">{{ $sortBy === 'name' ? ($sortOrder === 'asc' ? '^' : 'v') : '<>' }}</span>
                                     </button>
                                 </th>
                                 <th>
                                     <button type="button" class="sortable-header-btn" data-sort-key="slug">
                                         Slug
-                                        <span class="sort-indicator">{{ $sortBy === 'slug' ? ($sortOrder === 'asc' ? '^' : 'v') : '<>' }}</span>
                                     </button>
                                 </th>
                                 <th>
                                     <button type="button" class="sortable-header-btn" data-sort-key="posts_count">
                                         Posts Count
-                                        <span class="sort-indicator">{{ $sortBy === 'posts_count' ? ($sortOrder === 'asc' ? '^' : 'v') : '<>' }}</span>
                                     </button>
                                 </th>
                                 <th>
                                     <button type="button" class="sortable-header-btn" data-sort-key="created">
                                         Created
-                                        <span class="sort-indicator">{{ $sortBy === 'created' ? ($sortOrder === 'asc' ? '^' : 'v') : '<>' }}</span>
                                     </button>
                                 </th>
                                 <th class="action-col">Actions</th>
@@ -353,32 +332,11 @@
     @method('DELETE')
 </form>
 
-<div class="modal fade import-modal" id="importCategoriesModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form method="POST" action="{{ route('admin.categories.import') }}" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title">Import Categories (CSV)</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <label class="form-label">CSV File</label>
-                    <input type="file" name="import_file" class="form-control" accept=".csv,.txt" required>
-                    <small class="text-muted d-block mt-2">Expected columns: name, description</small>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Import</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    const categorySelectionStorageKey = 'admin.categories.selectedIds';
+
     const filtersForm = document.getElementById('categoryFiltersForm');
     const searchInput = filtersForm?.querySelector('input[name="search"]');
     const autoSubmitFilters = document.querySelectorAll('.auto-submit-filter');
@@ -394,6 +352,52 @@ document.addEventListener('DOMContentLoaded', function () {
     const bulkDeleteForm = document.getElementById('bulkDeleteCategoriesForm');
     const singleDeleteForm = document.getElementById('singleCategoryDeleteForm');
     const deleteSingleButtons = document.querySelectorAll('.delete-single-category');
+
+    function readStoredSelection() {
+        try {
+            const raw = localStorage.getItem(categorySelectionStorageKey);
+            if (!raw) {
+                return [];
+            }
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed.map(String) : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function writeStoredSelection(selectedIds) {
+        try {
+            localStorage.setItem(categorySelectionStorageKey, JSON.stringify(selectedIds));
+        } catch (error) {
+            // Ignore storage errors and continue with in-memory selection state.
+        }
+    }
+
+    function clearStoredSelection() {
+        try {
+            localStorage.removeItem(categorySelectionStorageKey);
+        } catch (error) {
+            // Ignore storage errors.
+        }
+    }
+
+    function collectSelectedIds() {
+        return rowCheckboxes
+            .filter(function (item) { return item.checked; })
+            .map(function (item) { return String(item.value); });
+    }
+
+    function restoreSelectionFromStorage() {
+        const storedIds = new Set(readStoredSelection());
+        if (storedIds.size === 0) {
+            return;
+        }
+
+        rowCheckboxes.forEach(function (checkbox) {
+            checkbox.checked = storedIds.has(String(checkbox.value));
+        });
+    }
 
     let searchDebounce = null;
     if (searchInput && filtersForm) {
@@ -446,6 +450,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (selectAll) {
             selectAll.checked = rowCheckboxes.length > 0 && rowCheckboxes.every(function (item) { return item.checked; });
         }
+
+        writeStoredSelection(collectSelectedIds());
     }
 
     if (selectAll) {
@@ -475,6 +481,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    restoreSelectionFromStorage();
     syncSelectionUI();
 
     if (bulkDeleteForm) {
@@ -501,6 +508,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 : { isConfirmed: confirm('Delete selected categories?') };
 
             if (result.isConfirmed) {
+                clearStoredSelection();
                 bulkDeleteForm.submit();
             }
         });
@@ -526,6 +534,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 : { isConfirmed: confirm('Delete this category?') };
 
             if (result.isConfirmed) {
+                clearStoredSelection();
                 singleDeleteForm.setAttribute('action', action);
                 singleDeleteForm.submit();
             }

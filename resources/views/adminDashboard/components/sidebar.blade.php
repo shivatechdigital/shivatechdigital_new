@@ -58,14 +58,14 @@
         </li>
         
         <!-- Categories Management -->
-        <li class="dropdown">
-          <a href="javascript:void(0)">
+        <li class="dropdown {{ request()->routeIs('admin.categories.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.categories.*') ? 'active-page' : '' }}">
             <iconify-icon icon="solar:folder-outline" class="menu-icon"></iconify-icon>
             <span>Categories</span>
           </a>
           <ul class="sidebar-submenu">
             <li>
-              <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.index') ? 'active-submenu' : '' }}">
+              <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.index') || request()->routeIs('admin.categories.edit') ? 'active-submenu' : '' }}">
                 <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> All Categories
               </a>
             </li>
