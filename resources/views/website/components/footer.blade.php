@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy;{{$settings->footer_text ?? ''}} | <a href="{{ route('privacy-policy') }}">Privacy Policy</a> | <a href="{{ route('terms-of-service') }}">Terms of
+                <p>&copy;{{$settings->footer_text ?? ''}} | <a href="{{ \Illuminate\Support\Facades\Route::has('privacy-policy') ? route('privacy-policy') : url('/privacy-policy') }}">Privacy Policy</a> | <a href="{{ \Illuminate\Support\Facades\Route::has('terms-of-service') ? route('terms-of-service') : url('/terms-of-service') }}">Terms of
                     Service</a></p>
             </div>
         </div>

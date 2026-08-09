@@ -62,7 +62,7 @@
 .mega-item:hover { background: #f8fafc; }
 .mega-item-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; }
 .icon-web { background: #eff6ff; color: #2563eb; } .icon-app { background: #ecfdf5; color: #059669; } .icon-ui { background: #fdf4ff; color: #a21caf; } .icon-shop { background: #fff7ed; color: #ea580c; } .icon-bull { background: #fffbeb; color: #d97706; } .icon-seo { background: #ecfdf5; color: #065f46; } .icon-sm { background: #fdf2f8; color: #db2777; } .icon-cont { background: #f0f9ff; color: #0369a1; } .icon-cloud { background: #f0fdf4; color: #15803d; } .icon-maint { background: #fefce8; color: #854d0e; } .icon-brand { background: #fff1f2; color: #be123c; }
-.mega-item-text strong { display: block; font-size: 0.83rem; font-weight: 700; color: #0f172a; margin-bottom: 1px; }
+.mega-item-text strong { display: block; font-size: 0.83rem; font-weight: 700; color: white; margin-bottom: 1px; }
 .mega-item-text span { font-size: 0.72rem; color: #94a3b8; }
 .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .location-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 8px; background: #ffffff; }

@@ -10,6 +10,40 @@
     <link rel="stylesheet" href="{{ asset('web_assets/css/services.css') }}">
 @endpush
 
+@push('additional-meta')
+    @php
+        $serviceNameForSchema = trim($__env->yieldContent('breadcrumb-title', $__env->yieldContent('service-name', 'Our Services')));
+        $servicesHubUrl = \Illuminate\Support\Facades\Route::has('services.index') ? route('services.index') : url('/services');
+        $currentServiceUrl = url()->current();
+
+        $serviceBreadcrumbSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Home',
+                    'item' => route('home'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => 'Services',
+                    'item' => $servicesHubUrl,
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => $serviceNameForSchema,
+                    'item' => $currentServiceUrl,
+                ],
+            ],
+        ];
+    @endphp
+    <script type="application/ld+json">{!! json_encode($serviceBreadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+@endpush
+
 @section('website.content')
 
 <style>
