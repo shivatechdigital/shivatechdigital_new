@@ -564,47 +564,85 @@
 
 <!-- Add Team Member Modal -->
 <div class="modal fade" id="addTeamModal" tabindex="-1">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
-      <form action="{{ route('about.team.store') }}" method="POST" enctype="multipart/form-data">
+      <form id="addTeamForm" action="{{ route('about.team.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="modal-header">
-          <h5 class="modal-title">Add Team Member</h5>
+        <div class="modal-header edit-team-modal-header">
+          <h5 class="modal-title mb-0 d-flex align-items-center gap-2">
+            <iconify-icon icon="solar:user-plus-bold-duotone" class="text-xl"></iconify-icon>
+            Add Team Member
+          </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Name <span class="text-danger">*</span></label>
-            <input type="text" name="name" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role <span class="text-danger">*</span></label>
-            <input type="text" name="role" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Image</label>
-            <input type="file" name="image" class="form-control" accept="image/*">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">LinkedIn URL</label>
-            <input type="url" name="linkedin_url" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Twitter URL</label>
-            <input type="url" name="twitter_url" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Order <span class="text-danger">*</span></label>
-            <input type="number" name="order" class="form-control" value="0" required>
+          <div class="row g-3">
+            <div class="col-md-7">
+              <div class="mb-3">
+                <label class="form-label">Name <span class="text-danger">*</span></label>
+                <input type="text" name="name" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Role <span class="text-danger">*</span></label>
+                <input type="text" name="role" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" placeholder="email@example.com">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">LinkedIn URL</label>
+                <input type="url" name="linkedin_url" class="form-control" placeholder="https://linkedin.com/in/username">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Twitter URL</label>
+                <input type="url" name="twitter_url" class="form-control" placeholder="https://twitter.com/username">
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <div class="edit-team-preview-card">
+                <div id="add_team_current_image" class="mb-3">
+                  <label class="form-label">Current Image</label>
+                  <p class="text-muted mb-0">No image selected yet</p>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Choose Image</label>
+                  <input type="file" name="image" id="add_team_image" class="form-control" accept="image/*" onchange="previewImage(event, 'add_team_preview', 'add_team_remove_selected')">
+                  <div id="add_team_preview" class="mt-2" style="display: none;">
+                    <label class="form-label text-sm">New Image Preview:</label>
+                    <div>
+                      <img src="" alt="Preview" style="max-width: 150px; max-height: 150px;" class="rounded">
+                    </div>
+                    <button type="button" id="add_team_remove_selected" class="btn btn-sm btn-outline-danger mt-2" onclick="clearSelectedImage('add_team_image', 'add_team_preview', 'add_team_remove_selected')" style="display: none;">
+                      Remove selected image
+                    </button>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Display Order <span class="text-danger">*</span></label>
+                  <input type="number" name="order" class="form-control" value="0" min="0" required>
+                  <small class="text-muted">Lower numbers appear first</small>
+                </div>
+
+                <div class="form-check form-switch mb-0">
+                  <input class="form-check-input" type="checkbox" name="is_active" id="add_team_active" value="1" checked>
+                  <label class="form-check-label" for="add_team_active">
+                    Active Status
+                    <small class="d-block text-muted">Toggle to show/hide this member on the website</small>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Add Member</button>
+          <button type="button" class="btn btn-secondary-600" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-600">
+            <iconify-icon icon="solar:add-circle-bold" class="icon"></iconify-icon>
+            Add Member
+          </button>
         </div>
       </form>
     </div>
@@ -618,6 +656,7 @@
       <form id="editTeamForm" method="POST" enctype="multipart/form-data">
           @csrf
           @method('PUT')
+          <input type="hidden" name="remove_image" id="edit_team_remove_image" value="0">
           <div class="modal-header edit-team-modal-header">
             <h5 class="modal-title mb-0 d-flex align-items-center gap-2">
               <iconify-icon icon="solar:user-rounded-bold-duotone" class="text-xl"></iconify-icon>
@@ -661,6 +700,9 @@
                       <div>
                         <img src="" alt="Preview" style="max-width: 150px; max-height: 150px;" class="rounded">
                       </div>
+                      <button type="button" id="edit_team_remove_selected" class="btn btn-sm btn-outline-danger mt-2" onclick="clearSelectedImage('edit_team_image', 'edit_team_preview', 'edit_team_remove_selected')" style="display: none;">
+                        Remove selected image
+                      </button>
                     </div>
                   </div>
 
@@ -936,20 +978,23 @@
     padding: 12px;
   }
 
-  #editTeamModal .modal-content {
+  #editTeamModal .modal-content,
+  #addTeamModal .modal-content {
     background: #ffffff;
     color: #0f172a;
     border: 1px solid #dbe5f2;
     box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
   }
 
-  #editTeamModal .modal-body {
+  #editTeamModal .modal-body,
+  #addTeamModal .modal-body {
     max-height: 64vh;
     overflow-y: auto;
     padding-bottom: 18px;
   }
 
-  #editTeamModal .modal-footer {
+  #editTeamModal .modal-footer,
+  #addTeamModal .modal-footer {
     position: sticky;
     bottom: 0;
     z-index: 3;
@@ -959,73 +1004,106 @@
   }
 
   #editTeamModal .form-label,
-  #editTeamModal .form-check-label {
+  #addTeamModal .form-label,
+  #editTeamModal .form-check-label,
+  #addTeamModal .form-check-label {
     color: #0f172a !important;
     font-weight: 600;
   }
 
   #editTeamModal .form-check-label small,
+  #addTeamModal .form-check-label small,
   #editTeamModal .text-muted,
-  #editTeamModal small.text-muted {
+  #addTeamModal .text-muted,
+  #editTeamModal small.text-muted,
+  #addTeamModal small.text-muted {
     color: #64748b !important;
   }
 
   #editTeamModal .form-control,
-  #editTeamModal .form-select {
+  #addTeamModal .form-control,
+  #editTeamModal .form-select,
+  #addTeamModal .form-select {
     background: #ffffff;
     color: #0f172a;
     border-color: #cbd5e1;
   }
 
-  #editTeamModal .form-control::placeholder {
+  #editTeamModal .form-control::placeholder,
+  #addTeamModal .form-control::placeholder {
     color: #94a3b8;
   }
 
-  html[data-theme=dark] #editTeamModal .modal-content {
+  html[data-theme=dark] #editTeamModal .modal-content,
+  html[data-theme=dark] #addTeamModal .modal-content {
     background: #111827;
     color: #e2e8f0;
     border-color: #334155;
     box-shadow: 0 24px 60px rgba(2, 6, 23, 0.55);
   }
 
-  html[data-theme=dark] #editTeamModal .modal-footer {
+  html[data-theme=dark] #editTeamModal .modal-footer,
+  html[data-theme=dark] #addTeamModal .modal-footer {
     background: #111827;
     border-top-color: #334155;
   }
 
   html[data-theme=dark] #editTeamModal .form-label,
-  html[data-theme=dark] #editTeamModal .form-check-label {
+  html[data-theme=dark] #addTeamModal .form-label,
+  html[data-theme=dark] #editTeamModal .form-check-label,
+  html[data-theme=dark] #addTeamModal .form-check-label {
     color: #e2e8f0 !important;
   }
 
   html[data-theme=dark] #editTeamModal .form-check-label small,
+  html[data-theme=dark] #addTeamModal .form-check-label small,
   html[data-theme=dark] #editTeamModal .text-muted,
-  html[data-theme=dark] #editTeamModal small.text-muted {
+  html[data-theme=dark] #addTeamModal .text-muted,
+  html[data-theme=dark] #editTeamModal small.text-muted,
+  html[data-theme=dark] #addTeamModal small.text-muted {
     color: #94a3b8 !important;
   }
 
   html[data-theme=dark] #editTeamModal .form-control,
-  html[data-theme=dark] #editTeamModal .form-select {
+  html[data-theme=dark] #addTeamModal .form-control,
+  html[data-theme=dark] #editTeamModal .form-select,
+  html[data-theme=dark] #addTeamModal .form-select {
     background: #1f2937;
     color: #f1f5f9;
     border-color: #475569;
   }
 
-  html[data-theme=dark] #editTeamModal .form-control::placeholder {
+  html[data-theme=dark] #editTeamModal .form-control::placeholder,
+  html[data-theme=dark] #addTeamModal .form-control::placeholder {
     color: #94a3b8;
   }
 
-  #editTeamModal .form-check-input {
+  #editTeamModal .form-check-input,
+  #addTeamModal .form-check-input {
     background-color: rgba(100, 116, 139, 0.35);
     border-color: #94a3b8;
   }
 
-  #editTeamModal .form-check-input:checked {
+  #editTeamModal .form-check-input:checked,
+  #addTeamModal .form-check-input:checked {
     background-color: #4f46e5;
     border-color: #4f46e5;
   }
 
-  html[data-theme=dark] #editTeamModal .btn-close {
+  #editTeamModal .btn-outline-danger,
+  #addTeamModal .btn-outline-danger {
+    border-color: #ef4444;
+    color: #dc2626;
+  }
+
+  html[data-theme=dark] #editTeamModal .btn-outline-danger,
+  html[data-theme=dark] #addTeamModal .btn-outline-danger {
+    border-color: #f87171;
+    color: #fca5a5;
+  }
+
+  html[data-theme=dark] #editTeamModal .btn-close,
+  html[data-theme=dark] #addTeamModal .btn-close {
     filter: invert(1) brightness(1.5);
   }
 
@@ -1538,16 +1616,98 @@ document.addEventListener('DOMContentLoaded', function () {
 function previewImage(event, previewId) {
   const input = event.target;
   const preview = document.getElementById(previewId);
+  if (!preview) {
+    return;
+  }
   const img = preview.querySelector('img');
+  const removeSelectedBtnId = arguments[2];
+  const removeSelectedBtn = removeSelectedBtnId ? document.getElementById(removeSelectedBtnId) : null;
   
   if (input.files && input.files[0]) {
     const reader = new FileReader();
     reader.onload = function(e) {
       img.src = e.target.result;
       preview.style.display = 'block';
+      if (removeSelectedBtn) {
+        removeSelectedBtn.style.display = 'inline-block';
+      }
+
+      if (input.id === 'edit_team_image') {
+        const removeCurrentInput = document.getElementById('edit_team_remove_image');
+        if (removeCurrentInput) {
+          removeCurrentInput.value = '0';
+        }
+      }
     }
     reader.readAsDataURL(input.files[0]);
+  } else {
+    preview.style.display = 'none';
+    if (removeSelectedBtn) {
+      removeSelectedBtn.style.display = 'none';
+    }
   }
+}
+
+function clearSelectedImage(inputId, previewId, removeBtnId) {
+  const input = document.getElementById(inputId);
+  const preview = document.getElementById(previewId);
+  const removeBtn = document.getElementById(removeBtnId);
+
+  if (input) {
+    input.value = '';
+  }
+  if (preview) {
+    preview.style.display = 'none';
+    const img = preview.querySelector('img');
+    if (img) {
+      img.src = '';
+    }
+  }
+  if (removeBtn) {
+    removeBtn.style.display = 'none';
+  }
+}
+
+function removeCurrentTeamImage() {
+  const removeCurrentInput = document.getElementById('edit_team_remove_image');
+  if (removeCurrentInput) {
+    removeCurrentInput.value = '1';
+  }
+
+  const currentImageBox = document.getElementById('edit_team_current_image');
+  if (currentImageBox) {
+    currentImageBox.innerHTML = `
+      <label class="form-label">Current Image</label>
+      <div class="alert alert-warning py-2 px-3 mb-0">
+        Image will be removed after update.
+        <button type="button" class="btn btn-link p-0 ms-2" onclick="undoRemoveCurrentTeamImage()">Undo</button>
+      </div>
+    `;
+  }
+}
+
+function undoRemoveCurrentTeamImage() {
+  const removeCurrentInput = document.getElementById('edit_team_remove_image');
+  if (removeCurrentInput) {
+    removeCurrentInput.value = '0';
+  }
+}
+
+function resetAddTeamModal() {
+  const form = document.getElementById('addTeamForm');
+  if (form) {
+    form.reset();
+  }
+
+  const currentImageBox = document.getElementById('add_team_current_image');
+  if (currentImageBox) {
+    currentImageBox.innerHTML = `
+      <label class="form-label">Current Image</label>
+      <p class="text-muted mb-0">No image selected yet</p>
+    `;
+  }
+
+  clearSelectedImage('add_team_image', 'add_team_preview', 'add_team_remove_selected');
 }
 
 // Team Member Functions
@@ -1561,6 +1721,8 @@ function editTeamMember(member) {
   document.getElementById('edit_team_email').value = member.email || '';
   document.getElementById('edit_team_order').value = member.order;
   document.getElementById('edit_team_active').checked = member.is_active == 1;
+  document.getElementById('edit_team_remove_image').value = '0';
+  clearSelectedImage('edit_team_image', 'edit_team_preview', 'edit_team_remove_selected');
   
   // Clear previous image preview
   document.getElementById('edit_team_current_image').innerHTML = '';
@@ -1572,12 +1734,22 @@ function editTeamMember(member) {
         <div>
           <img src="/storage/${member.image}" alt="${member.name}" style="max-width: 150px; max-height: 150px;" class="rounded">
         </div>
+        <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="removeCurrentTeamImage()">
+          Remove current image
+        </button>
       </div>
+    `;
+  } else {
+    document.getElementById('edit_team_current_image').innerHTML = `
+      <label class="form-label">Current Image</label>
+      <p class="text-muted mb-0">No image uploaded</p>
     `;
   }
   
   new bootstrap.Modal(document.getElementById('editTeamModal')).show();
 }
+
+document.getElementById('addTeamModal')?.addEventListener('show.bs.modal', resetAddTeamModal);
 
 function deleteTeamMember(id) {
   Swal.fire({

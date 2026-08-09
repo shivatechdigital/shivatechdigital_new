@@ -93,7 +93,10 @@ class AboutPageController extends Controller
             'twitter_url' => 'nullable|url',
             'email' => 'nullable|email',
             'order' => 'required|integer|min:0',
+            'is_active' => 'boolean',
         ]);
+
+        $validated['is_active'] = $request->has('is_active') ? 1 : 0;
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('team', 'public');
@@ -117,13 +120,21 @@ class AboutPageController extends Controller
             'email' => 'nullable|email',
             'order' => 'required|integer|min:0',
             'is_active' => 'boolean',
+            'remove_image' => 'nullable|boolean',
         ]);
         
         $validated['is_active'] = $request->has('is_active') ? 1 : 0;
+        $currentImage = $teamMember->image;
+
+        if ($request->boolean('remove_image') && $currentImage) {
+            Storage::disk('public')->delete($currentImage);
+            $validated['image'] = null;
+            $currentImage = null;
+        }
         
         if ($request->hasFile('image')) {
-            if ($teamMember->image) {
-                Storage::disk('public')->delete($teamMember->image);
+            if ($currentImage) {
+                Storage::disk('public')->delete($currentImage);
             }
             $validated['image'] = $request->file('image')->store('team', 'public');
         }
