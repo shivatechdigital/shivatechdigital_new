@@ -944,8 +944,18 @@
   }
 
   #editTeamModal .modal-body {
-    max-height: 72vh;
+    max-height: 64vh;
     overflow-y: auto;
+    padding-bottom: 18px;
+  }
+
+  #editTeamModal .modal-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    padding: 12px 16px;
   }
 
   #editTeamModal .form-label,
@@ -976,6 +986,11 @@
     color: #e2e8f0;
     border-color: #334155;
     box-shadow: 0 24px 60px rgba(2, 6, 23, 0.55);
+  }
+
+  html[data-theme=dark] #editTeamModal .modal-footer {
+    background: #111827;
+    border-top-color: #334155;
   }
 
   html[data-theme=dark] #editTeamModal .form-label,
