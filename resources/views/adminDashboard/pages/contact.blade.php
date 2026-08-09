@@ -136,7 +136,7 @@
     <div class="col-lg-12">
       <div class="row g-3 mb-16" id="contactsStatsCards">
         <div class="col-xxl-3 col-sm-6">
-          <a href="{{ route('contacts.index', ['status' => 'all']) }}" class="contact-glass-card h-100">
+          <a href="{{ route('contacts.index', ['status' => 'all', 'per_page' => request('per_page', 20)]) }}" class="contact-glass-card h-100">
             <div class="card-body p-20">
               <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
@@ -152,7 +152,7 @@
         </div>
 
         <div class="col-xxl-3 col-sm-6">
-          <a href="{{ route('contacts.index', ['status' => 'new']) }}" class="contact-glass-card h-100">
+          <a href="{{ route('contacts.index', ['status' => 'new', 'per_page' => request('per_page', 20)]) }}" class="contact-glass-card h-100">
             <div class="card-body p-20">
               <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
@@ -169,7 +169,7 @@
         </div>
 
         <div class="col-xxl-3 col-sm-6">
-          <a href="{{ route('contacts.index', ['status' => 'read']) }}" class="contact-glass-card h-100">
+          <a href="{{ route('contacts.index', ['status' => 'read', 'per_page' => request('per_page', 20)]) }}" class="contact-glass-card h-100">
             <div class="card-body p-20">
               <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
@@ -186,7 +186,7 @@
         </div>
 
         <div class="col-xxl-3 col-sm-6">
-          <a href="{{ route('contacts.index', ['status' => 'replied']) }}" class="contact-glass-card h-100">
+          <a href="{{ route('contacts.index', ['status' => 'replied', 'per_page' => request('per_page', 20)]) }}" class="contact-glass-card h-100">
             <div class="card-body p-20">
               <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
@@ -262,7 +262,7 @@
             <div class="row gy-3">
               <div class="col-md-3">
                 <label class="form-label fw-semibold text-primary-light text-sm mb-8">Filter by Status</label>
-                <select name="status" class="form-select form-select-sm" id="statusFilterSelect">
+                <select name="status" class="form-select form-select-sm" id="statusFilterSelect" onchange="this.form.requestSubmit()">
                   <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status</option>
                   <option value="new" {{ request('status') == 'new' ? 'selected' : '' }}>New</option>
                   <option value="read" {{ request('status') == 'read' ? 'selected' : '' }}>Read</option>
@@ -273,16 +273,31 @@
 
               <div class="col-md-3">
                 <label class="form-label fw-semibold text-primary-light text-sm mb-8">Sort By</label>
-                <select name="sort_by" class="form-select form-select-sm" id="sortBySelect">
+                <select name="sort_by" class="form-select form-select-sm" id="sortBySelect" onchange="this.form.requestSubmit()">
                   <option value="created_at" {{ request('sort_by', 'created_at') == 'created_at' ? 'selected' : '' }}>Date</option>
                   <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Name</option>
                   <option value="status" {{ request('sort_by') == 'status' ? 'selected' : '' }}>Status</option>
                 </select>
               </div>
 
-              <input type="hidden" name="sort_order" id="sortOrderInput" value="{{ request('sort_order', 'desc') }}">
+              <div class="col-md-2">
+                <label class="form-label fw-semibold text-primary-light text-sm mb-8">Order</label>
+                <select name="sort_order" class="form-select form-select-sm" id="sortOrderSelect" onchange="this.form.requestSubmit()">
+                  <option value="desc" {{ request('sort_order', 'desc') === 'desc' ? 'selected' : '' }}>Descending</option>
+                  <option value="asc" {{ request('sort_order') === 'asc' ? 'selected' : '' }}>Ascending</option>
+                </select>
+              </div>
 
-              <div class="col-md-4">
+              <div class="col-md-2">
+                <label class="form-label fw-semibold text-primary-light text-sm mb-8">Rows</label>
+                <select name="per_page" class="form-select form-select-sm" id="perPageSelect" onchange="this.form.requestSubmit()">
+                  <option value="20" {{ (int) request('per_page', 20) === 20 ? 'selected' : '' }}>20</option>
+                  <option value="50" {{ (int) request('per_page', 20) === 50 ? 'selected' : '' }}>50</option>
+                  <option value="100" {{ (int) request('per_page', 20) === 100 ? 'selected' : '' }}>100</option>
+                </select>
+              </div>
+
+              <div class="col-md-2">
                 <label class="form-label fw-semibold text-primary-light text-sm mb-8">Search</label>
                 <div class="input-group">
                   <input type="text" name="search" id="contactSearchInput" class="form-control form-control-sm" placeholder="Search by name, email, subject..." value="{{ request('search') }}">
@@ -292,9 +307,9 @@
                 </div>
               </div>
 
-              <div class="col-md-2">
+              <div class="col-md-12">
                 <label class="form-label fw-semibold text-primary-light text-sm mb-8">&nbsp;</label>
-                <a href="{{ route('contacts.index') }}" class="btn btn-sm btn-outline-secondary w-100" style="display:flex; align-items:center; gap:4px;">
+                <a href="{{ route('contacts.index') }}" class="btn btn-sm btn-outline-secondary" style="display:inline-flex; align-items:center; gap:4px;">
                   <iconify-icon icon="solar:refresh-linear" class="icon"></iconify-icon>
                   Reset
                 </a>
@@ -451,6 +466,8 @@
     const searchInput = document.getElementById('contactSearchInput');
     const statusSelect = document.getElementById('statusFilterSelect');
     const sortBySelect = document.getElementById('sortBySelect');
+    const sortOrderSelect = document.getElementById('sortOrderSelect');
+    const perPageSelect = document.getElementById('perPageSelect');
     const statusChipBar = document.getElementById('statusChipBar');
     const selectAllCheckbox = document.getElementById('selectAll');
     const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
@@ -501,7 +518,21 @@
       }
 
       const params = new URLSearchParams(new FormData(filterForm));
-      const url = explicitUrl || (filterForm.action + '?' + params.toString());
+      let url = explicitUrl || (filterForm.action + '?' + params.toString());
+
+      if (explicitUrl) {
+        try {
+          const mergedUrl = new URL(explicitUrl, window.location.origin);
+          params.forEach(function(value, key) {
+            if (key !== 'page') {
+              mergedUrl.searchParams.set(key, value);
+            }
+          });
+          url = mergedUrl.toString();
+        } catch (error) {
+          url = explicitUrl;
+        }
+      }
 
       fetch(url, {
         headers: {
@@ -586,6 +617,14 @@
 
     if (sortBySelect) {
       sortBySelect.addEventListener('change', fetchContacts);
+    }
+
+    if (sortOrderSelect) {
+      sortOrderSelect.addEventListener('change', fetchContacts);
+    }
+
+    if (perPageSelect) {
+      perPageSelect.addEventListener('change', fetchContacts);
     }
 
     if (statusChipBar) {

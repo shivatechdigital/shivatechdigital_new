@@ -44,7 +44,13 @@ class ContactManagementController extends Controller
         }
         $query->orderBy($sortBy, $sortOrder);
 
-        $contacts = $query->paginate(20);
+        $allowedPerPage = [20, 50, 100];
+        $perPage = (int) $request->get('per_page', 20);
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 20;
+        }
+
+        $contacts = $query->paginate($perPage)->appends($request->query());
 
         // Get statistics
         $stats = [
