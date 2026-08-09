@@ -1,27 +1,64 @@
 @extends('adminDashboard.index')
 @section('adminDashboard.content')
 <style>
+  .contact-theme {
+    --contact-hero-bg: linear-gradient(135deg, #1e293b, #334155 45%, #0891b2);
+    --contact-hero-border: rgba(148, 163, 184, 0.22);
+    --contact-card-bg: #ffffff;
+    --contact-card-border: #dbe4f0;
+    --contact-card-text: #0f172a;
+    --contact-card-muted: #475569;
+    --contact-card-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    --contact-table-hover: rgba(59, 130, 246, 0.08);
+  }
+
+  html[data-theme=dark] .contact-theme {
+    --contact-hero-bg: linear-gradient(135deg, rgba(17, 24, 39, 0.92), rgba(30, 41, 59, 0.88), rgba(14, 116, 144, 0.75));
+    --contact-hero-border: rgba(148, 163, 184, 0.22);
+    --contact-card-bg: rgba(255, 255, 255, 0.08);
+    --contact-card-border: rgba(148, 163, 184, 0.26);
+    --contact-card-text: #f8fafc;
+    --contact-card-muted: #cbd5e1;
+    --contact-card-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+    --contact-table-hover: rgba(99, 102, 241, 0.08);
+  }
+
   .contact-glass-hero {
-    background: linear-gradient(135deg, rgba(17, 24, 39, 0.92), rgba(30, 41, 59, 0.88), rgba(14, 116, 144, 0.75));
-    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: var(--contact-hero-bg);
+    border: 1px solid var(--contact-hero-border);
     border-radius: 16px;
     padding: 16px;
     backdrop-filter: blur(10px);
   }
 
   .contact-glass-card {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(148, 163, 184, 0.26);
+    background: var(--contact-card-bg);
+    border: 1px solid var(--contact-card-border);
     border-radius: 14px;
     backdrop-filter: blur(10px);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     text-decoration: none;
     display: block;
+    box-shadow: var(--contact-card-shadow);
   }
 
   .contact-glass-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.16);
+  }
+
+  .contact-stat-title {
+    color: var(--contact-card-muted);
+  }
+
+  .contact-stat-value {
+    color: var(--contact-card-text);
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+
+  .contact-stat-note {
+    color: var(--contact-card-muted);
   }
 
   .contact-main-card {
@@ -31,7 +68,7 @@
   }
 
   .contact-glass-table .table tbody tr:hover {
-    background-color: rgba(99, 102, 241, 0.08);
+    background-color: var(--contact-table-hover);
     transition: background-color 0.2s ease;
   }
 
@@ -80,7 +117,7 @@
   }
 </style>
 
-<div class="dashboard-main-body" id="contactsPageRoot">
+<div class="dashboard-main-body contact-theme" id="contactsPageRoot">
   <div class="contact-glass-hero d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
     <h4 class="fw-semibold mb-0 text-white">Contact Queries Management</h4>
     <ul class="d-flex align-items-center gap-2 mb-0">
@@ -103,8 +140,8 @@
             <div class="card-body p-20">
               <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
-                  <p class="fw-medium text-primary-light mb-1">Total Queries</p>
-                  <h6 class="mb-0 text-white" id="statTotalCount">{{ $stats['total'] }}</h6>
+                  <p class="fw-medium mb-1 contact-stat-title">Total Queries</p>
+                  <h6 class="mb-0 contact-stat-value" id="statTotalCount">{{ $stats['total'] }}</h6>
                 </div>
                 <div class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
                   <iconify-icon icon="fluent:mail-inbox-24-filled" class="text-white text-2xl mb-0"></iconify-icon>
@@ -119,14 +156,14 @@
             <div class="card-body p-20">
               <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
-                  <p class="fw-medium text-primary-light mb-1">New Queries</p>
-                  <h6 class="mb-0 text-white" id="statNewCount">{{ $stats['new'] }}</h6>
+                  <p class="fw-medium mb-1 contact-stat-title">New Queries</p>
+                  <h6 class="mb-0 contact-stat-value" id="statNewCount">{{ $stats['new'] }}</h6>
                 </div>
                 <div class="w-50-px h-50-px bg-warning-main rounded-circle d-flex justify-content-center align-items-center">
                   <iconify-icon icon="solar:star-bold" class="text-white text-2xl mb-0"></iconify-icon>
                 </div>
               </div>
-              <p class="fw-medium text-sm text-primary-light mt-12 mb-0">Requires attention</p>
+              <p class="fw-medium text-sm mt-12 mb-0 contact-stat-note">Requires attention</p>
             </div>
           </a>
         </div>
@@ -136,14 +173,14 @@
             <div class="card-body p-20">
               <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
-                  <p class="fw-medium text-primary-light mb-1">Read Queries</p>
-                  <h6 class="mb-0 text-white" id="statReadCount">{{ $stats['read'] }}</h6>
+                  <p class="fw-medium mb-1 contact-stat-title">Read Queries</p>
+                  <h6 class="mb-0 contact-stat-value" id="statReadCount">{{ $stats['read'] }}</h6>
                 </div>
                 <div class="w-50-px h-50-px bg-info-main rounded-circle d-flex justify-content-center align-items-center">
                   <iconify-icon icon="solar:eye-bold" class="text-white text-2xl mb-0"></iconify-icon>
                 </div>
               </div>
-              <p class="fw-medium text-sm text-primary-light mt-12 mb-0">Viewed messages</p>
+              <p class="fw-medium text-sm mt-12 mb-0 contact-stat-note">Viewed messages</p>
             </div>
           </a>
         </div>
@@ -153,14 +190,14 @@
             <div class="card-body p-20">
               <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
-                  <p class="fw-medium text-primary-light mb-1">Replied Queries</p>
-                  <h6 class="mb-0 text-white" id="statRepliedCount">{{ $stats['replied'] }}</h6>
+                  <p class="fw-medium mb-1 contact-stat-title">Replied Queries</p>
+                  <h6 class="mb-0 contact-stat-value" id="statRepliedCount">{{ $stats['replied'] }}</h6>
                 </div>
                 <div class="w-50-px h-50-px bg-success-main rounded-circle d-flex justify-content-center align-items-center">
                   <iconify-icon icon="solar:check-circle-bold" class="text-white text-2xl mb-0"></iconify-icon>
                 </div>
               </div>
-              <p class="fw-medium text-sm text-primary-light mt-12 mb-0">Successfully handled</p>
+              <p class="fw-medium text-sm mt-12 mb-0 contact-stat-note">Successfully handled</p>
             </div>
           </a>
         </div>
