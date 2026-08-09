@@ -33,6 +33,10 @@
         box-shadow: var(--shadow-soft);
     }
 
+    .posts-glass-card .card-body {
+        background: transparent;
+    }
+
     .posts-glass-page h1,
     .posts-glass-page h2,
     .posts-glass-page h5,
@@ -103,6 +107,7 @@
         border-bottom: 1px solid var(--border-soft);
         font-size: 13px;
         color: var(--text-muted);
+        background: transparent;
     }
 
     .sortable-header-btn {
@@ -125,6 +130,29 @@
     .posts-table tbody td {
         border-color: rgba(148, 163, 184, 0.18);
         vertical-align: middle;
+    }
+
+    .posts-table {
+        --bs-table-bg: transparent;
+        --bs-table-color: var(--text-main);
+        --bs-table-border-color: rgba(148, 163, 184, 0.18);
+        margin-bottom: 0;
+    }
+
+    .posts-table thead,
+    .posts-table tbody,
+    .posts-table tr,
+    .posts-table td,
+    .posts-table th {
+        color: var(--text-main) !important;
+    }
+
+    .posts-table tbody tr {
+        background: rgba(255, 255, 255, 0.72);
+    }
+
+    .posts-table tbody tr:hover {
+        background: rgba(241, 245, 249, 0.92);
     }
 
     .select-col { width: 44px; text-align: center; }
@@ -171,6 +199,43 @@
     .action-icon-btn.delete-btn {
         color: #dc2626;
         border-color: rgba(220, 38, 38, 0.38);
+    }
+
+    html[data-theme=dark] .posts-glass-card {
+        background: rgba(15, 23, 42, 0.86);
+    }
+
+    html[data-theme=dark] .posts-table {
+        --bs-table-bg: transparent;
+        --bs-table-color: #e2e8f0;
+        --bs-table-border-color: rgba(148, 163, 184, 0.26);
+    }
+
+    html[data-theme=dark] .posts-table thead th,
+    html[data-theme=dark] .posts-table tbody td {
+        color: #e2e8f0 !important;
+    }
+
+    html[data-theme=dark] .posts-table tbody tr {
+        background: rgba(30, 41, 59, 0.78);
+    }
+
+    html[data-theme=dark] .posts-table tbody tr:hover {
+        background: rgba(51, 65, 85, 0.88);
+    }
+
+    html[data-theme=dark] .sortable-header-btn,
+    html[data-theme=dark] .sortable-header-btn .sort-indicator {
+        color: #cbd5e1;
+    }
+
+    html[data-theme=dark] .badge.bg-info {
+        color: #f8fafc !important;
+    }
+
+    html[data-theme=dark] .form-control::placeholder {
+        color: #94a3b8;
+        opacity: 1;
     }
 
     @media (max-width: 1200px) {
