@@ -3,38 +3,60 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
+use App\Models\BlogPost as Post;
 use App\Models\Category;
-use App\Models\Tag;
 use App\Models\Comment;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim((string) $request->input('search', ''));
+        $status = (string) $request->input('status', 'all');
+        $allowedPerPage = [10, 20, 50];
+        $perPage = (int) $request->input('per_page', 10);
+        if (!in_array($perPage, $allowedPerPage, true)) {
+            $perPage = 10;
+        }
+
         // Statistics
         $totalPosts = Post::count();
         $publishedPosts = Post::where('is_published', true)->count();
-        $draftPosts = Post::where('is_published', false)->count();
-        $totalCategories = Category::count();
-        $totalTags = Tag::count();
         $totalComments = Comment::count();
         $totalViews = Post::sum('views');
-        $totalUsers = User::count();
 
-        // Recent Posts
-        $recentPosts = Post::with(['category', 'user'])
-            ->latest()
-            ->limit(5)
-            ->get();
+        // Recent Posts with filters and pagination
+        $recentPostsQuery = Post::with(['category', 'user'])->latest();
 
-        // Popular Posts
-        $popularPosts = Post::orderBy('views', 'desc')
-            ->limit(5)
-            ->get();
+        if ($search !== '') {
+            $recentPostsQuery->where(function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('excerpt', 'like', '%' . $search . '%')
+                    ->orWhere('content', 'like', '%' . $search . '%')
+                    ->orWhere('author_name', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($status === 'published') {
+            $recentPostsQuery->where(function ($query) {
+                $query->where('is_published', true)
+                    ->orWhere('status', 'published');
+            });
+        } elseif ($status === 'draft') {
+            $recentPostsQuery->where(function ($query) {
+                $query->where('is_published', false)
+                    ->orWhere('status', 'draft')
+                    ->orWhereNull('status');
+            });
+        } elseif ($status === 'scheduled') {
+            $recentPostsQuery->where('status', 'scheduled');
+        }
+
+        $recentPosts = $recentPostsQuery
+            ->paginate($perPage)
+            ->appends($request->query());
 
         // Recent Comments
         $recentComments = Comment::with(['post', 'user'])
@@ -63,23 +85,20 @@ class DashboardController extends Controller
         // Category wise posts
         $categoryPosts = Category::withCount('posts')
             ->orderBy('posts_count', 'desc')
-            ->limit(5)
             ->get();
 
         return view('adminDashboard.pages.posts.dashboard', compact(
             'totalPosts',
             'publishedPosts',
-            'draftPosts',
-            'totalCategories',
-            'totalTags',
             'totalComments',
             'totalViews',
-            'totalUsers',
             'recentPosts',
-            'popularPosts',
             'recentComments',
             'chartData',
-            'categoryPosts'
+            'categoryPosts',
+            'search',
+            'status',
+            'perPage'
         ));
     }
 }
