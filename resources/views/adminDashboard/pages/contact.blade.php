@@ -1,112 +1,199 @@
 @extends('adminDashboard.index')
 @section('adminDashboard.content')
-<div class="dashboard-main-body">
-  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-    <h6 class="fw-semibold mb-0">Contact Queries Management</h6>
-    <ul class="d-flex align-items-center gap-2">
+<style>
+  .contact-glass-hero {
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.92), rgba(30, 41, 59, 0.88), rgba(14, 116, 144, 0.75));
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+  }
+
+  .contact-glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(148, 163, 184, 0.26);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    display: block;
+  }
+
+  .contact-glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+  }
+
+  .contact-main-card {
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    overflow: hidden;
+  }
+
+  .contact-glass-table .table tbody tr:hover {
+    background-color: rgba(99, 102, 241, 0.08);
+    transition: background-color 0.2s ease;
+  }
+
+  .status-chip {
+    border-radius: 999px;
+  }
+
+  .rotate-animation {
+    animation: rotate 0.5s linear;
+  }
+
+  .bulk-controls {
+    min-width: 180px;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .form-check-input {
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .form-check-input:checked {
+    background-color: #6366f1;
+    border-color: #6366f1;
+  }
+
+  .w-32-px {
+    transition: all 0.2s ease;
+  }
+
+  .w-32-px:hover {
+    transform: scale(1.1);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .bg-danger-focus {
+    animation: pulse 2s infinite;
+  }
+</style>
+
+<div class="dashboard-main-body" id="contactsPageRoot">
+  <div class="contact-glass-hero d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+    <h4 class="fw-semibold mb-0 text-white">Contact Queries Management</h4>
+    <ul class="d-flex align-items-center gap-2 mb-0">
       <li class="fw-medium">
-        <a href="{{ route('index') }}" class="d-flex align-items-center gap-1 hover-text-primary">
+        <a href="{{ route('index') }}" class="d-flex align-items-center gap-1 text-white">
           <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
           Dashboard
         </a>
       </li>
       <li>-</li>
-      <li class="fw-medium">Contact Queries</li>
+      <li class="fw-medium text-white">Contact Queries</li>
     </ul>
   </div>
 
   <div class="row gy-4">
     <div class="col-lg-12">
-      <!-- Statistics Cards -->
-      <div class="row g-3 mb-24">
-        <!-- Total Queries -->
-        <div class="col-xxl-3 col-sm-3">
-          <div class="card shadow-none border bg-gradient-start-1 h-100">
+      <div class="row g-3 mb-16" id="contactsStatsCards">
+        <div class="col-xxl-3 col-sm-6">
+          <a href="{{ route('contacts.index', ['status' => 'all']) }}" class="contact-glass-card h-100">
             <div class="card-body p-20">
-              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+              <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
                   <p class="fw-medium text-primary-light mb-1">Total Queries</p>
-                  <h6 class="mb-0">{{ $stats['total'] }}</h6>
+                  <h6 class="mb-0 text-white" id="statTotalCount">{{ $stats['total'] }}</h6>
                 </div>
                 <div class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
                   <iconify-icon icon="fluent:mail-inbox-24-filled" class="text-white text-2xl mb-0"></iconify-icon>
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
 
-        <!-- New Query -->
-        <div class="col-xxl-3 col-sm-3">
-          <div class="card shadow-none border bg-gradient-start-2 h-100">
+        <div class="col-xxl-3 col-sm-6">
+          <a href="{{ route('contacts.index', ['status' => 'new']) }}" class="contact-glass-card h-100">
             <div class="card-body p-20">
-              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+              <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
                   <p class="fw-medium text-primary-light mb-1">New Queries</p>
-                  <h6 class="mb-0">{{ $stats['new'] }}</h6>
+                  <h6 class="mb-0 text-white" id="statNewCount">{{ $stats['new'] }}</h6>
                 </div>
                 <div class="w-50-px h-50-px bg-warning-main rounded-circle d-flex justify-content-center align-items-center">
                   <iconify-icon icon="solar:star-bold" class="text-white text-2xl mb-0"></iconify-icon>
                 </div>
               </div>
-              <p class="fw-medium text-sm text-primary-light mt-12 mb-0">
-                Requires attention
-              </p>
+              <p class="fw-medium text-sm text-primary-light mt-12 mb-0">Requires attention</p>
             </div>
-          </div>
+          </a>
         </div>
 
-        <!-- Read Enquiry -->
-        <div class="col-xxl-3 col-sm-3">
-          <div class="card shadow-none border bg-gradient-start-3 h-100">
+        <div class="col-xxl-3 col-sm-6">
+          <a href="{{ route('contacts.index', ['status' => 'read']) }}" class="contact-glass-card h-100">
             <div class="card-body p-20">
-              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+              <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
                   <p class="fw-medium text-primary-light mb-1">Read Queries</p>
-                  <h6 class="mb-0">{{ $stats['read'] }}</h6>
+                  <h6 class="mb-0 text-white" id="statReadCount">{{ $stats['read'] }}</h6>
                 </div>
                 <div class="w-50-px h-50-px bg-info-main rounded-circle d-flex justify-content-center align-items-center">
                   <iconify-icon icon="solar:eye-bold" class="text-white text-2xl mb-0"></iconify-icon>
                 </div>
               </div>
-              <p class="fw-medium text-sm text-primary-light mt-12 mb-0">
-                Viewed messages
-              </p>
+              <p class="fw-medium text-sm text-primary-light mt-12 mb-0">Viewed messages</p>
             </div>
-          </div>
+          </a>
         </div>
 
-        <!-- Replied Enquiries -->
-        <div class="col-xxl-3 col-sm-3">
-          <div class="card shadow-none border bg-gradient-start-4 h-100">
+        <div class="col-xxl-3 col-sm-6">
+          <a href="{{ route('contacts.index', ['status' => 'replied']) }}" class="contact-glass-card h-100">
             <div class="card-body p-20">
-              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+              <div class="d-flex align-items-center justify-content-between gap-3">
                 <div>
                   <p class="fw-medium text-primary-light mb-1">Replied Queries</p>
-                  <h6 class="mb-0">{{ $stats['replied'] }}</h6>
+                  <h6 class="mb-0 text-white" id="statRepliedCount">{{ $stats['replied'] }}</h6>
                 </div>
                 <div class="w-50-px h-50-px bg-success-main rounded-circle d-flex justify-content-center align-items-center">
                   <iconify-icon icon="solar:check-circle-bold" class="text-white text-2xl mb-0"></iconify-icon>
                 </div>
               </div>
-              <p class="fw-medium text-sm text-primary-light mt-12 mb-0">
-                Successfully handled
-              </p>
+              <p class="fw-medium text-sm text-primary-light mt-12 mb-0">Successfully handled</p>
             </div>
-          </div>
+          </a>
         </div>
       </div>
 
-      <!-- Main Card -->
-      <div class="card">
+      <div class="d-flex flex-wrap gap-2 mb-24" id="statusChipBar">
+        <button type="button" class="btn btn-sm status-chip {{ request('status', 'all') === 'all' ? 'btn-primary-600' : 'btn-outline-primary' }}" data-status="all">All ({{ $stats['total'] }})</button>
+        <button type="button" class="btn btn-sm status-chip {{ request('status') === 'new' ? 'btn-primary-600' : 'btn-outline-primary' }}" data-status="new">New ({{ $stats['new'] }})</button>
+        <button type="button" class="btn btn-sm status-chip {{ request('status') === 'read' ? 'btn-primary-600' : 'btn-outline-primary' }}" data-status="read">Read ({{ $stats['read'] }})</button>
+        <button type="button" class="btn btn-sm status-chip {{ request('status') === 'replied' ? 'btn-primary-600' : 'btn-outline-primary' }}" data-status="replied">Replied ({{ $stats['replied'] }})</button>
+        <button type="button" class="btn btn-sm status-chip {{ request('status') === 'archived' ? 'btn-primary-600' : 'btn-outline-primary' }}" data-status="archived">Archived ({{ $stats['archived'] }})</button>
+      </div>
+
+      <div class="card contact-main-card contact-glass-table">
         <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
           <h6 class="fw-semibold mb-0">All Contact Queries</h6>
           <div class="d-flex flex-wrap align-items-center gap-2">
+            <select class="form-select form-select-sm bulk-controls" id="bulkStatusSelect">
+              <option value="">Set status...</option>
+              <option value="new">Mark as New</option>
+              <option value="read">Mark as Read</option>
+              <option value="replied">Mark as Replied</option>
+              <option value="archived">Archive</option>
+            </select>
+            <button type="button" class="btn btn-sm btn-warning" onclick="bulkAction('status')" id="bulkStatusBtn" style="display: none;">
+              <iconify-icon icon="solar:checklist-minimalistic-bold" class="icon"></iconify-icon>
+              Update Status
+            </button>
             <button type="button" class="btn btn-sm btn-danger-600" onclick="bulkAction('delete')" id="bulkDeleteBtn" style="display: none;">
               <iconify-icon icon="solar:trash-bin-minimalistic-bold" class="icon"></iconify-icon>
               Delete Selected
             </button>
-            <button type="button" class="btn btn-sm btn-primary-600" id="refreshBtn" onclick="location.reload()" style="display:flex; align-items:center; gap:4px;">
+            <button type="button" class="btn btn-sm btn-primary-600" id="refreshBtn" style="display:flex; align-items:center; gap:4px;">
               <iconify-icon icon="solar:refresh-bold" class="icon"></iconify-icon>
               Refresh
             </button>
@@ -134,12 +221,11 @@
           </div>
           @endif
 
-          <!-- Filters -->
-          <form method="GET" action="{{ route('contacts.index') }}" class="mb-24">
+          <form method="GET" action="{{ route('contacts.index') }}" class="mb-24" id="contactFilterForm">
             <div class="row gy-3">
               <div class="col-md-3">
                 <label class="form-label fw-semibold text-primary-light text-sm mb-8">Filter by Status</label>
-                <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                <select name="status" class="form-select form-select-sm" id="statusFilterSelect">
                   <option value="all" {{ request('status', 'all') == 'all' ? 'selected' : '' }}>All Status</option>
                   <option value="new" {{ request('status') == 'new' ? 'selected' : '' }}>New</option>
                   <option value="read" {{ request('status') == 'read' ? 'selected' : '' }}>Read</option>
@@ -150,19 +236,19 @@
 
               <div class="col-md-3">
                 <label class="form-label fw-semibold text-primary-light text-sm mb-8">Sort By</label>
-                <select name="sort_by" class="form-select form-select-sm" onchange="this.form.submit()">
+                <select name="sort_by" class="form-select form-select-sm" id="sortBySelect">
                   <option value="created_at" {{ request('sort_by', 'created_at') == 'created_at' ? 'selected' : '' }}>Date</option>
                   <option value="name" {{ request('sort_by') == 'name' ? 'selected' : '' }}>Name</option>
                   <option value="status" {{ request('sort_by') == 'status' ? 'selected' : '' }}>Status</option>
                 </select>
               </div>
 
+              <input type="hidden" name="sort_order" id="sortOrderInput" value="{{ request('sort_order', 'desc') }}">
+
               <div class="col-md-4">
                 <label class="form-label fw-semibold text-primary-light text-sm mb-8">Search</label>
                 <div class="input-group">
-                  <input type="text" name="search" class="form-control form-control-sm" 
-                         placeholder="Search by name, email, subject..." 
-                         value="{{ request('search') }}">
+                  <input type="text" name="search" id="contactSearchInput" class="form-control form-control-sm" placeholder="Search by name, email, subject..." value="{{ request('search') }}">
                   <button class="btn btn-sm btn-primary-600" type="submit">
                     <iconify-icon icon="solar:magnifer-linear" class="icon"></iconify-icon>
                   </button>
@@ -179,17 +265,17 @@
             </div>
           </form>
 
-          <!-- Table -->
           <form id="bulkActionForm" method="POST">
             @csrf
+            <input type="hidden" name="status" id="bulkStatusInput" value="">
             <div class="table-responsive">
-              <table class="table bordered-table mb-0" id="dataTable" data-page-length="10">
+              <table class="table bordered-table mb-0" id="contactsTable" data-datatable="false">
                 <thead>
                   <tr>
                     <th scope="col" style="width: 80px;">
                       <div class="form-check style-check d-flex align-items-center">
                         <input class="form-check-input" type="checkbox" id="selectAll">
-                        <label class="form-check-label">S.L</label>
+                        <label class="form-check-label" for="selectAll">S.L</label>
                       </div>
                     </th>
                     <th scope="col">Name</th>
@@ -202,13 +288,12 @@
                     <th scope="col" style="width: 120px;">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="contactsTableBody">
                   @forelse($contacts as $contact)
                   <tr class="{{ $contact->status == 'new' ? 'bg-warning-focus' : '' }}">
                     <td>
                       <div class="form-check style-check d-flex align-items-center">
-                        <input class="form-check-input contact-checkbox" type="checkbox" 
-                               name="contact_ids[]" value="{{ $contact->id }}">
+                        <input class="form-check-input contact-checkbox" type="checkbox" name="contact_ids[]" value="{{ $contact->id }}">
                         <label class="form-check-label">{{ $loop->iteration + ($contacts->currentPage() - 1) * $contacts->perPage() }}</label>
                       </div>
                     </td>
@@ -218,21 +303,14 @@
                         <div class="flex-grow-1">
                           <h6 class="text-md mb-0 fw-semibold">{{ $contact->name }}</h6>
                           @if($contact->status == 'new')
-                          <span class="bg-danger-focus text-danger-600 border border-danger-main px-8 py-4 radius-4 fw-medium text-sm mt-1 d-inline-block">
-                            NEW
-                          </span>
+                          <span class="bg-danger-focus text-danger-600 border border-danger-main px-8 py-4 radius-4 fw-medium text-sm mt-1 d-inline-block">NEW</span>
                           @endif
                         </div>
                       </div>
                     </td>
 
-                    <td>
-                      <span class="text-secondary-light">{{ $contact->email }}</span>
-                    </td>
-
-                    <td>
-                      <span class="text-secondary-light">{{ $contact->phone ?? 'N/A' }}</span>
-                    </td>
+                    <td><span class="text-secondary-light">{{ $contact->email }}</span></td>
+                    <td><span class="text-secondary-light">{{ $contact->phone ?? 'N/A' }}</span></td>
 
                     <td>
                       @php
@@ -246,15 +324,11 @@
                       ];
                       $colorClass = $serviceColors[$contact->service] ?? 'bg-neutral-focus text-neutral-600';
                       @endphp
-                      <span class="{{ $colorClass }} px-12 py-6 radius-4 fw-medium text-sm">
-                        {{ $contact->service_name }}
-                      </span>
+                      <span class="{{ $colorClass }} px-12 py-6 radius-4 fw-medium text-sm">{{ $contact->service_name }}</span>
                     </td>
 
                     <td>
-                      <span class="text-secondary-light" data-bs-toggle="tooltip" title="{{ $contact->subject }}">
-                        {{ Str::limit($contact->subject, 30) }}
-                      </span>
+                      <span class="text-secondary-light" data-bs-toggle="tooltip" title="{{ $contact->subject }}">{{ Str::limit($contact->subject, 30) }}</span>
                     </td>
 
                     <td>
@@ -281,19 +355,14 @@
 
                     <td class="text-center">
                       <div class="d-flex align-items-center gap-2 justify-content-center">
-                        <a href="{{ route('contacts.show', $contact) }}"
-                           class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center"
-                           data-bs-toggle="tooltip" data-bs-placement="top" title="View Details">
+                        <a href="{{ route('contacts.show', $contact) }}" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="top" title="View Details">
                           <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
                         </a>
 
                         <form action="{{ route('contacts.destroy', $contact) }}" method="POST" class="d-inline">
                           @csrf
                           @method('DELETE')
-                          <button type="submit"
-                                  class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
-                                  onclick="return confirm('Are you sure you want to delete this contact? This action cannot be undone.')"
-                                  data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                          <button type="submit" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center border-0" onclick="return confirm('Are you sure you want to delete this contact? This action cannot be undone.')" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                             <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
                           </button>
                         </form>
@@ -316,17 +385,20 @@
             </div>
           </form>
 
-          <!-- Pagination -->
-          @if($contacts->hasPages())
-          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mt-24">
-            <p class="text-sm text-secondary-light mb-0">
-              Showing {{ $contacts->firstItem() }} to {{ $contacts->lastItem() }} of {{ $contacts->total() }} entries
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mt-24" id="contactsPaginationWrap">
+            <p class="text-sm text-secondary-light mb-0" id="contactsSummaryLine">
+              @if($contacts->count() > 0)
+                Showing {{ $contacts->firstItem() }} to {{ $contacts->lastItem() }} of {{ $contacts->total() }} entries
+              @else
+                Showing 0 entries
+              @endif
             </p>
-            <div>
-              {{ $contacts->links('pagination::bootstrap-5') }}
+            <div id="contactsPaginationLinks">
+              @if($contacts->hasPages())
+                {{ $contacts->links('pagination::bootstrap-5') }}
+              @endif
             </div>
           </div>
-          @endif
         </div>
       </div>
     </div>
@@ -334,85 +406,232 @@
 </div>
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    
-    // Initialize tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-
-    // Select all checkboxes functionality
+    const filterForm = document.getElementById('contactFilterForm');
+    const searchInput = document.getElementById('contactSearchInput');
+    const statusSelect = document.getElementById('statusFilterSelect');
+    const sortBySelect = document.getElementById('sortBySelect');
+    const statusChipBar = document.getElementById('statusChipBar');
     const selectAllCheckbox = document.getElementById('selectAll');
-    const contactCheckboxes = document.querySelectorAll('.contact-checkbox');
     const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+    const bulkStatusBtn = document.getElementById('bulkStatusBtn');
+    const bulkStatusSelect = document.getElementById('bulkStatusSelect');
+
+    let searchDebounceTimer = null;
+
+    function initTooltips() {
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    }
+
+    function getContactCheckboxes() {
+      return Array.from(document.querySelectorAll('.contact-checkbox'));
+    }
+
+    function setStatusChipActive(status) {
+      document.querySelectorAll('.status-chip').forEach(function(chip) {
+        const isActive = chip.getAttribute('data-status') === status;
+        chip.classList.toggle('btn-primary-600', isActive);
+        chip.classList.toggle('btn-outline-primary', !isActive);
+      });
+    }
+
+    function toggleBulkActions() {
+      const checkedCount = document.querySelectorAll('.contact-checkbox:checked').length;
+
+      if (bulkDeleteBtn) {
+        if (checkedCount > 0) {
+          bulkDeleteBtn.style.display = 'inline-flex';
+          bulkDeleteBtn.innerHTML = '<iconify-icon icon="solar:trash-bin-minimalistic-bold" class="icon"></iconify-icon>Delete Selected (' + checkedCount + ')';
+        } else {
+          bulkDeleteBtn.style.display = 'none';
+        }
+      }
+
+      if (bulkStatusBtn) {
+        bulkStatusBtn.style.display = checkedCount > 0 ? 'inline-flex' : 'none';
+      }
+    }
+
+    function fetchContacts(explicitUrl) {
+      if (!filterForm) {
+        return;
+      }
+
+      const params = new URLSearchParams(new FormData(filterForm));
+      const url = explicitUrl || (filterForm.action + '?' + params.toString());
+
+      fetch(url, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error('Unable to load contacts');
+        }
+        return response.text();
+      })
+      .then(function(html) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        const newStats = doc.getElementById('contactsStatsCards');
+        const curStats = document.getElementById('contactsStatsCards');
+        if (newStats && curStats) {
+          curStats.innerHTML = newStats.innerHTML;
+        }
+
+        const newChips = doc.getElementById('statusChipBar');
+        const curChips = document.getElementById('statusChipBar');
+        if (newChips && curChips) {
+          curChips.innerHTML = newChips.innerHTML;
+        }
+
+        const newTableBody = doc.getElementById('contactsTableBody');
+        const currentTableBody = document.getElementById('contactsTableBody');
+        if (newTableBody && currentTableBody) {
+          currentTableBody.innerHTML = newTableBody.innerHTML;
+        }
+
+        const newPaginationWrap = doc.getElementById('contactsPaginationWrap');
+        const currentPaginationWrap = document.getElementById('contactsPaginationWrap');
+        if (newPaginationWrap && currentPaginationWrap) {
+          currentPaginationWrap.innerHTML = newPaginationWrap.innerHTML;
+        }
+
+        if (selectAllCheckbox) {
+          selectAllCheckbox.checked = false;
+          selectAllCheckbox.indeterminate = false;
+        }
+
+        const selectedStatus = statusSelect ? statusSelect.value : 'all';
+        setStatusChipActive(selectedStatus || 'all');
+
+        toggleBulkActions();
+        initTooltips();
+
+        window.history.replaceState({}, '', url);
+      })
+      .catch(function() {
+        location.href = url;
+      });
+    }
+
+    initTooltips();
+    toggleBulkActions();
+
+    if (filterForm) {
+      filterForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetchContacts();
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(fetchContacts, 350);
+      });
+    }
+
+    if (statusSelect) {
+      statusSelect.addEventListener('change', function() {
+        setStatusChipActive(statusSelect.value || 'all');
+        fetchContacts();
+      });
+    }
+
+    if (sortBySelect) {
+      sortBySelect.addEventListener('change', fetchContacts);
+    }
+
+    if (statusChipBar) {
+      statusChipBar.addEventListener('click', function(event) {
+        const chip = event.target.closest('.status-chip');
+        if (!chip) {
+          return;
+        }
+
+        const status = chip.getAttribute('data-status') || 'all';
+        if (statusSelect) {
+          statusSelect.value = status;
+        }
+
+        setStatusChipActive(status);
+        fetchContacts();
+      });
+    }
+
+    document.addEventListener('click', function(event) {
+      const paginationLink = event.target.closest('#contactsPaginationLinks a');
+      if (!paginationLink) {
+        return;
+      }
+
+      event.preventDefault();
+      fetchContacts(paginationLink.getAttribute('href'));
+    });
 
     if (selectAllCheckbox) {
       selectAllCheckbox.addEventListener('change', function() {
-        contactCheckboxes.forEach(checkbox => {
-          checkbox.checked = this.checked;
+        getContactCheckboxes().forEach(function(checkbox) {
+          checkbox.checked = selectAllCheckbox.checked;
         });
         toggleBulkActions();
       });
     }
 
-    // Individual checkbox change
-    contactCheckboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', function() {
-        // Update select all checkbox state
-        const allChecked = Array.from(contactCheckboxes).every(cb => cb.checked);
-        const someChecked = Array.from(contactCheckboxes).some(cb => cb.checked);
-        
-        if (selectAllCheckbox) {
-          selectAllCheckbox.checked = allChecked;
-          selectAllCheckbox.indeterminate = someChecked && !allChecked;
-        }
-        
-        toggleBulkActions();
-      });
+    document.addEventListener('change', function(event) {
+      if (!event.target.classList.contains('contact-checkbox')) {
+        return;
+      }
+
+      const contactCheckboxes = getContactCheckboxes();
+      const allChecked = contactCheckboxes.length > 0 && contactCheckboxes.every(function(cb) { return cb.checked; });
+      const someChecked = contactCheckboxes.some(function(cb) { return cb.checked; });
+
+      if (selectAllCheckbox) {
+        selectAllCheckbox.checked = allChecked;
+        selectAllCheckbox.indeterminate = someChecked && !allChecked;
+      }
+
+      toggleBulkActions();
     });
 
-    // Show/hide bulk action buttons
-    function toggleBulkActions() {
-      const checkedCount = document.querySelectorAll('.contact-checkbox:checked').length;
-      
-      if (bulkDeleteBtn) {
-        if (checkedCount > 0) {
-          bulkDeleteBtn.style.display = 'inline-flex';
-          bulkDeleteBtn.innerHTML = `
-            <iconify-icon icon="solar:trash-bin-minimalistic-bold" class="icon"></iconify-icon>
-            Delete Selected (${checkedCount})
-          `;
-        } else {
-          bulkDeleteBtn.style.display = 'none';
-        }
-      }
-    }
+    document.getElementById('refreshBtn')?.addEventListener('click', function(event) {
+      event.preventDefault();
+      const icon = this.querySelector('iconify-icon');
+      icon?.classList.add('rotate-animation');
+      setTimeout(function() {
+        location.reload();
+      }, 300);
+    });
 
-    // Initialize on page load
-    toggleBulkActions();
-
-    // Auto-dismiss alerts after 5 seconds
     const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
-      setTimeout(() => {
+    alerts.forEach(function(alert) {
+      setTimeout(function() {
         const bsAlert = new bootstrap.Alert(alert);
         bsAlert.close();
       }, 5000);
     });
   });
 
-  // Bulk delete action
   function bulkAction(action) {
     const form = document.getElementById('bulkActionForm');
     const checkedBoxes = document.querySelectorAll('.contact-checkbox:checked');
+    const bulkStatusSelect = document.getElementById('bulkStatusSelect');
+    const bulkStatusInput = document.getElementById('bulkStatusInput');
 
     if (checkedBoxes.length === 0) {
       Swal.fire({
         icon: 'warning',
         title: 'No Selection',
-        text: 'Please select at least one contact to delete',
+        text: 'Please select at least one contact first.',
         confirmButtonColor: '#3085d6',
       });
       return;
@@ -421,87 +640,54 @@
     if (action === 'delete') {
       Swal.fire({
         title: 'Are you sure?',
-        text: `You are about to delete ${checkedBoxes.length} contact(s). This action cannot be undone!`,
+        text: 'You are about to delete ' + checkedBoxes.length + ' contact(s). This action cannot be undone!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Yes, delete them!',
         cancelButtonText: 'Cancel'
-      }).then((result) => {
+      }).then(function(result) {
         if (result.isConfirmed) {
           form.action = '{{ route("contacts.bulk-delete") }}';
           form.submit();
         }
       });
+      return;
+    }
+
+    if (action === 'status') {
+      const status = bulkStatusSelect ? bulkStatusSelect.value : '';
+      if (!status) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Select Status',
+          text: 'Please choose a status before updating.',
+          confirmButtonColor: '#3085d6',
+        });
+        return;
+      }
+
+      Swal.fire({
+        title: 'Update status?',
+        text: 'You are about to update ' + checkedBoxes.length + ' contact(s) to "' + status + '".',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, update',
+        cancelButtonText: 'Cancel'
+      }).then(function(result) {
+        if (result.isConfirmed) {
+          if (bulkStatusInput) {
+            bulkStatusInput.value = status;
+          }
+          form.action = '{{ route("contacts.bulk-status") }}';
+          form.submit();
+        }
+      });
     }
   }
-
-  // Refresh button animation
-  document.getElementById('refreshBtn')?.addEventListener('click', function() {
-    const icon = this.querySelector('iconify-icon');
-    icon.classList.add('rotate-animation');
-    
-    setTimeout(() => {
-      location.reload();
-    }, 300);
-  });
 </script>
-
-<style>
-  @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .rotate-animation {
-    animation: rotate 0.5s linear;
-  }
-
-  /* Hover effects for table rows */
-  .table tbody tr:hover {
-    background-color: rgba(99, 102, 241, 0.05);
-    transition: background-color 0.3s ease;
-  }
-
-  /* Smooth checkbox transitions */
-  .form-check-input {
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .form-check-input:checked {
-    background-color: #6366f1;
-    border-color: #6366f1;
-  }
-
-  /* Badge hover effects */
-  .badge, [class*="bg-"][class*="-focus"] {
-    transition: all 0.2s ease;
-  }
-
-  /* Action button hover effects */
-  .w-32-px {
-    transition: all 0.2s ease;
-  }
-
-  .w-32-px:hover {
-    transform: scale(1.1);
-  }
-
-  /* New badge pulse animation */
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.7;
-    }
-  }
-
-  .bg-danger-focus {
-    animation: pulse 2s infinite;
-  }
-</style>
 @endpush
 @endsection

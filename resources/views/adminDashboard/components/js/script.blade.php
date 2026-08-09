@@ -44,6 +44,18 @@
 <!-- Initialize DataTable -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    new DataTable('#dataTable');
+    const explicitTables = document.querySelectorAll('table[data-datatable="true"]');
+
+    if (explicitTables.length > 0) {
+      explicitTables.forEach(function(table) {
+        new DataTable(table);
+      });
+      return;
+    }
+
+    const legacyTable = document.querySelector('#dataTable:not([data-datatable="false"])');
+    if (legacyTable) {
+      new DataTable(legacyTable);
+    }
   });
 </script>

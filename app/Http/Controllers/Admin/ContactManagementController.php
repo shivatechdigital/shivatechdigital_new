@@ -32,8 +32,16 @@ class ContactManagementController extends Controller
         }
 
         // Sort
+        $allowedSortBy = ['created_at', 'name', 'status'];
         $sortBy = $request->get('sort_by', 'created_at');
-        $sortOrder = $request->get('sort_order', 'desc');
+        if (!in_array($sortBy, $allowedSortBy, true)) {
+            $sortBy = 'created_at';
+        }
+
+        $sortOrder = strtolower((string) $request->get('sort_order', 'desc'));
+        if (!in_array($sortOrder, ['asc', 'desc'], true)) {
+            $sortOrder = 'desc';
+        }
         $query->orderBy($sortBy, $sortOrder);
 
         $contacts = $query->paginate(20);
@@ -100,7 +108,7 @@ class ContactManagementController extends Controller
     {
         $contact->delete();
 
-        return redirect()->route('adminDashboard.pages.contact')
+        return redirect()->route('contacts.index')
             ->with('success', 'Contact deleted successfully!');
     }
 
@@ -116,7 +124,7 @@ class ContactManagementController extends Controller
 
         Contact::whereIn('id', $request->contact_ids)->delete();
 
-        return redirect()->route('adminDashboard.pages.contact')
+        return redirect()->route('contacts.index')
             ->with('success', count($request->contact_ids) . ' contacts deleted successfully!');
     }
 
@@ -135,7 +143,7 @@ class ContactManagementController extends Controller
             'status' => $request->status
         ]);
 
-        return redirect()->route('adminDashboard.pages.contact')
+        return redirect()->route('contacts.index')
             ->with('success', count($request->contact_ids) . ' contacts updated successfully!');
     }
 }
