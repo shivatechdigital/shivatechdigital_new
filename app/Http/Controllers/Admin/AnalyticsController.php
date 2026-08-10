@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Log;
 
 class AnalyticsController extends Controller
 {
-    private string $property = 'properties/509783221';
-
-    private string $searchConsoleSite = 'sc-domain:shivatechdigital.com';
-
     private ?string $lastGscError = null;
 
     private function GA()
@@ -46,7 +42,7 @@ class AnalyticsController extends Controller
             'metrics'=>[['name'=>'activeUsers']]
         ]);
 
-        $response = $analytics->properties->runRealtimeReport($this->property, $request);
+        $response = $analytics->properties->runRealtimeReport($this->gaProperty(), $request);
 
         return response()->json([
             'activeUsers' => $response->getRows()[0]->getMetricValues()[0]->getValue() ?? 0
@@ -63,7 +59,7 @@ class AnalyticsController extends Controller
             'metrics'=>[['name'=>'activeUsers']]
         ]);
 
-        $response = $analytics->properties->runReport($this->property,$request);
+        $response = $analytics->properties->runReport($this->gaProperty(),$request);
 
         return response()->json([
             'users_30_days' => $response->getRows()[0]->getMetricValues()[0]->getValue() ?? 0
@@ -241,7 +237,7 @@ class AnalyticsController extends Controller
             'dimensions'=>[['name'=>$dimension]]
         ]);
 
-        $response = $analytics->properties->runReport($this->property,$request);
+        $response = $analytics->properties->runReport($this->gaProperty(),$request);
 
         $data = [];
 
@@ -287,7 +283,7 @@ class AnalyticsController extends Controller
             $client->setAuthConfig($this->googleCredentialsPath());
             $client->addScope('https://www.googleapis.com/auth/webmasters.readonly');
 
-            $siteUrl = urlencode(config('services.search_console.site_url', $this->searchConsoleSite));
+            $siteUrl = urlencode(config('services.search_console.site_url', 'sc-domain:shivatechdigital.com'));
             $httpClient = $client->authorize();
             $response = $httpClient->post(
                 "https://searchconsole.googleapis.com/webmasters/v3/sites/{$siteUrl}/searchAnalytics/query",
@@ -321,6 +317,17 @@ class AnalyticsController extends Controller
         }
 
         return storage_path('app/ga-credentials.json');
+    }
+
+    private function gaProperty(): string
+    {
+        $configuredPropertyId = (string) config('services.ga4.property_id', '509783221');
+
+        if (str_starts_with($configuredPropertyId, 'properties/')) {
+            return $configuredPropertyId;
+        }
+
+        return 'properties/' . $configuredPropertyId;
     }
 
     private function resolveDateRange(Request $request): array

@@ -40,11 +40,15 @@ return [
     ],
 
     'google' => [
-        'credentials_json_path' => env('GOOGLE_CREDENTIALS_JSON_PATH', 'storage/app/ga-credentials.json'),
+        'credentials_json_path' => env('GOOGLE_CREDENTIALS_JSON_PATH', env('GOOGLE_SERVICE_ACCOUNT_PATH', 'storage/app/ga-credentials.json')),
+    ],
+
+    'ga4' => [
+        'property_id' => env('GA4_PROPERTY_ID', '509783221'),
     ],
 
     'search_console' => [
-        'site_url' => env('SEARCH_CONSOLE_SITE_URL', 'sc-domain:shivatechdigital.com'),
+        'site_url' => env('SEARCH_CONSOLE_SITE_URL', env('GSC_PROPERTY', 'sc-domain:shivatechdigital.com')),
     ],
 
 ];
