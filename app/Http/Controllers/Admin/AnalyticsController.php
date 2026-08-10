@@ -394,7 +394,42 @@ class AnalyticsController extends Controller
         return view('adminDashboard.pages.analytics.gsc-inspect', compact('urls'));
     }
 
-    /** Inspect a single URL — called per-URL from the frontend */
+    /** Request indexing for a single URL via Google Indexing API */
+    public function gscRequestIndexing(Request $request)
+    {
+        $url = $request->input('url');
+
+        if (empty($url)) {
+            return response()->json(['error' => 'URL required'], 422);
+        }
+
+        try {
+            $client = new Client();
+            $client->setAuthConfig($this->googleCredentialsPath());
+            $client->addScope('https://www.googleapis.com/auth/indexing');
+            $httpClient = $client->authorize();
+
+            $response = $httpClient->post(
+                'https://indexing.googleapis.com/v3/urlNotifications:publish',
+                ['json' => ['url' => $url, 'type' => 'URL_UPDATED']]
+            );
+
+            $data = json_decode((string) $response->getBody(), true);
+
+            return response()->json([
+                'success'      => true,
+                'url'          => $url,
+                'notifyTime'   => $data['urlNotificationMetadata']['latestUpdate']['notifyTime'] ?? now()->toISOString(),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'url'     => $url,
+                'error'   => $e->getMessage(),
+            ], 200); // 200 so frontend handles it gracefully
+        }
+    }
+
     public function gscInspectSingle(Request $request)
     {
         $url     = $request->input('url');

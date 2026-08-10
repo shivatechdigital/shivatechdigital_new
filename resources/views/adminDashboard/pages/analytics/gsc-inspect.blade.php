@@ -64,6 +64,15 @@
     .gi-stat-box { border: 1px solid var(--gi-border); border-radius: 12px; padding: 14px 18px; text-align: center; }
     .gi-stat-num { font-size: 26px; font-weight: 700; color: var(--gi-text); }
     .gi-stat-lbl { font-size: 12px; color: var(--gi-muted); margin-top: 2px; }
+
+    /* Indexing request button */
+    .gi-idx-btn { font-size: 11px; padding: 3px 10px; border-radius: 6px; white-space: nowrap; cursor: pointer; border: 1px solid #6366f1; color: #6366f1; background: transparent; transition: all .2s; }
+    .gi-idx-btn:hover:not(:disabled) { background: #6366f1; color: #fff; }
+    .gi-idx-btn.sent  { border-color: #22c55e; color: #22c55e; cursor: default; }
+    .gi-idx-btn.error { border-color: #ef4444; color: #ef4444; cursor: default; }
+    .gi-idx-btn:disabled { opacity: .5; cursor: default; }
+    html[data-theme=dark] .gi-idx-btn { border-color: #818cf8; color: #818cf8; }
+    html[data-theme=dark] .gi-idx-btn:hover:not(:disabled) { background: #818cf8; color: #1e1b4b; }
 </style>
 @endpush
 
@@ -89,6 +98,10 @@
             <button id="btn-resume" class="btn btn-warning d-flex align-items-center gap-2" style="display:none!important;">
                 <iconify-icon icon="solar:play-bold"></iconify-icon>
                 Resume
+            </button>
+            <button id="btn-request-all" class="btn btn-outline-primary d-flex align-items-center gap-2" disabled>
+                <iconify-icon icon="solar:refresh-bold"></iconify-icon>
+                Request All Indexing
             </button>
             <button id="btn-export" class="btn btn-outline-success d-flex align-items-center gap-2" disabled>
                 <iconify-icon icon="solar:download-bold"></iconify-icon>
@@ -177,6 +190,7 @@
                     <th>Rich Results</th>
                     <th>Mobile</th>
                     <th>Issues</th>
+                    <th>Request Index</th>
                 </tr>
             </thead>
             <tbody id="gi-tbody"></tbody>
