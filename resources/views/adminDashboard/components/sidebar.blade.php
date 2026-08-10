@@ -24,6 +24,12 @@
           <span>Dashboard</span>
         </a>
       </li>
+      <li class="{{ request()->routeIs('admin.analytics.search-console') ? 'active-page' : '' }}">
+        <a href="{{ route('admin.analytics.search-console') }}" class="{{ request()->routeIs('admin.analytics.search-console') ? 'active-page' : '' }}">
+          <iconify-icon icon="solar:chart-2-outline" class="menu-icon"></iconify-icon>
+          <span>Search Console Details</span>
+        </a>
+      </li>
       @endif
       @if($can('sitedetails.manage'))
       <li class="{{ request()->routeIs('sitedetails') ? 'active-page' : '' }} mb-2">

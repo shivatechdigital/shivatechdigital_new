@@ -154,6 +154,9 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::get('/index', [AnalyticsController::class, 'dashboard'])
         ->middleware('permission:dashboard.view')
         ->name('index');
+    Route::get('/admin/search-console', [AnalyticsController::class, 'searchConsoleDetails'])
+        ->middleware('permission:dashboard.view')
+        ->name('admin.analytics.search-console');
 
 
 /*===========================================
