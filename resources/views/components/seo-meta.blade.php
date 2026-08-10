@@ -65,19 +65,19 @@
 <meta name="format-detection" content="telephone=yes">
 
 {{-- Schema Markup (JSON-LD) --}}
-@if($meta['schema'])
+@if($meta['schema'] && json_decode($meta['schema']))
 <script type="application/ld+json">
 {!! $meta['schema'] !!}
 </script>
 @endif
 
-@if($meta['breadcrumb_schema'])
+@if($meta['breadcrumb_schema'] && json_decode($meta['breadcrumb_schema']))
 <script type="application/ld+json">
 {!! $meta['breadcrumb_schema'] !!}
 </script>
 @endif
 
-@if($meta['faq_schema'])
+@if($meta['faq_schema'] && json_decode($meta['faq_schema']))
 <script type="application/ld+json">
 {!! $meta['faq_schema'] !!}
 </script>
