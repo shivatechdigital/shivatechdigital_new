@@ -39,7 +39,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>SI</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
@@ -49,7 +49,7 @@
                     <tbody>
                         @forelse($users as $user)
                             <tr>
-                                <td>{{ $user->id }}</td>
+                                <td>{{ $users->firstItem() + $loop->index }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td><span class="badge bg-info">{{ $user->role }}</span></td>
