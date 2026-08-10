@@ -13,7 +13,8 @@ class InspectGscUrls extends Command
     protected $signature = 'gsc:inspect
                             {--site=https://shivatechdigital.com/ : The GSC property URL (must match exactly)}
                             {--output=gsc_inspection_results.csv : Output CSV filename in storage/app/}
-                            {--delay=150 : Delay in ms between requests (default 150ms = ~6 req/sec)}';
+                            {--delay=150 : Delay in ms between requests (default 150ms = ~6 req/sec)}
+                            {--debug : Show raw API response for first URL and exit}';
 
     protected $description = 'Inspect all site URLs via Google Search Console URL Inspection API and export results to CSV';
 
@@ -34,6 +35,11 @@ class InspectGscUrls extends Command
         }
 
         $httpClient = $client->authorize();
+
+        // Debug mode: show raw response for first URL and exit
+        if ($this->option('debug')) {
+            return $this->debugSingleUrl($httpClient);
+        }
 
         $urls = $this->collectUrls();
         $this->info('Total URLs to inspect: <comment>' . count($urls) . '</comment>');
@@ -56,6 +62,42 @@ class InspectGscUrls extends Command
         $this->exportCsv($outputFile);
         $this->info("CSV saved: <comment>{$outputFile}</comment>");
         $this->printSummary();
+
+        return self::SUCCESS;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Debug
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private function debugSingleUrl($httpClient): int
+    {
+        $testUrl = rtrim($this->siteUrl, '/') . '/';
+        $this->info("Debug: Inspecting <comment>{$testUrl}</comment>");
+        $this->info("Using siteUrl: <comment>{$this->siteUrl}</comment>");
+        $this->newLine();
+
+        try {
+            $response = $httpClient->post(
+                'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
+                [
+                    'json' => [
+                        'inspectionUrl' => $testUrl,
+                        'siteUrl'       => $this->siteUrl,
+                    ],
+                ]
+            );
+
+            $body = (string) $response->getBody();
+            $this->line('<info>HTTP Status:</info> ' . $response->getStatusCode());
+            $this->line('<info>Raw Response:</info>');
+            $this->line(json_encode(json_decode($body), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $this->error('HTTP Error: ' . $e->getResponse()->getStatusCode());
+            $this->line($e->getResponse()->getBody());
+        } catch (\Exception $e) {
+            $this->error('Error: ' . $e->getMessage());
+        }
 
         return self::SUCCESS;
     }
