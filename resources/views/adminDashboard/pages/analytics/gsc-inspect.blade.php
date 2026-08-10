@@ -86,6 +86,10 @@
                 <iconify-icon icon="solar:play-bold"></iconify-icon>
                 Start Inspection
             </button>
+            <button id="btn-resume" class="btn btn-warning d-flex align-items-center gap-2" style="display:none!important;">
+                <iconify-icon icon="solar:play-bold"></iconify-icon>
+                Resume
+            </button>
             <button id="btn-export" class="btn btn-outline-success d-flex align-items-center gap-2" disabled>
                 <iconify-icon icon="solar:download-bold"></iconify-icon>
                 Download CSV
@@ -197,17 +201,283 @@
 @push('scripts')
 <script>
 (function () {
-    const CSRF   = document.querySelector('meta[name="csrf-token"]')?.content;
-    const URLS   = @json($urls);
-    const ENDPOINT = '{{ route("admin.gsc.inspect.single") }}';
+    const CSRF      = document.querySelector('meta[name="csrf-token"]')?.content;
+    const URLS      = @json($urls);
+    const ENDPOINT  = '{{ route("admin.gsc.inspect.single") }}';
+    const STORE_KEY = 'gsc_inspect_progress';
 
-    const runBtn = document.getElementById('btn-run');
-    const expBtn = document.getElementById('btn-export');
+    const runBtn    = document.getElementById('btn-run');
+    const resumeBtn = document.getElementById('btn-resume');
+    const expBtn    = document.getElementById('btn-export');
 
     let allResults   = [];
     let activeFilter = 'all';
     let running      = false;
     let stopFlag     = false;
+
+    // ── Load saved progress from localStorage
+    function loadSaved() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+            if (saved && Array.isArray(saved.results) && saved.results.length > 0 && saved.results.length < URLS.length) {
+                return saved;
+            }
+        } catch {}
+        return null;
+    }
+
+    function saveProgress(results) {
+        try { localStorage.setItem(STORE_KEY, JSON.stringify({ results, savedAt: Date.now() })); } catch {}
+    }
+
+    function clearSaved() {
+        try { localStorage.removeItem(STORE_KEY); } catch {}
+    }
+
+    // ── Check on page load if there's saved progress
+    function checkResumable() {
+        const saved = loadSaved();
+        if (saved) {
+            const done = saved.results.length;
+            const remaining = URLS.length - done;
+            resumeBtn.style.display = '';
+            resumeBtn.innerHTML = `<iconify-icon icon="solar:play-bold"></iconify-icon> Resume (${done}/${URLS.length} done, ${remaining} remaining)`;
+        } else {
+            resumeBtn.style.display = 'none';
+        }
+    }
+
+    // ── Badges
+    function verdictBadge(v) {
+        const map = { PASS:['pass',v], NEUTRAL:['neutral',v], FAIL:['fail','NOT INDEXED'], UNKNOWN:['unknown','UNKNOWN'], ERROR:['error','ERROR'] };
+        const [cls, label] = map[v] ?? ['unknown', v||'—'];
+        return `<span class="gi-badge gi-badge-${cls}">${label}</span>`;
+    }
+    function richBadge(v) {
+        if (!v||v==='N/A') return `<span class="gi-badge gi-badge-na">N/A</span>`;
+        if (v==='PASS')    return `<span class="gi-badge gi-badge-pass">PASS</span>`;
+        if (v==='FAIL')    return `<span class="gi-badge gi-badge-fail">FAIL</span>`;
+        return `<span class="gi-badge gi-badge-neutral">${v}</span>`;
+    }
+    function mobileBadge(v) {
+        if (!v||v==='N/A')       return `<span class="gi-badge gi-badge-na">N/A</span>`;
+        if (v==='MOBILE_USABLE') return `<span class="gi-badge gi-badge-pass">OK</span>`;
+        if (v==='MOBILE_UNUSABLE') return `<span class="gi-badge gi-badge-fail">ISSUES</span>`;
+        return `<span class="gi-badge gi-badge-neutral">${v}</span>`;
+    }
+    function shortUrl(url) { try { return new URL(url).pathname||'/'; } catch { return url; } }
+
+    // ── Render all existing results into table (used on resume)
+    function renderAllRows(results) {
+        const tbody = document.getElementById('gi-tbody');
+        tbody.innerHTML = '';
+        results.forEach((r, i) => appendRow(r, i + 1, false));
+    }
+
+    // ── Append single row
+    function appendRow(r, index, scroll = true) {
+        const tbody = document.getElementById('gi-tbody');
+        const ph = tbody.querySelector('.gi-placeholder');
+        if (ph) ph.remove();
+
+        const row = document.createElement('tr');
+        row.dataset.verdict = r.verdict;
+        row.dataset.rich    = r.rich_verdict;
+        if (!rowMatchesFilter(r)) row.style.display = 'none';
+
+        row.innerHTML = `
+            <td>${index}</td>
+            <td class="url-cell" title="${r.url}">
+                <a href="${r.url}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${shortUrl(r.url)}</a>
+            </td>
+            <td>${verdictBadge(r.verdict)}</td>
+            <td style="font-size:12px;">${r.coverage||'—'}</td>
+            <td style="font-size:12px;">${r.last_crawl ? r.last_crawl.replace('T',' ').substring(0,16) : 'Never'}</td>
+            <td style="font-size:12px;">${r.crawled_as||'—'}</td>
+            <td>${richBadge(r.rich_verdict)}</td>
+            <td>${mobileBadge(r.mobile_verdict)}</td>
+            <td style="font-size:11px;max-width:200px;color:#ef4444;">
+                ${[r.rich_issues,r.mobile_issues].filter(Boolean).join('<br>')||'—'}
+            </td>`;
+        tbody.appendChild(row);
+        if (scroll) row.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    }
+
+    function rowMatchesFilter(r) {
+        if (activeFilter==='all')         return true;
+        if (activeFilter==='rich-issues') return r.rich_verdict==='FAIL'||!!r.rich_issues;
+        return r.verdict===activeFilter;
+    }
+
+    function updateStats() {
+        const c = {PASS:0,NEUTRAL:0,FAIL:0,UNKNOWN:0,ERROR:0};
+        let rf = 0;
+        allResults.forEach(r => { c[r.verdict]=(c[r.verdict]||0)+1; if(r.rich_verdict==='FAIL') rf++; });
+        document.getElementById('stat-total').textContent     = allResults.length;
+        document.getElementById('stat-pass').textContent      = c.PASS;
+        document.getElementById('stat-neutral').textContent   = c.NEUTRAL;
+        document.getElementById('stat-fail').textContent      = c.FAIL;
+        document.getElementById('stat-unknown').textContent   = (c.UNKNOWN||0)+(c.ERROR||0);
+        document.getElementById('stat-rich-fail').textContent = rf;
+    }
+
+    function applyFilter() {
+        const search = document.getElementById('gi-search').value.toLowerCase();
+        document.querySelectorAll('#gi-tbody tr:not(.gi-placeholder)').forEach(row => {
+            const v = row.dataset.verdict, r = row.dataset.rich;
+            const url = row.querySelector('a')?.href?.toLowerCase()||'';
+            let show = activeFilter==='all' ? true
+                : activeFilter==='rich-issues' ? (r==='FAIL'||row.querySelector('td:last-child')?.textContent?.trim()!=='—')
+                : v===activeFilter;
+            if (show && search) show = url.includes(search);
+            row.style.display = show?'':'none';
+        });
+    }
+
+    document.querySelectorAll('.gi-filter').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.gi-filter').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            activeFilter = btn.dataset.filter;
+            applyFilter();
+        });
+    });
+    document.getElementById('gi-search').addEventListener('input', applyFilter);
+
+    async function inspectOne(url) {
+        const resp = await fetch(ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type':'application/json', 'X-CSRF-TOKEN':CSRF, 'Accept':'application/json' },
+            body: JSON.stringify({ url }),
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        return resp.json();
+    }
+
+    // ── Core loop — startFrom lets resume work
+    async function runLoop(startFrom = 0) {
+        running  = true;
+        stopFlag = false;
+
+        runBtn.innerHTML    = '<span class="spinner-border spinner-border-sm"></span> Running... <small>(click to stop)</small>';
+        resumeBtn.style.display = 'none';
+        expBtn.disabled     = true;
+
+        document.getElementById('gi-start-hint').style.display    = 'none';
+        document.getElementById('gi-progress-wrap').style.display  = '';
+        document.getElementById('gi-stats').style.removeProperty('display');
+        document.getElementById('gi-filter-bar').style.removeProperty('display');
+        document.getElementById('gi-table-wrap').style.display     = '';
+
+        for (let i = startFrom; i < URLS.length; i++) {
+            if (stopFlag) {
+                saveProgress(allResults);
+                document.getElementById('gi-progress-msg').textContent =
+                    `⏸ Paused at ${i}/${URLS.length}. Click Resume to continue.`;
+                resumeBtn.style.display = '';
+                resumeBtn.innerHTML = `<iconify-icon icon="solar:play-bold"></iconify-icon> Resume (${i}/${URLS.length} done, ${URLS.length - i} remaining)`;
+                break;
+            }
+
+            const url = URLS[i];
+            const pct = Math.round((i / URLS.length) * 100);
+            document.getElementById('gi-progress-bar').style.width   = pct + '%';
+            document.getElementById('gi-progress-label').textContent = `${i} / ${URLS.length}`;
+            document.getElementById('gi-progress-msg').textContent   =
+                `[${i+1}/${URLS.length}] Checking: ${shortUrl(url)}`;
+
+            try {
+                const result = await inspectOne(url);
+                allResults.push(result);
+                appendRow(result, i + 1);
+                updateStats();
+                document.getElementById('gi-progress-bar').style.width   = Math.round(((i+1)/URLS.length)*100) + '%';
+                document.getElementById('gi-progress-label').textContent = `${i+1} / ${URLS.length}`;
+                document.getElementById('gi-progress-msg').textContent   =
+                    `[${i+1}/${URLS.length}] ${shortUrl(url)} → ${result.verdict}`;
+            } catch(e) {
+                const errRow = { url, verdict:'ERROR', coverage:e.message, indexing:'', last_crawl:'', crawled_as:'', robots:'', canonical:'', rich_verdict:'N/A', rich_issues:'', mobile_verdict:'N/A', mobile_issues:'' };
+                allResults.push(errRow);
+                appendRow(errRow, i + 1);
+                updateStats();
+            }
+        }
+
+        if (!stopFlag) {
+            // Fully complete
+            clearSaved();
+            document.getElementById('gi-progress-bar').style.width   = '100%';
+            document.getElementById('gi-progress-label').textContent = `${URLS.length} / ${URLS.length}`;
+            document.getElementById('gi-progress-msg').textContent   = `✓ Complete! ${allResults.length} URLs inspected.`;
+            resumeBtn.style.display = 'none';
+        }
+
+        running = false;
+        runBtn.innerHTML = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Start Fresh';
+        if (allResults.length) expBtn.disabled = false;
+    }
+
+    // ── Start Fresh button
+    runBtn.addEventListener('click', () => {
+        if (running) { stopFlag = true; return; }
+        clearSaved();
+        allResults   = [];
+        activeFilter = 'all';
+        document.querySelectorAll('.gi-filter').forEach(b=>b.classList.remove('active'));
+        document.querySelector('.gi-filter[data-filter="all"]').classList.add('active');
+        document.getElementById('gi-progress-bar').style.width   = '0%';
+        document.getElementById('gi-progress-label').textContent = `0 / ${URLS.length}`;
+        document.getElementById('gi-progress-msg').textContent   = 'Starting...';
+        document.getElementById('gi-tbody').innerHTML =
+            `<tr class="gi-placeholder"><td colspan="9" class="text-center py-3" style="color:var(--gi-muted);">
+                <span class="spinner-border spinner-border-sm me-2"></span>Waiting for first result...
+            </td></tr>`;
+        updateStats();
+        runLoop(0);
+    });
+
+    // ── Resume button
+    resumeBtn.addEventListener('click', () => {
+        if (running) return;
+        const saved = loadSaved();
+        if (!saved) { checkResumable(); return; }
+
+        allResults   = saved.results;
+        activeFilter = 'all';
+        document.querySelectorAll('.gi-filter').forEach(b=>b.classList.remove('active'));
+        document.querySelector('.gi-filter[data-filter="all"]').classList.add('active');
+
+        document.getElementById('gi-progress-bar').style.width   = Math.round((allResults.length/URLS.length)*100) + '%';
+        document.getElementById('gi-progress-label').textContent = `${allResults.length} / ${URLS.length}`;
+        document.getElementById('gi-progress-msg').textContent   = `Resuming from URL ${allResults.length + 1}...`;
+
+        // Re-render existing results
+        document.getElementById('gi-start-hint').style.display    = 'none';
+        document.getElementById('gi-progress-wrap').style.display  = '';
+        document.getElementById('gi-stats').style.removeProperty('display');
+        document.getElementById('gi-filter-bar').style.removeProperty('display');
+        document.getElementById('gi-table-wrap').style.display     = '';
+        renderAllRows(allResults);
+        updateStats();
+
+        runLoop(allResults.length);
+    });
+
+    // CSV export
+    expBtn.addEventListener('click', () => {
+        if (!allResults.length) return;
+        const headers = ['URL','Verdict','Coverage','Indexing State','Last Crawl','Crawled As','Robots.txt','Canonical','Rich Verdict','Rich Issues','Mobile Verdict','Mobile Issues'];
+        const rows    = allResults.map(r=>[r.url,r.verdict,r.coverage,r.indexing,r.last_crawl,r.crawled_as,r.robots,r.canonical,r.rich_verdict,r.rich_issues,r.mobile_verdict,r.mobile_issues]);
+        const csv     = [headers,...rows].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+        const a       = Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:`gsc-${new Date().toISOString().slice(0,10)}.csv`});
+        a.click();
+    });
+
+    // On load, check if previous session exists
+    checkResumable();
+})();
+</script>
+@endpush
 
     // ── Badges
     function verdictBadge(v) {
