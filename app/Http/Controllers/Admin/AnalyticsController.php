@@ -15,6 +15,8 @@ class AnalyticsController extends Controller
 {
     private ?string $lastGscError = null;
 
+    private ?string $lastGscSiteUsed = null;
+
     private function GA()
     {
         $client = new Client();
@@ -157,6 +159,7 @@ class AnalyticsController extends Controller
             'ok' => $this->lastGscError === null,
             'message' => $this->lastGscError,
             'source' => 'google-search-console',
+            'site_used' => $this->lastGscSiteUsed,
             'range' => [
                 'key' => $rangeKey,
                 'days' => $days,
@@ -278,32 +281,78 @@ class AnalyticsController extends Controller
 
     private function gscQuery(array $payload): array
     {
-        try {
-            $client = new Client();
-            $client->setAuthConfig($this->googleCredentialsPath());
-            $client->addScope('https://www.googleapis.com/auth/webmasters.readonly');
+        $sites = $this->searchConsoleSiteCandidates();
 
-            $siteUrl = urlencode(config('services.search_console.site_url', 'sc-domain:shivatechdigital.com'));
-            $httpClient = $client->authorize();
-            $response = $httpClient->post(
-                "https://searchconsole.googleapis.com/webmasters/v3/sites/{$siteUrl}/searchAnalytics/query",
-                ['json' => $payload]
-            );
+        foreach ($sites as $site) {
+            try {
+                $rows = $this->runGscRequestForSite($payload, $site);
 
-            $json = json_decode((string) $response->getBody(), true);
+                if (!empty($rows)) {
+                    $this->lastGscSiteUsed = $site;
+                    return $rows;
+                }
+            } catch (\Throwable $exception) {
+                if ($this->lastGscError === null) {
+                    $this->lastGscError = $exception->getMessage();
+                }
 
-            return $json['rows'] ?? [];
-        } catch (\Throwable $exception) {
-            if ($this->lastGscError === null) {
-                $this->lastGscError = $exception->getMessage();
+                Log::warning('Search Console API query failed', [
+                    'site' => $site,
+                    'message' => $exception->getMessage(),
+                ]);
             }
-
-            Log::warning('Search Console API query failed', [
-                'message' => $exception->getMessage(),
-            ]);
-
-            return [];
         }
+
+        if ($this->lastGscSiteUsed === null && !empty($sites)) {
+            $this->lastGscSiteUsed = $sites[0];
+        }
+
+        return [];
+    }
+
+    private function runGscRequestForSite(array $payload, string $site): array
+    {
+        $client = new Client();
+        $client->setAuthConfig($this->googleCredentialsPath());
+        $client->addScope('https://www.googleapis.com/auth/webmasters.readonly');
+
+        $siteUrl = urlencode($site);
+        $httpClient = $client->authorize();
+        $response = $httpClient->post(
+            "https://searchconsole.googleapis.com/webmasters/v3/sites/{$siteUrl}/searchAnalytics/query",
+            ['json' => $payload]
+        );
+
+        $json = json_decode((string) $response->getBody(), true);
+
+        return $json['rows'] ?? [];
+    }
+
+    private function searchConsoleSiteCandidates(): array
+    {
+        $configured = trim((string) config('services.search_console.site_url', 'sc-domain:shivatechdigital.com'));
+        $candidates = [];
+
+        if ($configured !== '') {
+            $candidates[] = $configured;
+        }
+
+        $domain = preg_replace('#^sc-domain:#', '', $configured);
+        $domain = preg_replace('#^https?://#', '', (string) $domain);
+        $domain = rtrim((string) $domain, '/');
+
+        if ($domain !== '') {
+            $candidates[] = 'sc-domain:' . $domain;
+            $candidates[] = 'https://' . $domain . '/';
+            $candidates[] = 'http://' . $domain . '/';
+
+            if (!str_starts_with($domain, 'www.')) {
+                $candidates[] = 'https://www.' . $domain . '/';
+                $candidates[] = 'http://www.' . $domain . '/';
+            }
+        }
+
+        return array_values(array_unique(array_filter($candidates)));
     }
 
     private function googleCredentialsPath(): string
