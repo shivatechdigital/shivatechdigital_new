@@ -390,110 +390,77 @@ class AnalyticsController extends Controller
 
     public function gscInspectPage()
     {
-        return view('adminDashboard.pages.analytics.gsc-inspect');
+        $urls = $this->gscInspectUrlList('https://shivatechdigital.com');
+        return view('adminDashboard.pages.analytics.gsc-inspect', compact('urls'));
     }
 
-    public function gscInspectRun(Request $request)
+    /** Inspect a single URL — called per-URL from the frontend */
+    public function gscInspectSingle(Request $request)
     {
-        $siteUrl    = 'sc-domain:shivatechdigital.com';
-        $baseDomain = 'https://shivatechdigital.com';
+        $url     = $request->input('url');
+        $siteUrl = 'sc-domain:shivatechdigital.com';
 
-        $client = new Client();
-        $client->setAuthConfig($this->googleCredentialsPath());
-        $client->addScope('https://www.googleapis.com/auth/webmasters.readonly');
-        $httpClient = $client->authorize();
+        if (empty($url)) {
+            return response()->json(['error' => 'URL required'], 422);
+        }
 
-        $urls = $this->gscInspectUrlList($baseDomain);
-        $total = count($urls);
+        try {
+            $client = new Client();
+            $client->setAuthConfig($this->googleCredentialsPath());
+            $client->addScope('https://www.googleapis.com/auth/webmasters.readonly');
+            $httpClient = $client->authorize();
 
-        return response()->stream(function () use ($httpClient, $urls, $total, $siteUrl) {
-            @set_time_limit(0);
+            $response = $httpClient->post(
+                'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
+                ['json' => ['inspectionUrl' => $url, 'siteUrl' => $siteUrl]]
+            );
 
-            // Send total count first
-            echo "data: " . json_encode(['type' => 'init', 'total' => $total]) . "\n\n";
-            $this->sseFlush();
+            $data   = json_decode((string) $response->getBody(), true);
+            $result = $data['inspectionResult']        ?? [];
+            $index  = $result['indexStatusResult']     ?? [];
+            $rich   = $result['richResultsResult']     ?? [];
+            $mobile = $result['mobileUsabilityResult'] ?? [];
 
-            foreach ($urls as $i => $url) {
-                try {
-                    $response = $httpClient->post(
-                        'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
-                        ['json' => ['inspectionUrl' => $url, 'siteUrl' => $siteUrl]]
-                    );
-
-                    $data   = json_decode((string) $response->getBody(), true);
-                    $result = $data['inspectionResult']       ?? [];
-                    $index  = $result['indexStatusResult']    ?? [];
-                    $rich   = $result['richResultsResult']    ?? [];
-                    $mobile = $result['mobileUsabilityResult'] ?? [];
-
-                    $richIssues = [];
-                    foreach ($rich['detectedItems'] ?? [] as $det) {
-                        foreach ($det['items'] ?? [] as $item) {
-                            foreach ($item['issues'] ?? [] as $issue) {
-                                if (!empty($issue['issueMessage'])) {
-                                    $richIssues[] = $issue['issueMessage'];
-                                }
-                            }
+            $richIssues = [];
+            foreach ($rich['detectedItems'] ?? [] as $det) {
+                foreach ($det['items'] ?? [] as $item) {
+                    foreach ($item['issues'] ?? [] as $issue) {
+                        if (!empty($issue['issueMessage'])) {
+                            $richIssues[] = $issue['issueMessage'];
                         }
                     }
-                    $mobileIssues = array_column($mobile['issues'] ?? [], 'issueType');
-
-                    $row = [
-                        'url'            => $url,
-                        'verdict'        => $index['verdict']        ?? 'UNKNOWN',
-                        'coverage'       => $index['coverageState']  ?? '',
-                        'indexing'       => $index['indexingState']  ?? '',
-                        'last_crawl'     => $index['lastCrawlTime']  ?? '',
-                        'crawled_as'     => $index['crawledAs']      ?? '',
-                        'robots'         => $index['robotsTxtState'] ?? '',
-                        'canonical'      => $index['googleCanonical'] ?? '',
-                        'rich_verdict'   => $rich['verdict']         ?? 'N/A',
-                        'rich_issues'    => implode(' | ', $richIssues),
-                        'mobile_verdict' => $mobile['verdict']       ?? 'N/A',
-                        'mobile_issues'  => implode(' | ', $mobileIssues),
-                    ];
-                } catch (\Exception $e) {
-                    $row = [
-                        'url'            => $url,
-                        'verdict'        => 'ERROR',
-                        'coverage'       => $e->getMessage(),
-                        'indexing'       => '', 'last_crawl'     => '',
-                        'crawled_as'     => '', 'robots'         => '',
-                        'canonical'      => '', 'rich_verdict'   => '',
-                        'rich_issues'    => '', 'mobile_verdict' => '',
-                        'mobile_issues'  => '',
-                    ];
                 }
-
-                echo "data: " . json_encode([
-                    'type'    => 'result',
-                    'index'   => $i + 1,
-                    'total'   => $total,
-                    'result'  => $row,
-                ]) . "\n\n";
-                $this->sseFlush();
-
-                usleep(150000);
             }
+            $mobileIssues = array_column($mobile['issues'] ?? [], 'issueType');
 
-            echo "data: " . json_encode(['type' => 'done']) . "\n\n";
-            $this->sseFlush();
-
-        }, 200, [
-            'Content-Type'      => 'text/event-stream',
-            'Cache-Control'     => 'no-cache, no-store',
-            'X-Accel-Buffering' => 'no',
-            'Connection'        => 'keep-alive',
-        ]);
-    }
-
-    private function sseFlush(): void
-    {
-        if (ob_get_level() > 0) {
-            ob_flush();
+            return response()->json([
+                'url'            => $url,
+                'verdict'        => $index['verdict']         ?? 'UNKNOWN',
+                'coverage'       => $index['coverageState']   ?? '',
+                'indexing'       => $index['indexingState']   ?? '',
+                'last_crawl'     => $index['lastCrawlTime']   ?? '',
+                'crawled_as'     => $index['crawledAs']       ?? '',
+                'robots'         => $index['robotsTxtState']  ?? '',
+                'canonical'      => $index['googleCanonical'] ?? '',
+                'rich_verdict'   => $rich['verdict']          ?? 'N/A',
+                'rich_issues'    => implode(' | ', $richIssues),
+                'mobile_verdict' => $mobile['verdict']        ?? 'N/A',
+                'mobile_issues'  => implode(' | ', $mobileIssues),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'url'            => $url,
+                'verdict'        => 'ERROR',
+                'coverage'       => $e->getMessage(),
+                'indexing'       => '', 'last_crawl'     => '',
+                'crawled_as'     => '', 'robots'         => '',
+                'canonical'      => '', 'rich_verdict'   => 'N/A',
+                'rich_issues'    => '', 'mobile_verdict' => 'N/A',
+                'mobile_issues'  => '',
+            ]);
         }
-        flush();
     }
+
 
     private function gscInspectUrlList(string $base): array
     {
