@@ -499,6 +499,13 @@ class AnalyticsController extends Controller
 
     private function gscInspectUrlList(string $base): array
     {
+        // 1. Try to parse sitemap.xml (covers all pages automatically)
+        $sitemapUrls = $this->extractUrlsFromSitemap($base . '/sitemap.xml');
+        if (count($sitemapUrls) > 0) {
+            return $sitemapUrls;
+        }
+
+        // 2. Fallback: hardcoded static + dynamic DB URLs
         $urls = [
             $base . '/',
             $base . '/about',
@@ -538,14 +545,56 @@ class AnalyticsController extends Controller
 
         \App\Models\BlogPost::where('status', 'published')->pluck('slug')
             ->each(fn ($s) => $urls[] = $base . '/blog/' . $s);
-
         \App\Models\Category::pluck('slug')
             ->each(fn ($s) => $urls[] = $base . '/category/' . $s);
-
         \App\Models\Tag::pluck('slug')
             ->each(fn ($s) => $urls[] = $base . '/tag/' . $s);
 
         return array_unique($urls);
+    }
+
+    /**
+     * Fetch and parse a sitemap XML (handles sitemap index files too).
+     * Returns all <loc> URLs found.
+     */
+    private function extractUrlsFromSitemap(string $sitemapUrl, int $depth = 0): array
+    {
+        if ($depth > 3) return []; // prevent infinite recursion
+
+        try {
+            $context  = stream_context_create(['http' => ['timeout' => 10]]);
+            $xml      = @file_get_contents($sitemapUrl, false, $context);
+            if (! $xml) return [];
+
+            $doc = new \SimpleXMLElement($xml);
+            $doc->registerXPathNamespace('sm', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+
+            $urls = [];
+
+            // Sitemap index — contains <sitemap><loc>...</loc></sitemap>
+            $sitemapLocs = $doc->xpath('//sm:sitemap/sm:loc') ?: $doc->xpath('//sitemap/loc') ?: [];
+            if (count($sitemapLocs) > 0) {
+                foreach ($sitemapLocs as $loc) {
+                    $childUrls = $this->extractUrlsFromSitemap((string) $loc, $depth + 1);
+                    $urls      = array_merge($urls, $childUrls);
+                }
+                return array_unique($urls);
+            }
+
+            // Regular sitemap — contains <url><loc>...</loc></url>
+            $urlLocs = $doc->xpath('//sm:url/sm:loc') ?: $doc->xpath('//url/loc') ?: [];
+            foreach ($urlLocs as $loc) {
+                $url = trim((string) $loc);
+                // Only include URLs from this domain
+                if (str_starts_with($url, 'https://shivatechdigital.com')) {
+                    $urls[] = $url;
+                }
+            }
+
+            return array_unique($urls);
+        } catch (\Throwable) {
+            return [];
+        }
     }
 
     private function googleCredentialsPath(): string
