@@ -394,6 +394,110 @@ class AnalyticsController extends Controller
         return view('adminDashboard.pages.analytics.gsc-inspect', compact('urls'));
     }
 
+    /** Live-test a URL: fetch page HTML and validate JSON-LD structured data */
+    public function gscLiveTest(Request $request)
+    {
+        $url = $request->input('url');
+        if (empty($url)) {
+            return response()->json(['error' => 'URL required'], 422);
+        }
+
+        try {
+            $html = $this->fetchPageHtml($url);
+            if (! $html) {
+                return response()->json(['status' => 'error', 'message' => 'Could not fetch page']);
+            }
+
+            $issues  = [];
+            $schemas = $this->extractJsonLd($html);
+
+            foreach ($schemas as $schema) {
+                $issues = array_merge($issues, $this->validateSchema($schema));
+            }
+
+            // Also check microdata itemReviewed
+            if (preg_match_all('/itemtype=["\']https:\/\/schema\.org\/(\w+)["\']/', $html, $m)) {
+                foreach ($m[1] as $type) {
+                    if ($type === 'Service' && str_contains($html, 'itemprop="itemReviewed"')) {
+                        $issues[] = 'Invalid itemReviewed type: Service (use LocalBusiness)';
+                    }
+                }
+            }
+
+            $issues = array_unique(array_filter($issues));
+
+            return response()->json([
+                'status'        => empty($issues) ? 'pass' : 'fail',
+                'issues'        => array_values($issues),
+                'schemas_found' => count($schemas),
+                'test_url'      => 'https://search.google.com/test/rich-results?url=' . urlencode($url),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    private function fetchPageHtml(string $url): ?string
+    {
+        $ctx = stream_context_create(['http' => [
+            'timeout'          => 15,
+            'user_agent'       => 'Googlebot/2.1 (+http://www.google.com/bot.html)',
+            'follow_location'  => true,
+            'max_redirects'    => 5,
+        ]]);
+        $html = @file_get_contents($url, false, $ctx);
+        return $html ?: null;
+    }
+
+    private function extractJsonLd(string $html): array
+    {
+        $schemas = [];
+        if (preg_match_all('/<script[^>]+type=["\']application\/ld\+json["\'][^>]*>(.*?)<\/script>/si', $html, $m)) {
+            foreach ($m[1] as $json) {
+                $decoded = json_decode(trim($json), true);
+                if ($decoded) {
+                    // Handle @graph
+                    if (isset($decoded['@graph']) && is_array($decoded['@graph'])) {
+                        foreach ($decoded['@graph'] as $item) {
+                            $schemas[] = $item;
+                        }
+                    } else {
+                        $schemas[] = $decoded;
+                    }
+                }
+            }
+        }
+        return $schemas;
+    }
+
+    private function validateSchema(array $schema): array
+    {
+        $issues = [];
+        $type   = $schema['@type'] ?? '';
+
+        // Service + aggregateRating = invalid for rich results
+        if ($type === 'Service' && isset($schema['aggregateRating'])) {
+            $issues[] = '"@type":"Service" with aggregateRating is invalid — use LocalBusiness';
+        }
+
+        // Review with itemReviewed Service type
+        if ($type === 'Review' && isset($schema['itemReviewed']['@type'])) {
+            $invalidReviewTypes = ['Service'];
+            if (in_array($schema['itemReviewed']['@type'], $invalidReviewTypes)) {
+                $issues[] = 'Invalid itemReviewed @type: ' . $schema['itemReviewed']['@type'] . ' — use LocalBusiness';
+            }
+        }
+
+        // Recurse into nested schemas
+        foreach ($schema as $key => $value) {
+            if (is_array($value) && isset($value['@type'])) {
+                $issues = array_merge($issues, $this->validateSchema($value));
+            }
+        }
+
+        return $issues;
+    }
+
     /** Request indexing for a single URL via Google Indexing API */
     public function gscRequestIndexing(Request $request)
     {

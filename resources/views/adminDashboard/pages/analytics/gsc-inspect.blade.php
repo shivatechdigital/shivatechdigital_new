@@ -58,6 +58,14 @@
     .gi-idx-btn:disabled { opacity:.5; cursor:default; }
     html[data-theme=dark] .gi-idx-btn { border-color:#818cf8; color:#818cf8; }
     html[data-theme=dark] .gi-idx-btn:hover:not(:disabled) { background:#818cf8; color:#1e1b4b; }
+
+    .gi-live-btn { font-size:11px; padding:3px 10px; border-radius:6px; white-space:nowrap; cursor:pointer; border:1px solid #0ea5e9; color:#0ea5e9; background:transparent; transition:all .2s; }
+    .gi-live-btn:hover:not(:disabled) { background:#0ea5e9; color:#fff; }
+    .gi-live-btn.pass  { border-color:#22c55e; color:#22c55e; cursor:default; }
+    .gi-live-btn.fail  { border-color:#ef4444; color:#ef4444; cursor:pointer; }
+    .gi-live-btn:disabled { opacity:.5; cursor:default; }
+    html[data-theme=dark] .gi-live-btn { border-color:#38bdf8; color:#38bdf8; }
+    .gi-cell-actions { display:flex; gap:6px; align-items:center; flex-wrap:nowrap; }
 </style>
 @endpush
 
@@ -139,7 +147,7 @@
                 <tr>
                     <th>#</th><th>URL</th><th>Index Verdict</th><th>Coverage State</th>
                     <th>Last Crawled</th><th>Crawled As</th><th>Rich Results</th>
-                    <th>Mobile</th><th>Issues</th><th>Request Index</th>
+                    <th>Mobile</th><th>Issues</th><th>Live Test</th><th>Request Index</th>
                 </tr>
             </thead>
             <tbody id="gi-tbody"></tbody>
@@ -160,9 +168,10 @@
 (function () {
     const CSRF       = document.querySelector('meta[name="csrf-token"]')?.content;
     const URLS       = @json($urls);
-    const INSPECT_EP = '{{ route("admin.gsc.inspect.single") }}';
-    const INDEX_EP   = '{{ route("admin.gsc.inspect.request-indexing") }}';
-    const STORE_KEY  = 'gsc_inspect_progress';
+    const INSPECT_EP  = '{{ route("admin.gsc.inspect.single") }}';
+    const INDEX_EP    = '{{ route("admin.gsc.inspect.request-indexing") }}';
+    const LIVE_EP     = '{{ route("admin.gsc.inspect.live-test") }}';
+    const STORE_KEY   = 'gsc_inspect_progress';
 
     const runBtn    = document.getElementById('btn-run');
     const resumeBtn = document.getElementById('btn-resume');
@@ -251,6 +260,48 @@
         }
     }
 
+    // ── Live test: fetch page + validate JSON-LD, then auto-request if pass
+    async function runLiveTest(url, liveBtn, idxBtn) {
+        liveBtn.disabled = true;
+        liveBtn.textContent = '⏳ Testing...';
+
+        try {
+            const resp = await fetch(LIVE_EP, {
+                method: 'POST',
+                headers: { 'Content-Type':'application/json', 'X-CSRF-TOKEN':CSRF, 'Accept':'application/json' },
+                body: JSON.stringify({ url }),
+            });
+            const data = await resp.json();
+
+            if (data.status === 'pass') {
+                liveBtn.textContent = '✓ Live Pass';
+                liveBtn.classList.add('pass');
+                liveBtn.title = `${data.schemas_found} schema(s) found — no issues`;
+
+                // Auto-request indexing after live test passes
+                if (idxBtn && !idxBtn.classList.contains('sent')) {
+                    await new Promise(r => setTimeout(r, 300));
+                    await requestIndexing(url, idxBtn);
+                }
+            } else if (data.status === 'fail') {
+                liveBtn.textContent = '✗ Issues Found';
+                liveBtn.classList.add('fail');
+                liveBtn.title = data.issues.join('\n');
+                liveBtn.disabled = false;
+                // Open Rich Results Test for manual inspection
+                window.open(data.test_url, '_blank');
+            } else {
+                liveBtn.textContent = '? Error';
+                liveBtn.title = data.message || 'Fetch failed';
+                liveBtn.disabled = false;
+            }
+        } catch(e) {
+            liveBtn.textContent = '? Error';
+            liveBtn.title = e.message;
+            liveBtn.disabled = false;
+        }
+    }
+
     function appendRow(r, idx, scroll = true) {
         const tbody = document.getElementById('gi-tbody');
         const ph = tbody.querySelector('.gi-placeholder');
@@ -262,7 +313,9 @@
         if (!rowMatchesFilter(r)) row.style.display = 'none';
 
         const important = isSeoImportant(r.url);
-        const btnId = 'idx-' + idx;
+        const liveBtnId = 'live-' + idx;
+        const idxBtnId  = 'idx-' + idx;
+
         row.innerHTML = `
             <td>${idx}</td>
             <td class="url-cell" title="${r.url}">
@@ -276,15 +329,30 @@
             <td>${mobileBadge(r.mobile_verdict)}</td>
             <td style="font-size:11px;max-width:200px;color:#ef4444;">${[r.rich_issues,r.mobile_issues].filter(Boolean).join('<br>')||'—'}</td>
             <td>${important
-                ? `<button id="${btnId}" class="gi-idx-btn" data-url="${r.url}">Request</button>`
+                ? `<button id="${liveBtnId}" class="gi-live-btn" data-url="${r.url}" title="Fetch live page and validate structured data">Live Test</button>`
+                : `<span style="font-size:11px;color:var(--gi-muted);">—</span>`}</td>
+            <td>${important
+                ? `<button id="${idxBtnId}" class="gi-idx-btn" data-url="${r.url}" disabled title="Run Live Test first">Request</button>`
                 : `<span style="font-size:11px;color:var(--gi-muted);">—</span>`}</td>`;
 
         tbody.appendChild(row);
         if (scroll) row.scrollIntoView({ behavior:'smooth', block:'nearest' });
 
         if (important) {
-            document.getElementById(btnId)?.addEventListener('click', function() {
-                requestIndexing(this.dataset.url, this);
+            const liveBtn = document.getElementById(liveBtnId);
+            const idxBtn  = document.getElementById(idxBtnId);
+
+            liveBtn?.addEventListener('click', function() {
+                runLiveTest(this.dataset.url, liveBtn, idxBtn);
+            });
+
+            // Allow direct request too (right-click style — shift+click skips live test)
+            idxBtn?.addEventListener('click', function(e) {
+                if (e.shiftKey) {
+                    // Shift+click = force request without live test
+                    idxBtn.disabled = false;
+                    requestIndexing(this.dataset.url, idxBtn);
+                }
             });
         }
     }
@@ -418,7 +486,7 @@
         document.getElementById('gi-progress-label').textContent = `0 / ${URLS.length}`;
         document.getElementById('gi-progress-msg').textContent   = 'Starting...';
         document.getElementById('gi-tbody').innerHTML =
-            `<tr class="gi-placeholder"><td colspan="10" class="text-center py-3" style="color:var(--gi-muted);">
+            `<tr class="gi-placeholder"><td colspan="11" class="text-center py-3" style="color:var(--gi-muted);">
                 <span class="spinner-border spinner-border-sm me-2"></span>Waiting for first result...
             </td></tr>`;
         reqAllBtn.disabled = true;
@@ -444,27 +512,32 @@
     reqAllBtn.addEventListener('click', async () => {
         if (!allResults.length) return;
 
-        const eligible = [...document.querySelectorAll('.gi-idx-btn:not(.sent):not(.error)')].filter(btn => {
+        // Collect eligible rows: SEO-important + not already indexed perfectly
+        const liveButtons = [...document.querySelectorAll('.gi-live-btn:not(.pass):not(:disabled)')].filter(btn => {
             const r = allResults.find(x => x.url === btn.dataset.url);
             if (!r) return false;
-            if (r.verdict === 'PASS' && r.rich_verdict !== 'FAIL') return false;
+            if (r.verdict === 'PASS' && r.rich_verdict !== 'FAIL') return false; // already perfect
             return true;
         });
 
-        if (!eligible.length) {
+        if (!liveButtons.length) {
             reqAllBtn.innerHTML = '✓ All eligible pages already indexed!';
             return;
         }
 
         reqAllBtn.disabled = true;
         let done = 0;
-        for (const btn of eligible) {
-            await requestIndexing(btn.dataset.url, btn);
+
+        for (const liveBtn of liveButtons) {
+            const url    = liveBtn.dataset.url;
+            const idxBtn = document.getElementById('idx-' + liveBtn.id.replace('live-', ''));
+            await runLiveTest(url, liveBtn, idxBtn);
             done++;
-            reqAllBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${done}/${eligible.length} requested...`;
-            await new Promise(r => setTimeout(r, 500));
+            reqAllBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${done}/${liveButtons.length} tested & requested...`;
+            await new Promise(r => setTimeout(r, 800));
         }
-        reqAllBtn.innerHTML = `✓ ${done} URLs requested!`;
+
+        reqAllBtn.innerHTML = `✓ ${done} URLs tested & submitted!`;
     });
 
     expBtn.addEventListener('click', () => {

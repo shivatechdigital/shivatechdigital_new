@@ -164,6 +164,9 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::post('/admin/gsc-inspect/single', [AnalyticsController::class, 'gscInspectSingle'])
         ->middleware('permission:dashboard.view')
         ->name('admin.gsc.inspect.single');
+    Route::post('/admin/gsc-inspect/live-test', [AnalyticsController::class, 'gscLiveTest'])
+        ->middleware('permission:dashboard.view')
+        ->name('admin.gsc.inspect.live-test');
     Route::post('/admin/gsc-inspect/request-indexing', [AnalyticsController::class, 'gscRequestIndexing'])
         ->middleware('permission:dashboard.view')
         ->name('admin.gsc.inspect.request-indexing');
