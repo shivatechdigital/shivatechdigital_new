@@ -92,6 +92,11 @@
                 <iconify-icon icon="solar:play-bold"></iconify-icon>
                 Resume
             </button>
+            <button id="btn-test-issues" class="btn btn-outline-info d-flex align-items-center gap-2" disabled
+                    title="Sirf Rich Result FAIL pages ka live test karo">
+                <iconify-icon icon="solar:bug-bold"></iconify-icon>
+                Test All Issues
+            </button>
             <button id="btn-request-all" class="btn btn-outline-primary d-flex align-items-center gap-2" disabled
                     title="SEO-important pages jo indexed nahi hain unko request karega">
                 <iconify-icon icon="solar:refresh-bold"></iconify-icon>
@@ -173,10 +178,11 @@
     const LIVE_EP     = '{{ route("admin.gsc.inspect.live-test") }}';
     const STORE_KEY   = 'gsc_inspect_progress';
 
-    const runBtn    = document.getElementById('btn-run');
-    const resumeBtn = document.getElementById('btn-resume');
-    const reqAllBtn = document.getElementById('btn-request-all');
-    const expBtn    = document.getElementById('btn-export');
+    const runBtn        = document.getElementById('btn-run');
+    const resumeBtn     = document.getElementById('btn-resume');
+    const testIssuesBtn = document.getElementById('btn-test-issues');
+    const reqAllBtn     = document.getElementById('btn-request-all');
+    const expBtn        = document.getElementById('btn-export');
 
     let allResults   = [];
     let activeFilter = 'all';
@@ -260,8 +266,8 @@
         }
     }
 
-    // ── Live test: fetch page + validate JSON-LD, then auto-request if pass
-    async function runLiveTest(url, liveBtn, idxBtn) {
+    // ── Live test: fetch page + validate JSON-LD (independent of request indexing)
+    async function runLiveTest(url, liveBtn) {
         liveBtn.disabled = true;
         liveBtn.textContent = '⏳ Testing...';
 
@@ -274,21 +280,14 @@
             const data = await resp.json();
 
             if (data.status === 'pass') {
-                liveBtn.textContent = '✓ Live Pass';
+                liveBtn.textContent = '✓ Pass';
                 liveBtn.classList.add('pass');
-                liveBtn.title = `${data.schemas_found} schema(s) found — no issues`;
-
-                // Auto-request indexing after live test passes
-                if (idxBtn && !idxBtn.classList.contains('sent')) {
-                    await new Promise(r => setTimeout(r, 300));
-                    await requestIndexing(url, idxBtn);
-                }
+                liveBtn.title = `${data.schemas_found} schema(s) — no issues detected`;
             } else if (data.status === 'fail') {
-                liveBtn.textContent = '✗ Issues Found';
+                liveBtn.textContent = '✗ Issues';
                 liveBtn.classList.add('fail');
                 liveBtn.title = data.issues.join('\n');
                 liveBtn.disabled = false;
-                // Open Rich Results Test for manual inspection
                 window.open(data.test_url, '_blank');
             } else {
                 liveBtn.textContent = '? Error';
@@ -312,9 +311,10 @@
         row.dataset.rich    = r.rich_verdict;
         if (!rowMatchesFilter(r)) row.style.display = 'none';
 
-        const important = isSeoImportant(r.url);
-        const liveBtnId = 'live-' + idx;
-        const idxBtnId  = 'idx-' + idx;
+        const important  = isSeoImportant(r.url);
+        const hasIssues  = r.rich_verdict === 'FAIL' || !!r.rich_issues;
+        const liveBtnId  = 'live-' + idx;
+        const idxBtnId   = 'idx-'  + idx;
 
         row.innerHTML = `
             <td>${idx}</td>
@@ -328,31 +328,26 @@
             <td>${richBadge(r.rich_verdict)}</td>
             <td>${mobileBadge(r.mobile_verdict)}</td>
             <td style="font-size:11px;max-width:200px;color:#ef4444;">${[r.rich_issues,r.mobile_issues].filter(Boolean).join('<br>')||'—'}</td>
+            <td>${hasIssues
+                ? `<button id="${liveBtnId}" class="gi-live-btn" data-url="${r.url}" title="Live page fetch + JSON-LD validation">Live Test</button>`
+                : `<span style="font-size:11px;color:#22c55e;">✓ Clean</span>`}</td>
             <td>${important
-                ? `<button id="${liveBtnId}" class="gi-live-btn" data-url="${r.url}" title="Fetch live page and validate structured data">Live Test</button>`
-                : `<span style="font-size:11px;color:var(--gi-muted);">—</span>`}</td>
-            <td>${important
-                ? `<button id="${idxBtnId}" class="gi-idx-btn" data-url="${r.url}" disabled title="Run Live Test first">Request</button>`
+                ? `<button id="${idxBtnId}" class="gi-idx-btn" data-url="${r.url}">Request</button>`
                 : `<span style="font-size:11px;color:var(--gi-muted);">—</span>`}</td>`;
 
         tbody.appendChild(row);
         if (scroll) row.scrollIntoView({ behavior:'smooth', block:'nearest' });
 
-        if (important) {
-            const liveBtn = document.getElementById(liveBtnId);
-            const idxBtn  = document.getElementById(idxBtnId);
-
-            liveBtn?.addEventListener('click', function() {
-                runLiveTest(this.dataset.url, liveBtn, idxBtn);
+        // Wire live test button
+        if (hasIssues) {
+            document.getElementById(liveBtnId)?.addEventListener('click', function() {
+                runLiveTest(this.dataset.url, this);
             });
-
-            // Allow direct request too (right-click style — shift+click skips live test)
-            idxBtn?.addEventListener('click', function(e) {
-                if (e.shiftKey) {
-                    // Shift+click = force request without live test
-                    idxBtn.disabled = false;
-                    requestIndexing(this.dataset.url, idxBtn);
-                }
+        }
+        // Wire request index button (always independent)
+        if (important) {
+            document.getElementById(idxBtnId)?.addEventListener('click', function() {
+                requestIndexing(this.dataset.url, this);
             });
         }
     }
@@ -428,6 +423,7 @@
         runBtn.innerHTML        = '<span class="spinner-border spinner-border-sm"></span> Running... <small>(click to stop)</small>';
         resumeBtn.style.display = 'none';
         reqAllBtn.disabled      = true;
+        testIssuesBtn.disabled  = true;
         expBtn.disabled         = true;
         showPanels();
 
@@ -470,9 +466,10 @@
         }
 
         running = false;
-        runBtn.innerHTML   = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Start Fresh';
-        reqAllBtn.disabled = allResults.length === 0;
-        expBtn.disabled    = allResults.length === 0;
+        runBtn.innerHTML      = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Start Fresh';
+        testIssuesBtn.disabled = allResults.length === 0;
+        reqAllBtn.disabled    = allResults.length === 0;
+        expBtn.disabled       = allResults.length === 0;
     }
 
     runBtn.addEventListener('click', () => {
@@ -509,35 +506,31 @@
         runLoop(allResults.length);
     });
 
+    // ── Request All Indexing (SEO-important + not already perfect — no live test required)
     reqAllBtn.addEventListener('click', async () => {
         if (!allResults.length) return;
 
-        // Collect eligible rows: SEO-important + not already indexed perfectly
-        const liveButtons = [...document.querySelectorAll('.gi-live-btn:not(.pass):not(:disabled)')].filter(btn => {
+        const eligible = [...document.querySelectorAll('.gi-idx-btn:not(.sent):not(.error)')].filter(btn => {
             const r = allResults.find(x => x.url === btn.dataset.url);
             if (!r) return false;
-            if (r.verdict === 'PASS' && r.rich_verdict !== 'FAIL') return false; // already perfect
+            if (r.verdict === 'PASS' && r.rich_verdict !== 'FAIL') return false;
             return true;
         });
 
-        if (!liveButtons.length) {
+        if (!eligible.length) {
             reqAllBtn.innerHTML = '✓ All eligible pages already indexed!';
             return;
         }
 
         reqAllBtn.disabled = true;
         let done = 0;
-
-        for (const liveBtn of liveButtons) {
-            const url    = liveBtn.dataset.url;
-            const idxBtn = document.getElementById('idx-' + liveBtn.id.replace('live-', ''));
-            await runLiveTest(url, liveBtn, idxBtn);
+        for (const btn of eligible) {
+            await requestIndexing(btn.dataset.url, btn);
             done++;
-            reqAllBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${done}/${liveButtons.length} tested & requested...`;
-            await new Promise(r => setTimeout(r, 800));
+            reqAllBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${done}/${eligible.length} requested...`;
+            await new Promise(r => setTimeout(r, 500));
         }
-
-        reqAllBtn.innerHTML = `✓ ${done} URLs tested & submitted!`;
+        reqAllBtn.innerHTML = `✓ ${done} URLs requested!`;
     });
 
     expBtn.addEventListener('click', () => {
