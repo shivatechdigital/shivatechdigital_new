@@ -197,18 +197,18 @@
 @push('scripts')
 <script>
 (function () {
-    const CSRF   = document.querySelector('meta[name="csrf-token"]')?.content;
     const runBtn = document.getElementById('btn-run');
     const expBtn = document.getElementById('btn-export');
 
-    let allResults = [];
+    let allResults   = [];
     let activeFilter = 'all';
+    let evtSource    = null;
 
     // ── verdict badge
     function verdictBadge(v) {
         const map = {
-            PASS:    ['pass',    v || 'PASS'],
-            NEUTRAL: ['neutral', v || 'NEUTRAL'],
+            PASS:    ['pass',    v],
+            NEUTRAL: ['neutral', v],
             FAIL:    ['fail',    'NOT INDEXED'],
             UNKNOWN: ['unknown', 'UNKNOWN'],
             ERROR:   ['error',   'ERROR'],
@@ -216,91 +216,95 @@
         const [cls, label] = map[v] ?? ['unknown', v || '—'];
         return `<span class="gi-badge gi-badge-${cls}">${label}</span>`;
     }
-
     function richBadge(v) {
-        if (!v || v === 'N/A') return `<span class="gi-badge gi-badge-na">N/A</span>`;
-        if (v === 'PASS')      return `<span class="gi-badge gi-badge-pass">PASS</span>`;
-        if (v === 'FAIL')      return `<span class="gi-badge gi-badge-fail">FAIL</span>`;
+        if (!v || v === 'N/A')   return `<span class="gi-badge gi-badge-na">N/A</span>`;
+        if (v === 'PASS')        return `<span class="gi-badge gi-badge-pass">PASS</span>`;
+        if (v === 'FAIL')        return `<span class="gi-badge gi-badge-fail">FAIL</span>`;
         return `<span class="gi-badge gi-badge-neutral">${v}</span>`;
     }
-
     function mobileBadge(v) {
-        if (!v || v === 'N/A')    return `<span class="gi-badge gi-badge-na">N/A</span>`;
-        if (v === 'MOBILE_USABLE') return `<span class="gi-badge gi-badge-pass">OK</span>`;
+        if (!v || v === 'N/A')       return `<span class="gi-badge gi-badge-na">N/A</span>`;
+        if (v === 'MOBILE_USABLE')   return `<span class="gi-badge gi-badge-pass">OK</span>`;
         if (v === 'MOBILE_UNUSABLE') return `<span class="gi-badge gi-badge-fail">ISSUES</span>`;
         return `<span class="gi-badge gi-badge-neutral">${v}</span>`;
     }
-
     function shortUrl(url) {
         try { return new URL(url).pathname || '/'; } catch { return url; }
     }
 
-    // ── render table
-    function renderTable(data) {
+    // ── append single row to table
+    function appendRow(r, index) {
         const tbody = document.getElementById('gi-tbody');
-        tbody.innerHTML = '';
 
-        if (!data.length) {
-            tbody.innerHTML = '<tr><td colspan="9" class="text-center py-4" style="color:var(--gi-muted)">No results match filter</td></tr>';
-            return;
+        // Remove "waiting..." placeholder if present
+        const placeholder = tbody.querySelector('.gi-placeholder');
+        if (placeholder) placeholder.remove();
+
+        const row = document.createElement('tr');
+        row.dataset.verdict = r.verdict;
+        row.dataset.rich    = r.rich_verdict;
+
+        // Apply filter visibility
+        if (!rowMatchesFilter(r)) {
+            row.style.display = 'none';
         }
 
-        data.forEach((r, i) => {
-            const row = document.createElement('tr');
-            row.dataset.verdict = r.verdict;
-            row.dataset.rich    = r.rich_verdict;
-            row.innerHTML = `
-                <td>${i + 1}</td>
-                <td class="url-cell" title="${r.url}">
-                    <a href="${r.url}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;"
-                       title="${r.url}">${shortUrl(r.url)}</a>
-                </td>
-                <td>${verdictBadge(r.verdict)}</td>
-                <td style="font-size:12px;">${r.coverage || '—'}</td>
-                <td style="font-size:12px;">${r.last_crawl ? r.last_crawl.replace('T',' ').substring(0,16) : 'Never'}</td>
-                <td style="font-size:12px;">${r.crawled_as || '—'}</td>
-                <td>${richBadge(r.rich_verdict)}</td>
-                <td>${mobileBadge(r.mobile_verdict)}</td>
-                <td style="font-size:11px;max-width:200px;color:#ef4444;">
-                    ${[r.rich_issues, r.mobile_issues].filter(Boolean).join('<br>') || '—'}
-                </td>`;
-            tbody.appendChild(row);
-        });
+        row.innerHTML = `
+            <td>${index}</td>
+            <td class="url-cell" title="${r.url}">
+                <a href="${r.url}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">${shortUrl(r.url)}</a>
+            </td>
+            <td>${verdictBadge(r.verdict)}</td>
+            <td style="font-size:12px;">${r.coverage || '—'}</td>
+            <td style="font-size:12px;">${r.last_crawl ? r.last_crawl.replace('T',' ').substring(0,16) : 'Never'}</td>
+            <td style="font-size:12px;">${r.crawled_as || '—'}</td>
+            <td>${richBadge(r.rich_verdict)}</td>
+            <td>${mobileBadge(r.mobile_verdict)}</td>
+            <td style="font-size:11px;max-width:200px;color:#ef4444;">
+                ${[r.rich_issues, r.mobile_issues].filter(Boolean).join('<br>') || '—'}
+            </td>`;
+        tbody.appendChild(row);
     }
 
-    // ── update stats
-    function updateStats(results) {
-        const counts = { PASS:0, NEUTRAL:0, FAIL:0, UNKNOWN:0 };
+    function rowMatchesFilter(r) {
+        if (activeFilter === 'all')         return true;
+        if (activeFilter === 'rich-issues') return r.rich_verdict === 'FAIL' || !!r.rich_issues;
+        return r.verdict === activeFilter;
+    }
+
+    // ── update stats incrementally
+    function updateStats() {
+        const counts = { PASS:0, NEUTRAL:0, FAIL:0, UNKNOWN:0, ERROR:0 };
         let richFail = 0;
-        results.forEach(r => {
-            if (r.verdict in counts) counts[r.verdict]++;
-            else counts.UNKNOWN++;
+        allResults.forEach(r => {
+            counts[r.verdict] = (counts[r.verdict] || 0) + 1;
             if (r.rich_verdict === 'FAIL') richFail++;
         });
-        document.getElementById('stat-total').textContent   = results.length;
-        document.getElementById('stat-pass').textContent    = counts.PASS;
-        document.getElementById('stat-neutral').textContent = counts.NEUTRAL;
-        document.getElementById('stat-fail').textContent    = counts.FAIL;
-        document.getElementById('stat-unknown').textContent = counts.UNKNOWN;
+        document.getElementById('stat-total').textContent    = allResults.length;
+        document.getElementById('stat-pass').textContent     = counts.PASS;
+        document.getElementById('stat-neutral').textContent  = counts.NEUTRAL;
+        document.getElementById('stat-fail').textContent     = counts.FAIL;
+        document.getElementById('stat-unknown').textContent  = (counts.UNKNOWN || 0) + (counts.ERROR || 0);
         document.getElementById('stat-rich-fail').textContent = richFail;
     }
 
-    // ── filter
+    // ── filter (re-renders existing rows)
     function applyFilter() {
         const search = document.getElementById('gi-search').value.toLowerCase();
-        let data = allResults;
+        document.querySelectorAll('#gi-tbody tr:not(.gi-placeholder)').forEach(row => {
+            const verdict = row.dataset.verdict;
+            const rich    = row.dataset.rich;
+            const url     = row.querySelector('a')?.href?.toLowerCase() || '';
 
-        if (activeFilter === 'rich-issues') {
-            data = data.filter(r => r.rich_verdict === 'FAIL' || r.rich_issues);
-        } else if (activeFilter !== 'all') {
-            data = data.filter(r => r.verdict === activeFilter);
-        }
-
-        if (search) {
-            data = data.filter(r => r.url.toLowerCase().includes(search));
-        }
-
-        renderTable(data);
+            let show = true;
+            if (activeFilter === 'rich-issues') {
+                show = rich === 'FAIL' || row.querySelector('td:last-child')?.textContent?.trim() !== '—';
+            } else if (activeFilter !== 'all') {
+                show = verdict === activeFilter;
+            }
+            if (show && search) show = url.includes(search);
+            row.style.display = show ? '' : 'none';
+        });
     }
 
     document.querySelectorAll('.gi-filter').forEach(btn => {
@@ -311,79 +315,121 @@
             applyFilter();
         });
     });
-
     document.getElementById('gi-search').addEventListener('input', applyFilter);
 
-    // ── run inspection
-    runBtn.addEventListener('click', async () => {
+    // ── START INSPECTION via SSE
+    runBtn.addEventListener('click', () => {
+        // Close any existing stream
+        if (evtSource) { evtSource.close(); evtSource = null; }
+
+        allResults = [];
+        activeFilter = 'all';
+        document.querySelectorAll('.gi-filter').forEach(b => b.classList.remove('active'));
+        document.querySelector('.gi-filter[data-filter="all"]').classList.add('active');
+
         runBtn.disabled = true;
         runBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Running...';
-        expBtn.disabled = true;
+        expBtn.disabled  = true;
 
-        document.getElementById('gi-start-hint').style.display = 'none';
+        // Show panels
+        document.getElementById('gi-start-hint').style.display  = 'none';
+        document.getElementById('gi-progress-wrap').style.display = '';
         document.getElementById('gi-stats').style.removeProperty('display');
         document.getElementById('gi-filter-bar').style.removeProperty('display');
-        document.getElementById('gi-progress-wrap').style.display = '';
-        document.getElementById('gi-table-wrap').style.display = '';
+        document.getElementById('gi-table-wrap').style.display   = '';
+
+        // Reset progress
+        document.getElementById('gi-progress-bar').style.width   = '0%';
+        document.getElementById('gi-progress-label').textContent = '0 / ?';
+        document.getElementById('gi-progress-msg').textContent   = 'Connecting...';
+
+        // Clear table
         document.getElementById('gi-tbody').innerHTML =
-            '<tr><td colspan="9" class="text-center py-4"><span class="spinner-border spinner-border-sm me-2"></span>Inspecting all URLs, please wait (~15-20 seconds)...</td></tr>';
+            `<tr class="gi-placeholder"><td colspan="9" class="text-center py-3" style="color:var(--gi-muted);">
+                <span class="spinner-border spinner-border-sm me-2"></span>Starting inspection...
+            </td></tr>`;
 
-        document.getElementById('gi-progress-bar').style.width = '10%';
-        document.getElementById('gi-progress-msg').textContent = 'Sending requests to Google Search Console API...';
+        updateStats();
 
-        try {
-            const resp = await fetch('{{ route("admin.gsc.inspect.run") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': CSRF,
-                    'Accept': 'application/json',
-                },
-            });
+        // Open SSE stream
+        evtSource = new EventSource('{{ route("admin.gsc.inspect.run") }}');
 
-            if (!resp.ok) {
-                const err = await resp.json().catch(() => ({}));
-                throw new Error(err.message || `HTTP ${resp.status}`);
+        evtSource.onmessage = (e) => {
+            const msg = JSON.parse(e.data);
+
+            if (msg.type === 'init') {
+                document.getElementById('gi-progress-label').textContent = `0 / ${msg.total}`;
+                document.getElementById('gi-progress-msg').textContent   = `Inspecting ${msg.total} URLs...`;
+                return;
             }
 
-            const data = await resp.json();
-            allResults = data.results || [];
+            if (msg.type === 'result') {
+                const { index, total, result } = msg;
+                allResults.push(result);
 
-            document.getElementById('gi-progress-bar').style.width = '100%';
-            document.getElementById('gi-progress-label').textContent = `${allResults.length} / ${allResults.length}`;
-            document.getElementById('gi-progress-msg').textContent   = 'Complete!';
+                // Update progress
+                const pct = Math.round((index / total) * 100);
+                document.getElementById('gi-progress-bar').style.width   = pct + '%';
+                document.getElementById('gi-progress-label').textContent = `${index} / ${total}`;
+                document.getElementById('gi-progress-msg').textContent   =
+                    `[${index}/${total}] ${shortUrl(result.url)} — ${result.verdict}`;
 
-            updateStats(allResults);
-            applyFilter();
+                appendRow(result, index);
+                updateStats();
+                return;
+            }
 
-            expBtn.disabled = false;
-        } catch (e) {
-            document.getElementById('gi-tbody').innerHTML =
-                `<tr><td colspan="9" class="text-center text-danger py-4">
-                    <iconify-icon icon="solar:danger-circle-bold" class="me-1"></iconify-icon>
-                    Error: ${e.message}
-                </td></tr>`;
-        } finally {
-            runBtn.disabled = false;
+            if (msg.type === 'done') {
+                evtSource.close();
+                evtSource = null;
+
+                document.getElementById('gi-progress-bar').style.width   = '100%';
+                document.getElementById('gi-progress-msg').textContent   = `✓ Complete! ${allResults.length} URLs inspected.`;
+
+                runBtn.disabled  = false;
+                runBtn.innerHTML = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Re-run Inspection';
+                expBtn.disabled  = false;
+
+                // Remove placeholder if still there
+                const ph = document.querySelector('#gi-tbody .gi-placeholder');
+                if (ph) ph.remove();
+
+                if (!allResults.length) {
+                    document.getElementById('gi-tbody').innerHTML =
+                        '<tr><td colspan="9" class="text-center py-4" style="color:var(--gi-muted)">No data received</td></tr>';
+                }
+            }
+        };
+
+        evtSource.onerror = () => {
+            if (evtSource) { evtSource.close(); evtSource = null; }
+            runBtn.disabled  = false;
             runBtn.innerHTML = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Re-run Inspection';
-        }
+
+            if (allResults.length === 0) {
+                document.getElementById('gi-tbody').innerHTML =
+                    `<tr><td colspan="9" class="text-center text-danger py-4">
+                        Connection error. Check server logs or try again.
+                    </td></tr>`;
+            }
+            document.getElementById('gi-progress-msg').textContent = allResults.length
+                ? `Stopped at ${allResults.length} URLs.`
+                : 'Connection failed.';
+        };
     });
 
     // ── CSV export
     expBtn.addEventListener('click', () => {
         if (!allResults.length) return;
-
         const headers = ['URL','Verdict','Coverage','Indexing State','Last Crawl','Crawled As','Robots.txt','Canonical','Rich Verdict','Rich Issues','Mobile Verdict','Mobile Issues'];
         const rows    = allResults.map(r => [
             r.url, r.verdict, r.coverage, r.indexing, r.last_crawl,
             r.crawled_as, r.robots, r.canonical,
             r.rich_verdict, r.rich_issues, r.mobile_verdict, r.mobile_issues,
         ]);
-
-        const csv = [headers, ...rows]
-            .map(row => row.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(','))
+        const csv  = [headers, ...rows]
+            .map(row => row.map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(','))
             .join('\n');
-
         const blob = new Blob([csv], { type: 'text/csv' });
         const url  = URL.createObjectURL(blob);
         const a    = document.createElement('a');

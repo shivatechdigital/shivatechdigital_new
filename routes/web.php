@@ -161,7 +161,7 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::get('/admin/gsc-inspect', [AnalyticsController::class, 'gscInspectPage'])
         ->middleware('permission:dashboard.view')
         ->name('admin.gsc.inspect');
-    Route::post('/admin/gsc-inspect/run', [AnalyticsController::class, 'gscInspectRun'])
+    Route::get('/admin/gsc-inspect/stream', [AnalyticsController::class, 'gscInspectRun'])
         ->middleware('permission:dashboard.view')
         ->name('admin.gsc.inspect.run');
 
