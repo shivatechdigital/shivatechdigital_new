@@ -202,6 +202,13 @@
             });
         } catch {}
     }
+    function serverSaveBeacon(results, status) {
+        // Used on page unload — sendBeacon works even when page is closing
+        try {
+            const blob = new Blob([JSON.stringify({ results, urlCount: URLS.length, status, _token: CSRF })], { type: 'application/json' });
+            navigator.sendBeacon(SAVE_EP, blob);
+        } catch {}
+    }
     async function serverLoad() {
         try {
             const resp = await fetch(LOAD_EP, { headers: { 'Accept':'application/json' } });
@@ -218,54 +225,79 @@
         localStorage.removeItem(STORE_KEY);
     }
 
-    // ── localStorage: only for partial progress during active inspection
-    function saveProgress(r) { try { localStorage.setItem(STORE_KEY, JSON.stringify({ results: r, savedAt: Date.now() })); } catch {} }
+    // ── localStorage: fast save on every URL (survives refresh instantly)
+    function saveProgress(r, status = 'partial') {
+        try {
+            localStorage.setItem(STORE_KEY, JSON.stringify({
+                results: r,
+                urlCount: URLS.length,
+                status,
+                savedAt: Date.now(),
+            }));
+        } catch {}
+    }
     function clearLocalProgress() { try { localStorage.removeItem(STORE_KEY); } catch {} }
     function loadLocalProgress() {
         try {
             const s = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
-            if (s && Array.isArray(s.results) && s.results.length > 0 && s.results.length < URLS.length) return s;
+            if (s && Array.isArray(s.results) && s.results.length > 0 && s.urlCount === URLS.length) return s;
         } catch {}
         return null;
     }
 
-    // ── On page load: try server first, then localStorage partial
-    async function checkResumable() {
-        const server = await serverLoad();
+    // ── Page unload: save whatever we have via sendBeacon
+    window.addEventListener('beforeunload', () => {
+        if (allResults.length > 0) {
+            const status = running ? 'partial' : 'complete';
+            saveProgress(allResults, status);          // localStorage (instant)
+            serverSaveBeacon(allResults, status);       // server (survives refresh)
+        }
+    });
 
-        if (server.found) {
-            allResults = server.results;
+    // ── On page load: localStorage first (instant), then server (authoritative)
+    async function checkResumable() {
+        // Step 1: Check localStorage immediately (no network wait)
+        const local = loadLocalProgress();
+        if (local && local.results.length > 0) {
+            restoreState(local.results, local.status, 'Restoring...', false);
+        }
+
+        // Step 2: Server load (may have more recent/complete data)
+        const server = await serverLoad();
+        if (server.found && server.results.length >= (local ? local.results.length : 0)) {
             const ago  = Math.round((Date.now() - new Date(server.savedAt).getTime()) / 60000);
             const when = ago < 60 ? `${ago} min ago` : new Date(server.savedAt).toLocaleString();
-            const statusLabel = server.status === 'complete' ? '✓ Complete' : `⏸ Paused (${allResults.length}/${URLS.length})`;
+            restoreState(server.results, server.status, `Saved ${when} by ${server.savedBy}`, true);
+        } else if (!local) {
+            resumeBtn.style.display = 'none';
+        }
+    }
 
-            showPanels();
-            renderAllRows(allResults);
-            updateStats();
+    function restoreState(results, status, label, fromServer) {
+        allResults = results;
+        const isComplete = status === 'complete';
 
-            document.getElementById('gi-progress-bar').style.width   = server.status === 'complete' ? '100%' : Math.round((allResults.length/URLS.length)*100)+'%';
-            document.getElementById('gi-progress-label').textContent = `${allResults.length} / ${URLS.length}`;
-            document.getElementById('gi-progress-msg').textContent   =
-                `${statusLabel} — Saved ${when} by ${server.savedBy}. Click "Start Fresh" to re-run.`;
+        showPanels();
+        renderAllRows(allResults);
+        updateStats();
 
-            runBtn.innerHTML       = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Start Fresh';
-            testIssuesBtn.disabled = false;
-            reqAllBtn.disabled     = false;
-            expBtn.disabled        = false;
-            resumeBtn.style.display = server.status === 'partial' ? '' : 'none';
-            if (server.status === 'partial') {
-                resumeBtn.innerHTML = `<iconify-icon icon="solar:play-bold"></iconify-icon> Resume (${allResults.length}/${URLS.length} done)`;
-            }
+        const pct = isComplete ? 100 : Math.round((allResults.length / URLS.length) * 100);
+        document.getElementById('gi-progress-bar').style.width   = pct + '%';
+        document.getElementById('gi-progress-label').textContent = `${allResults.length} / ${URLS.length}`;
+        document.getElementById('gi-progress-msg').textContent   = isComplete
+            ? `✓ Complete (${allResults.length} URLs) — ${label}. Click "Start Fresh" to re-run.`
+            : `⏸ Paused at ${allResults.length}/${URLS.length} — ${label}. Click Resume to continue.`;
 
+        runBtn.innerHTML        = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Start Fresh';
+        testIssuesBtn.disabled  = false;
+        reqAllBtn.disabled      = false;
+        expBtn.disabled         = false;
+
+        if (!isComplete) {
+            resumeBtn.style.display = '';
+            resumeBtn.innerHTML = `<iconify-icon icon="solar:play-bold"></iconify-icon> Resume (${allResults.length}/${URLS.length} done)`;
         } else {
-            // Fallback: check localStorage for partial progress
-            const local = loadLocalProgress();
-            if (local) {
-                resumeBtn.style.display = '';
-                resumeBtn.innerHTML = `<iconify-icon icon="solar:play-bold"></iconify-icon> Resume (${local.results.length}/${URLS.length} done)`;
-            } else {
-                resumeBtn.style.display = 'none';
-            }
+            resumeBtn.style.display = 'none';
         }
     }
 
@@ -489,8 +521,8 @@
 
         for (let i = startFrom; i < URLS.length; i++) {
             if (stopFlag) {
-                saveProgress(allResults);           // localStorage (quick access)
-                serverSave(allResults, 'partial');  // server (survives logout)
+                saveProgress(allResults, 'partial');    // localStorage
+                serverSave(allResults, 'partial');      // server
                 document.getElementById('gi-progress-msg').textContent = `⏸ Paused at ${i}/${URLS.length}. Click Resume to continue.`;
                 resumeBtn.style.display = '';
                 resumeBtn.innerHTML = `<iconify-icon icon="solar:play-bold"></iconify-icon> Resume (${i}/${URLS.length} done, ${URLS.length - i} left)`;
@@ -510,8 +542,10 @@
                 document.getElementById('gi-progress-bar').style.width   = Math.round(((i+1) / URLS.length) * 100) + '%';
                 document.getElementById('gi-progress-label').textContent = `${i+1} / ${URLS.length}`;
                 document.getElementById('gi-progress-msg').textContent   = `[${i+1}/${URLS.length}] ${shortUrl(url)} → ${result.verdict}`;
-                // Auto-save to server every 10 URLs
-                if ((i + 1) % 10 === 0) serverSave(allResults, 'partial');
+                // Every URL → localStorage (instant, no network)
+                saveProgress(allResults, 'partial');
+                // Every 5 URLs → server save
+                if ((i + 1) % 5 === 0) serverSave(allResults, 'partial');
             } catch(e) {
                 const err = { url, verdict:'ERROR', coverage:e.message, indexing:'', last_crawl:'', crawled_as:'', robots:'', canonical:'', rich_verdict:'N/A', rich_issues:'', mobile_verdict:'N/A', mobile_issues:'' };
                 allResults.push(err);
@@ -522,7 +556,8 @@
 
         if (!stopFlag) {
             clearLocalProgress();
-            serverSave(allResults, 'complete'); // final save to server
+            saveProgress(allResults, 'complete');   // localStorage
+            serverSave(allResults, 'complete');     // server (final)
             document.getElementById('gi-progress-bar').style.width   = '100%';
             document.getElementById('gi-progress-label').textContent = `${URLS.length} / ${URLS.length}`;
             document.getElementById('gi-progress-msg').textContent   = `✓ Complete! ${allResults.length} URLs. Data saved — available after logout/login.`;
