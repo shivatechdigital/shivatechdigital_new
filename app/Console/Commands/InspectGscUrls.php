@@ -11,7 +11,8 @@ use Illuminate\Console\Command;
 class InspectGscUrls extends Command
 {
     protected $signature = 'gsc:inspect
-                            {--site=https://shivatechdigital.com/ : The GSC property URL (must match exactly)}
+                            {--site=sc-domain:shivatechdigital.com : GSC property identifier (sc-domain:example.com or https://example.com/)}
+                            {--domain=https://shivatechdigital.com : Base domain for building inspection URLs (always https://)}
                             {--output=gsc_inspection_results.csv : Output CSV filename in storage/app/}
                             {--delay=150 : Delay in ms between requests (default 150ms = ~6 req/sec)}
                             {--debug : Show raw API response for first URL and exit}';
@@ -19,13 +20,15 @@ class InspectGscUrls extends Command
     protected $description = 'Inspect all site URLs via Google Search Console URL Inspection API and export results to CSV';
 
     private string $siteUrl;
+    private string $baseDomain;
     private array $results = [];
 
     public function handle(): int
     {
-        $this->siteUrl = $this->option('site');
-        $outputFile    = storage_path('app/' . $this->option('output'));
-        $delay         = (int) $this->option('delay') * 1000; // convert ms to microseconds
+        $this->siteUrl    = $this->option('site');
+        $this->baseDomain = rtrim($this->option('domain'), '/');
+        $outputFile       = storage_path('app/' . $this->option('output'));
+        $delay            = (int) $this->option('delay') * 1000;
 
         $this->info('Initializing Google Search Console client...');
 
@@ -72,7 +75,7 @@ class InspectGscUrls extends Command
 
     private function debugSingleUrl($httpClient): int
     {
-        $testUrl = rtrim($this->siteUrl, '/') . '/';
+        $testUrl = $this->baseDomain . '/';
         $this->info("Debug: Inspecting <comment>{$testUrl}</comment>");
         $this->info("Using siteUrl: <comment>{$this->siteUrl}</comment>");
         $this->newLine();
@@ -129,7 +132,7 @@ class InspectGscUrls extends Command
 
     private function collectUrls(): array
     {
-        $base = rtrim($this->siteUrl, '/');
+        $base = $this->baseDomain;
 
         $urls = [
             // Core pages
