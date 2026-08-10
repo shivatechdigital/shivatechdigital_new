@@ -41,3 +41,31 @@
 
 <!-- Main Style -->
 <link rel="stylesheet" href="{{ asset('admin_assets/css/style.css') }}">
+
+<style>
+	/* Global dark mode fix for non-editable fields */
+	[data-theme="dark"] .form-control[readonly],
+	[data-theme="dark"] .form-control:disabled,
+	[data-theme="dark"] .form-select:disabled,
+	[data-theme="dark"] textarea:disabled,
+	[data-theme="dark"] textarea[readonly],
+	[data-theme="dark"] input[readonly],
+	[data-theme="dark"] input:disabled,
+	[data-theme="dark"] select:disabled {
+		background-color: var(--input-bg) !important;
+		border-color: var(--input-form-light) !important;
+		color: var(--text-primary-light) !important;
+		opacity: 1 !important;
+		-webkit-text-fill-color: var(--text-primary-light) !important;
+	}
+
+	[data-theme="dark"] .form-control[readonly]::placeholder,
+	[data-theme="dark"] .form-control:disabled::placeholder,
+	[data-theme="dark"] textarea[readonly]::placeholder,
+	[data-theme="dark"] textarea:disabled::placeholder,
+	[data-theme="dark"] input[readonly]::placeholder,
+	[data-theme="dark"] input:disabled::placeholder {
+		color: var(--text-secondary-light) !important;
+		opacity: 1;
+	}
+</style>
