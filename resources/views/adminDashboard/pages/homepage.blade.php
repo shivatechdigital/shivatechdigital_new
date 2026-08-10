@@ -640,7 +640,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const labels = items.slice(0, 7).map(function (item) { return item.query || '(unknown)'; });
-        const values = items.slice(0, 7).map(function (item) { return Number(item.clicks || 0); });
+        const values = items.slice(0, 7).map(function (item) {
+            const clicks = Number(item.clicks || 0);
+            const impressions = Number(item.impressions || 0);
+            return clicks > 0 ? clicks : impressions;
+        });
+
+        const usingImpressionsFallback = items.slice(0, 7).every(function (item) {
+            return Number(item.clicks || 0) === 0;
+        });
 
         const options = {
             chart: {
@@ -652,7 +660,7 @@ document.addEventListener('DOMContentLoaded', function () {
             plotOptions: {
                 bar: { borderRadius: 4, horizontal: true }
             },
-            series: [{ name: 'Clicks', data: values }],
+            series: [{ name: usingImpressionsFallback ? 'Impressions' : 'Clicks', data: values }],
             xaxis: {
                 categories: labels,
                 labels: { style: { colors: '#d7e5f2' } }
@@ -675,7 +683,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const labels = items.map(function (item) { return item.label || 'Unknown'; });
-        const values = items.map(function (item) { return Number(item.clicks || 0); });
+        const values = items.map(function (item) {
+            const clicks = Number(item.clicks || 0);
+            const impressions = Number(item.impressions || 0);
+            return clicks > 0 ? clicks : impressions;
+        });
 
         const options = {
             chart: {

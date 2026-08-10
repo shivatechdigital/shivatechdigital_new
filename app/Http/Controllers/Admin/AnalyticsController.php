@@ -17,6 +17,8 @@ class AnalyticsController extends Controller
 
     private ?string $lastGscSiteUsed = null;
 
+    private array $gscSiteAttempts = [];
+
     private function GA()
     {
         $client = new Client();
@@ -33,6 +35,11 @@ class AnalyticsController extends Controller
         }
 
         return view('adminDashboard.pages.homepage');
+    }
+
+    public function searchConsoleDetails()
+    {
+        return view('adminDashboard.pages.analytics.search-console');
     }
 
     // -------------------------------------- REALTIME USERS
@@ -102,6 +109,8 @@ class AnalyticsController extends Controller
     public function searchConsoleDashboard(Request $request)
     {
         $this->lastGscError = null;
+        $this->lastGscSiteUsed = null;
+        $this->gscSiteAttempts = [];
 
         [$start, $end, $rangeKey] = $this->resolveDateRange($request);
         $days = $start->diffInDays($end) + 1;
@@ -216,15 +225,23 @@ class AnalyticsController extends Controller
                 return [
                     'label' => $row['keys'][0] ?? 'Unknown',
                     'clicks' => (int) ($row['clicks'] ?? 0),
+                    'impressions' => (int) ($row['impressions'] ?? 0),
                 ];
             }, $countryRows),
             'devices' => array_map(function (array $row) {
                 return [
                     'label' => ucfirst(strtolower($row['keys'][0] ?? 'unknown')),
                     'clicks' => (int) ($row['clicks'] ?? 0),
+                    'impressions' => (int) ($row['impressions'] ?? 0),
                 ];
             }, $deviceRows),
         ];
+
+        if ((bool) config('app.debug')) {
+            $response['gsc_debug'] = [
+                'attempts' => $this->gscSiteAttempts,
+            ];
+        }
 
         return response()->json($response);
     }
@@ -287,11 +304,23 @@ class AnalyticsController extends Controller
             try {
                 $rows = $this->runGscRequestForSite($payload, $site);
 
+                $this->gscSiteAttempts[] = [
+                    'site' => $site,
+                    'rows_count' => count($rows),
+                    'error' => null,
+                ];
+
                 if (!empty($rows)) {
                     $this->lastGscSiteUsed = $site;
                     return $rows;
                 }
             } catch (\Throwable $exception) {
+                $this->gscSiteAttempts[] = [
+                    'site' => $site,
+                    'rows_count' => 0,
+                    'error' => $exception->getMessage(),
+                ];
+
                 if ($this->lastGscError === null) {
                     $this->lastGscError = $exception->getMessage();
                 }
