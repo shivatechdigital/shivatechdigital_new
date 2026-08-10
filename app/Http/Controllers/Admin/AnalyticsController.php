@@ -394,6 +394,51 @@ class AnalyticsController extends Controller
         return view('adminDashboard.pages.analytics.gsc-inspect', compact('urls'));
     }
 
+    /** Save inspection results to server (persists across logout/login/devices) */
+    public function gscSaveResults(Request $request)
+    {
+        $data = [
+            'results'   => $request->input('results', []),
+            'urlCount'  => $request->input('urlCount', 0),
+            'status'    => $request->input('status', 'partial'), // 'partial' | 'complete'
+            'savedAt'   => now()->toISOString(),
+            'savedBy'   => auth()->user()?->email ?? 'unknown',
+        ];
+
+        \Illuminate\Support\Facades\Storage::put('gsc_inspection_state.json', json_encode($data, JSON_PRETTY_PRINT));
+
+        return response()->json(['success' => true]);
+    }
+
+    /** Load inspection results from server */
+    public function gscLoadResults()
+    {
+        if (! \Illuminate\Support\Facades\Storage::exists('gsc_inspection_state.json')) {
+            return response()->json(['found' => false]);
+        }
+
+        $data = json_decode(\Illuminate\Support\Facades\Storage::get('gsc_inspection_state.json'), true);
+        if (! $data || empty($data['results'])) {
+            return response()->json(['found' => false]);
+        }
+
+        return response()->json([
+            'found'    => true,
+            'results'  => $data['results'],
+            'urlCount' => $data['urlCount'],
+            'status'   => $data['status'],
+            'savedAt'  => $data['savedAt'],
+            'savedBy'  => $data['savedBy'],
+        ]);
+    }
+
+    /** Clear saved inspection state */
+    public function gscClearResults()
+    {
+        \Illuminate\Support\Facades\Storage::delete('gsc_inspection_state.json');
+        return response()->json(['success' => true]);
+    }
+
     /** Live-test a URL: fetch page HTML and validate JSON-LD structured data */
     public function gscLiveTest(Request $request)
     {

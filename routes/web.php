@@ -161,6 +161,15 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::get('/admin/gsc-inspect', [AnalyticsController::class, 'gscInspectPage'])
         ->middleware('permission:dashboard.view')
         ->name('admin.gsc.inspect');
+    Route::get('/admin/gsc-inspect/load', [AnalyticsController::class, 'gscLoadResults'])
+        ->middleware('permission:dashboard.view')
+        ->name('admin.gsc.inspect.load');
+    Route::post('/admin/gsc-inspect/save', [AnalyticsController::class, 'gscSaveResults'])
+        ->middleware('permission:dashboard.view')
+        ->name('admin.gsc.inspect.save');
+    Route::delete('/admin/gsc-inspect/clear', [AnalyticsController::class, 'gscClearResults'])
+        ->middleware('permission:dashboard.view')
+        ->name('admin.gsc.inspect.clear');
     Route::post('/admin/gsc-inspect/single', [AnalyticsController::class, 'gscInspectSingle'])
         ->middleware('permission:dashboard.view')
         ->name('admin.gsc.inspect.single');
