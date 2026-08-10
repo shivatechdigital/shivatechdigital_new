@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Support\AdminNotifier;
 use Illuminate\Http\Request;
 
 class RolePermissionController extends Controller
@@ -53,6 +54,14 @@ class RolePermissionController extends Controller
         }
 
         $role->permissions()->sync($permissionIds);
+
+        AdminNotifier::notify(
+            'Permissions Updated',
+            'Permissions were updated for role "' . $role->display_name . '".',
+            route('admin.permissions.index', ['role_id' => $role->id]),
+            'permissions_updated',
+            ['role_id' => $role->id, 'permissions_count' => count($permissionIds)]
+        );
 
         return redirect()->route('admin.permissions.index', ['role_id' => $role->id])
             ->with('success', $role->name === 'admin'

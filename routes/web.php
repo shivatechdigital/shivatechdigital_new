@@ -27,6 +27,8 @@ use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\NotificationController;
 
 /*===========================================
 | Correct Route
@@ -184,6 +186,18 @@ Route::middleware(['auth', 'admin'])->group(function(){
                 []
             )
         )->name('two-factor.show');
+
+    Route::get('/admin/profile', [ProfileController::class, 'edit'])
+        ->name('admin.profile.edit');
+    Route::put('/admin/profile', [ProfileController::class, 'update'])
+        ->name('admin.profile.update');
+
+    Route::get('/admin/notifications', [NotificationController::class, 'index'])
+        ->name('admin.notifications.index');
+    Route::get('/admin/notifications/{notificationId}', [NotificationController::class, 'open'])
+        ->name('admin.notifications.open');
+    Route::post('/admin/notifications/read-all', [NotificationController::class, 'readAll'])
+        ->name('admin.notifications.read-all');
 
 
 /*===========================================

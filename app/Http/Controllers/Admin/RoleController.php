@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Support\AdminNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -36,11 +37,19 @@ class RoleController extends Controller
 
         $roleName = $validated['name'] ?? Str::slug($validated['display_name'], '_');
 
-        Role::create([
+        $role = Role::create([
             'name' => $roleName,
             'display_name' => $validated['display_name'],
             'description' => $validated['description'] ?? null,
         ]);
+
+        AdminNotifier::notify(
+            'Role Created',
+            'A new role "' . $role->display_name . '" was created.',
+            route('admin.roles.index'),
+            'role_created',
+            ['role_id' => $role->id]
+        );
 
         return redirect()->route('admin.roles.index')
             ->with('success', 'Role created successfully');
@@ -64,6 +73,14 @@ class RoleController extends Controller
                 'description' => $request->description,
             ]);
 
+            AdminNotifier::notify(
+                'Role Updated',
+                'Admin role details were updated.',
+                route('admin.roles.index'),
+                'role_updated',
+                ['role_id' => $role->id]
+            );
+
             return redirect()->route('admin.roles.index')
                 ->with('success', 'Admin role updated successfully');
         }
@@ -75,6 +92,14 @@ class RoleController extends Controller
         ]);
 
         $role->update($validated);
+
+        AdminNotifier::notify(
+            'Role Updated',
+            'Role "' . $role->display_name . '" was updated.',
+            route('admin.roles.index'),
+            'role_updated',
+            ['role_id' => $role->id]
+        );
 
         return redirect()->route('admin.roles.index')
             ->with('success', 'Role updated successfully');

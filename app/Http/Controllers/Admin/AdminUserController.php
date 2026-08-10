@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Support\AdminNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -50,12 +51,20 @@ class AdminUserController extends Controller
             'role' => 'required|string|exists:roles,name',
         ]);
 
-        User::create([
+        $newUser = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
         ]);
+
+        AdminNotifier::notify(
+            'New User Created',
+            'A new user "' . $newUser->name . '" was created with role "' . $newUser->role . '".',
+            route('admin.users.index'),
+            'user_created',
+            ['user_id' => $newUser->id]
+        );
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User created successfully');
@@ -84,6 +93,14 @@ class AdminUserController extends Controller
 
         $user->update($validated);
 
+        AdminNotifier::notify(
+            'User Updated',
+            'User "' . $user->name . '" was updated.',
+            route('admin.users.index'),
+            'user_updated',
+            ['user_id' => $user->id]
+        );
+
         return redirect()->route('admin.users.index')
             ->with('success', 'User updated successfully');
     }
@@ -93,6 +110,14 @@ class AdminUserController extends Controller
         $user->update([
             'password' => Hash::make('password'),
         ]);
+
+        AdminNotifier::notify(
+            'User Password Reset',
+            'Password was reset for user "' . $user->name . '".',
+            route('admin.users.index'),
+            'user_password_reset',
+            ['user_id' => $user->id]
+        );
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Password reset to default: password');
@@ -108,7 +133,17 @@ class AdminUserController extends Controller
             return back()->with('error', 'Cannot delete last admin user.');
         }
 
+        $deletedUserName = $user->name;
+        $deletedUserId = $user->id;
         $user->delete();
+
+        AdminNotifier::notify(
+            'User Deleted',
+            'User "' . $deletedUserName . '" was deleted.',
+            route('admin.users.index'),
+            'user_deleted',
+            ['user_id' => $deletedUserId]
+        );
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User deleted successfully');

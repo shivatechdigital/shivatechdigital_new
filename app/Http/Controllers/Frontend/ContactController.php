@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Support\AdminNotifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -52,6 +53,14 @@ class ContactController extends Controller
                 'ip_address' => $request->ip(),
                 'status' => 'new'
             ]);
+
+            AdminNotifier::notify(
+                'New Contact Enquiry',
+                'A new enquiry was submitted by "' . $contact->name . '" for service "' . $contact->service_name . '".',
+                route('contacts.index'),
+                'contact_created',
+                ['contact_id' => $contact->id]
+            );
 
             // Send email notification to admin (optional)
             // Mail::to('admin@shivatechdigital.com')->send(new ContactFormSubmitted($contact));
