@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:comments.view')->only(['index']);
+        $this->middleware('permission:comments.reply')->only(['approve', 'createReply', 'storeReply', 'editReply', 'updateReply']);
+        $this->middleware('permission:comments.delete')->only(['destroy', 'bulkDelete']);
+    }
+
     public function index(Request $request)
     {
         $search = trim((string) $request->input('search', ''));

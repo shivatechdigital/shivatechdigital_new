@@ -9,6 +9,14 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:categories.view')->only(['index', 'show']);
+        $this->middleware('permission:categories.create')->only(['create', 'store', 'import']);
+        $this->middleware('permission:categories.update')->only(['edit', 'update']);
+        $this->middleware('permission:categories.delete')->only(['destroy', 'bulkDelete']);
+    }
+
     public function index(Request $request)
     {
         $search = trim((string) $request->input('search', ''));

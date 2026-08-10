@@ -33,7 +33,7 @@ class FortifyServiceProvider extends ServiceProvider
         /* |----------------------- | Redirect Back To Same Page After Login/Register |---------------------- */ 
         Fortify::redirects('login', function () { 
             // Admin redirect 
-            if (auth()->check() && auth()->user()->role === 'admin') {
+            if (auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->hasPermission('dashboard.view'))) {
                 return '/index'; 
             } 
             // Normal user redirect 

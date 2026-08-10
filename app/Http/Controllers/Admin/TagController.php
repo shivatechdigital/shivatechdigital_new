@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:tags.view')->only(['index', 'show']);
+        $this->middleware('permission:tags.create')->only(['create', 'store']);
+        $this->middleware('permission:tags.update')->only(['edit', 'update']);
+        $this->middleware('permission:tags.delete')->only(['destroy', 'bulkDelete']);
+    }
+
     public function index(Request $request)
     {
         $search = trim((string) $request->input('search', ''));

@@ -10,33 +10,48 @@
     </a>
   </div>
   <div class="sidebar-menu-area">
+    @php
+      $currentUser = auth()->user();
+      $can = function (string $permission) use ($currentUser) {
+          return $currentUser && ($currentUser->role === 'admin' || $currentUser->hasPermission($permission));
+      };
+    @endphp
     <ul class="sidebar-menu" id="sidebar-menu">
+      @if($can('dashboard.view'))
       <li class="{{ request()->routeIs('index') ? 'active-page' : '' }}">
         <a href="{{ route('index') }}" class="{{ request()->routeIs('index') ? 'active-page' : '' }}">
           <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
           <span>Dashboard</span>
         </a>
       </li>
+      @endif
+      @if($can('sitedetails.manage'))
       <li class="{{ request()->routeIs('sitedetails') ? 'active-page' : '' }} mb-2">
         <a href="{{ route('sitedetails') }}" class="{{ request()->routeIs('sitedetails') ? 'active-page' : '' }}">
           <iconify-icon icon="solar:settings-outline" class="menu-icon"></iconify-icon>
           <span>Site Details</span>
         </a>
       </li>
+      @endif
 
+      @if($can('contacts.manage'))
       <li class="{{ request()->routeIs('contacts.index') ? 'active-page' : '' }} mb-2">
         <a href="{{ route('contacts.index') }}" class="{{ request()->routeIs('contacts.index') ? 'active-page' : '' }}">
           <iconify-icon icon="mage:email" class="menu-icon"></iconify-icon>
           <span>Enquiry Details</span>
         </a>
       </li>
+      @endif
 
+      @if($can('about.manage'))
       <li class="{{ request()->routeIs('about.index') ? 'active-page' : '' }} mb-2">
         <a href="{{ route('about.index') }}" class="{{ request()->routeIs('about.index') ? 'active-page' : '' }}">
           <iconify-icon icon="mage:email" class="menu-icon"></iconify-icon>
           <span>About Us</span>
         </a>
       </li>
+      @endif
+      @if($can('posts.view'))
         <!-- Posts Management -->
         <li class="dropdown {{ request()->routeIs('admin.posts.*') ? 'open' : '' }}">
           <a href="javascript:void(0)" class="{{ request()->routeIs('admin.posts.*') ? 'active-page' : '' }}">
@@ -56,7 +71,9 @@
             </li>
           </ul>
         </li>
+      @endif
         
+      @if($can('categories.view'))
         <!-- Categories Management -->
         <li class="dropdown {{ request()->routeIs('admin.categories.*') ? 'open' : '' }}">
           <a href="javascript:void(0)" class="{{ request()->routeIs('admin.categories.*') ? 'active-page' : '' }}">
@@ -76,8 +93,10 @@
             </li>
           </ul>
         </li>
+      @endif
         
         
+      @if($can('partners.view'))
         <!-- Partners Management -->
         <li class="dropdown {{ request()->routeIs('partners.*') ? 'open' : '' }}">
           <a href="javascript:void(0)" class="{{ request()->routeIs('partners.*') ? 'active-page' : '' }}">
@@ -97,7 +116,9 @@
             </li>
           </ul>
         </li>
+      @endif
         
+      @if($can('tags.view'))
         <!-- Tags Management -->
         <li class="dropdown {{ request()->routeIs('admin.tags.*') ? 'open' : '' }}">
           <a href="javascript:void(0)" class="{{ request()->routeIs('admin.tags.*') ? 'active-page' : '' }}">
@@ -117,7 +138,9 @@
             </li>
           </ul>
         </li>
+      @endif
         
+      @if($can('comments.view'))
         <!-- Comments Management -->
         <li>
           <a href="{{ route('admin.comments.index') }}" class="{{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
@@ -130,7 +153,9 @@
             @endif
           </a>
         </li>
+      @endif
         
+      @if($can('servicequeries.view'))
        <li>
         <a href="{{ route('admin.servicecontact.index') }}" 
            class="{{ request()->routeIs('admin.servicecontact.*') ? 'active' : '' }}">
@@ -138,37 +163,48 @@
             <span>Service Contact Query</span>
         </a>
     </li>
+    @endif
 
         
         <!-- Users Management -->
-        <li class="dropdown">
-          <a href="javascript:void(0)">
+      @if($can('users.view') || $can('users.create') || $can('roles.manage') || $can('permissions.manage'))
+        <li class="dropdown {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*') ? 'active-page' : '' }}">
             <iconify-icon icon="solar:users-group-rounded-outline" class="menu-icon"></iconify-icon>
             <span>Users</span>
           </a>
           <ul class="sidebar-submenu">
+            @if($can('roles.manage'))
             <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> All Users
+              <a href="{{ route('admin.roles.index') }}" class="{{ request()->routeIs('admin.roles.*') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Create Role
               </a>
             </li>
+            @endif
+            @if($can('permissions.manage'))
             <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add New User
+              <a href="{{ route('admin.permissions.index') }}" class="{{ request()->routeIs('admin.permissions.*') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Give Permission
               </a>
             </li>
+            @endif
+            @if($can('users.create'))
             <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Roles & Permissions
+              <a href="{{ route('admin.users.create') }}" class="{{ request()->routeIs('admin.users.create') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Create User
               </a>
             </li>
+            @endif
+            @if($can('users.view'))
             <li>
-              <a href="javascript:void(0)">
-                <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Authors
+              <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.index') || request()->routeIs('admin.users.edit') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> All Users
               </a>
             </li>
+            @endif
           </ul>
         </li>
+      @endif
         
 
       <!-- <li class="dropdown">

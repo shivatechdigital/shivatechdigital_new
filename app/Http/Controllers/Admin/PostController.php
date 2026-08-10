@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:posts.view')->only(['index', 'show']);
+        $this->middleware('permission:posts.create')->only(['create', 'store']);
+        $this->middleware('permission:posts.update')->only(['edit', 'update']);
+        $this->middleware('permission:posts.delete')->only(['destroy']);
+    }
+
     public function index(Request $request)
     {
         $search = trim((string) $request->input('search', ''));

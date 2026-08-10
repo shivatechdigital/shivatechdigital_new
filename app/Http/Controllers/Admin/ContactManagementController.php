@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class ContactManagementController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:contacts.manage');
+    }
+
     /**
      * Display all contacts
      */

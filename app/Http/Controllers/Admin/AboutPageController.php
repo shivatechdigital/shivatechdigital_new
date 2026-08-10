@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Storage;
 
 class AboutPageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:about.manage');
+    }
+
     public function index()
     {
         $about = AboutPage::first() ?? new AboutPage();

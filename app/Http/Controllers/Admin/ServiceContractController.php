@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class ServiceContractController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:servicequeries.view')->only(['index', 'show', 'edit']);
+        $this->middleware('permission:servicequeries.update')->only(['update']);
+        $this->middleware('permission:servicequeries.delete')->only(['destroy', 'bulkDelete']);
+        $this->middleware('permission:servicequeries.resolve')->only(['toggleStatus']);
+    }
+
     
     /* ---------------- SHOW ALL QUERIES ---------------- */
     public function index(Request $request)

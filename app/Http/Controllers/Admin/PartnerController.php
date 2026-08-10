@@ -10,6 +10,14 @@ use Illuminate\Support\Str;
 
 class PartnerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:partners.view')->only(['index']);
+        $this->middleware('permission:partners.create')->only(['create', 'store']);
+        $this->middleware('permission:partners.update')->only(['edit', 'update']);
+        $this->middleware('permission:partners.delete')->only(['destroy', 'bulkDelete']);
+    }
+
     public function index(Request $request)
     {
         $search = trim((string) $request->input('search', ''));

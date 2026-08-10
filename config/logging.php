@@ -73,6 +73,14 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'rbac' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/rbac.log'),
+            'level' => env('RBAC_LOG_LEVEL', 'warning'),
+            'days' => env('RBAC_LOG_DAYS', 30),
+            'replace_placeholders' => true,
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

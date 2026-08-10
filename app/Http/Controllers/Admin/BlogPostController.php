@@ -13,6 +13,14 @@ use Illuminate\Support\Str;
 
 class BlogPostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:posts.view')->only(['index']);
+        $this->middleware('permission:posts.create')->only(['create', 'store']);
+        $this->middleware('permission:posts.update')->only(['edit', 'update', 'togglePublish', 'toggleFeatured', 'uploadImage', 'bulkAction']);
+        $this->middleware('permission:posts.delete')->only(['destroy', 'duplicate']);
+    }
+
     /**
      * Display a listing of the blog posts
      */

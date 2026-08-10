@@ -24,6 +24,9 @@ use App\Http\Controllers\Admin\ServiceContractController;
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PartnerController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\RolePermissionController;
+use App\Http\Controllers\Admin\AdminUserController;
 
 /*===========================================
 | Correct Route
@@ -131,7 +134,7 @@ Route::prefix('services')->name('services.')->group(function () {
 
 Route::get('/dashboard', function () 
 { 
-    if(auth()->user()->role === 'admin') 
+    if(auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->hasPermission('dashboard.view'))) 
     { 
         return redirect()->route('index'); 
         
@@ -143,19 +146,31 @@ Route::get('/dashboard', function ()
 // OR ADMIN DASHBOARD PAGE
 Route::middleware(['auth', 'admin'])->group(function(){
 
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/index', [AnalyticsController::class, 'dashboard'])->name('index');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+        ->middleware('permission:dashboard.view')
+        ->name('admin.dashboard');
+    Route::get('/index', [AnalyticsController::class, 'dashboard'])
+        ->middleware('permission:dashboard.view')
+        ->name('index');
 
 
 /*===========================================
 | SETTINGS & SITE DETAILS
 ===========================================*/
 
-    Route::get('/settings',[SettingController::class,'index'])->name('settings.index');
-    Route::post('/settings',[SettingController::class,'update'])->name('settings.update');
-    Route::post('/settings/reset',[SettingController::class,'reset'])->name('settings.reset');
+    Route::get('/settings',[SettingController::class,'index'])
+        ->middleware('permission:sitedetails.manage')
+        ->name('settings.index');
+    Route::post('/settings',[SettingController::class,'update'])
+        ->middleware('permission:sitedetails.manage')
+        ->name('settings.update');
+    Route::post('/settings/reset',[SettingController::class,'reset'])
+        ->middleware('permission:sitedetails.manage')
+        ->name('settings.reset');
 
-    Route::get('/sitedetails',[SettingController::class,'index'])->name('sitedetails');
+    Route::get('/sitedetails',[SettingController::class,'index'])
+        ->middleware('permission:sitedetails.manage')
+        ->name('sitedetails');
 
     Volt::route('settings/profile','settings.profile')->name('profile.edit');
     Volt::route('settings/password','settings.password')->name('user-password.edit');
@@ -175,60 +190,121 @@ Route::middleware(['auth', 'admin'])->group(function(){
 | CONTACT MANAGEMENT
 ===========================================*/
 
-    Route::get('/contacts',[ContactManagementController::class,'index'])->name('contacts.index');
-    Route::get('/contacts/{contact}',[ContactManagementController::class,'show'])->name('contacts.show');
-    Route::put('/contacts/{contact}/status',[ContactManagementController::class,'updateStatus'])->name('contacts.status');
-    Route::put('/contacts/{contact}/notes',[ContactManagementController::class,'updateNotes'])->name('contacts.notes');
-    Route::delete('/contacts/{contact}',[ContactManagementController::class,'destroy'])->name('contacts.destroy');
+    Route::get('/contacts',[ContactManagementController::class,'index'])
+        ->middleware('permission:contacts.manage')
+        ->name('contacts.index');
+    Route::get('/contacts/{contact}',[ContactManagementController::class,'show'])
+        ->middleware('permission:contacts.manage')
+        ->name('contacts.show');
+    Route::put('/contacts/{contact}/status',[ContactManagementController::class,'updateStatus'])
+        ->middleware('permission:contacts.manage')
+        ->name('contacts.status');
+    Route::put('/contacts/{contact}/notes',[ContactManagementController::class,'updateNotes'])
+        ->middleware('permission:contacts.manage')
+        ->name('contacts.notes');
+    Route::delete('/contacts/{contact}',[ContactManagementController::class,'destroy'])
+        ->middleware('permission:contacts.manage')
+        ->name('contacts.destroy');
 
-    Route::post('/contacts/bulk-delete',[ContactManagementController::class,'bulkDelete'])->name('contacts.bulk-delete');
-    Route::post('/contacts/bulk-status',[ContactManagementController::class,'bulkUpdateStatus'])->name('contacts.bulk-status');
+    Route::post('/contacts/bulk-delete',[ContactManagementController::class,'bulkDelete'])
+        ->middleware('permission:contacts.manage')
+        ->name('contacts.bulk-delete');
+    Route::post('/contacts/bulk-status',[ContactManagementController::class,'bulkUpdateStatus'])
+        ->middleware('permission:contacts.manage')
+        ->name('contacts.bulk-status');
 
 
 /*===========================================
 | ABOUT PAGE MANAGEMENT
 ===========================================*/
 
-    Route::get('/admin/about/',[AboutPageController::class,'index'])->name('about.index');
-    Route::post('/admin/about/update',[AboutPageController::class,'update'])->name('about.update');
+    Route::get('/admin/about/',[AboutPageController::class,'index'])
+        ->middleware('permission:about.manage')
+        ->name('about.index');
+    Route::post('/admin/about/update',[AboutPageController::class,'update'])
+        ->middleware('permission:about.manage')
+        ->name('about.update');
 
-    Route::post('/admin/about/team/store',[AboutPageController::class,'storeTeamMember'])->name('about.team.store');
-    Route::put('/admin/about/team/{teamMember}',[AboutPageController::class,'updateTeamMember'])->name('about.team.update');
-    Route::delete('/admin/about/team/{teamMember}',[AboutPageController::class,'deleteTeamMember'])->name('about.team.delete');
+    Route::post('/admin/about/team/store',[AboutPageController::class,'storeTeamMember'])
+        ->middleware('permission:about.manage')
+        ->name('about.team.store');
+    Route::put('/admin/about/team/{teamMember}',[AboutPageController::class,'updateTeamMember'])
+        ->middleware('permission:about.manage')
+        ->name('about.team.update');
+    Route::delete('/admin/about/team/{teamMember}',[AboutPageController::class,'deleteTeamMember'])
+        ->middleware('permission:about.manage')
+        ->name('about.team.delete');
 
-    Route::post('/admin/about/timeline/store',[AboutPageController::class,'storeTimeline'])->name('about.timeline.store');
-    Route::put('/admin/about/timeline/{timeline}',[AboutPageController::class,'updateTimeline'])->name('about.timeline.update');
-    Route::delete('/admin/about/timeline/{timeline}',[AboutPageController::class,'deleteTimeline'])->name('about.timeline.delete');
+    Route::post('/admin/about/timeline/store',[AboutPageController::class,'storeTimeline'])
+        ->middleware('permission:about.manage')
+        ->name('about.timeline.store');
+    Route::put('/admin/about/timeline/{timeline}',[AboutPageController::class,'updateTimeline'])
+        ->middleware('permission:about.manage')
+        ->name('about.timeline.update');
+    Route::delete('/admin/about/timeline/{timeline}',[AboutPageController::class,'deleteTimeline'])
+        ->middleware('permission:about.manage')
+        ->name('about.timeline.delete');
 
-    Route::post('/admin/about/value/store',[AboutPageController::class,'storeCoreValue'])->name('about.value.store');
-    Route::put('/admin/about/value/{coreValue}',[AboutPageController::class,'updateCoreValue'])->name('about.value.update');
-    Route::delete('/admin/about/value/{coreValue}',[AboutPageController::class,'deleteCoreValue'])->name('about.value.delete');
+    Route::post('/admin/about/value/store',[AboutPageController::class,'storeCoreValue'])
+        ->middleware('permission:about.manage')
+        ->name('about.value.store');
+    Route::put('/admin/about/value/{coreValue}',[AboutPageController::class,'updateCoreValue'])
+        ->middleware('permission:about.manage')
+        ->name('about.value.update');
+    Route::delete('/admin/about/value/{coreValue}',[AboutPageController::class,'deleteCoreValue'])
+        ->middleware('permission:about.manage')
+        ->name('about.value.delete');
 
 
 /*===========================================
 | BLOG ADMIN
 ===========================================*/
 
-    Route::resource('/admin/categories',CategoryController::class)->names('admin.categories');
-    Route::delete('/admin/categories/bulk-delete', [CategoryController::class, 'bulkDelete'])->name('admin.categories.bulk-delete');
-    Route::post('/admin/categories/import', [CategoryController::class, 'import'])->name('admin.categories.import');
-    Route::get('/admin/categories/export', [CategoryController::class, 'export'])->name('admin.categories.export');
-    Route::delete('/admin/tags/bulk-delete', [TagController::class, 'bulkDelete'])->name('admin.tags.bulk-delete');
-    Route::resource('/admin/tags',TagController::class)->names('admin.tags');
-    Route::resource('/admin/posts',PostController::class)->names('admin.posts');
-    Route::post('/admin/posts/{post}/toggle-publish', [BlogPostController::class, 'togglePublish'])->name('admin.posts.toggle-publish');
-    Route::post('/admin/posts/{post}/toggle-featured', [BlogPostController::class, 'toggleFeatured'])->name('admin.posts.toggle-featured');
-    Route::post('/admin/posts/{post}/duplicate', [BlogPostController::class, 'duplicate'])->name('admin.posts.duplicate');
-    Route::post('/admin/upload-image', [BlogPostController::class, 'uploadImage'])->name('admin.upload.image');
-    Route::post('/admin/posts/bulk-action', [BlogPostController::class, 'bulkAction'])->name('admin.posts.bulk-action');
+    Route::resource('/admin/categories',CategoryController::class)
+        ->names('admin.categories');
+    Route::delete('/admin/categories/bulk-delete', [CategoryController::class, 'bulkDelete'])
+        ->middleware('permission:categories.delete')
+        ->name('admin.categories.bulk-delete');
+    Route::post('/admin/categories/import', [CategoryController::class, 'import'])
+        ->middleware('permission:categories.create')
+        ->name('admin.categories.import');
+    Route::get('/admin/categories/export', [CategoryController::class, 'export'])
+        ->middleware('permission:categories.view')
+        ->name('admin.categories.export');
+    Route::delete('/admin/tags/bulk-delete', [TagController::class, 'bulkDelete'])
+        ->middleware('permission:tags.delete')
+        ->name('admin.tags.bulk-delete');
+    Route::resource('/admin/tags',TagController::class)
+        ->names('admin.tags');
+    Route::resource('/admin/posts',PostController::class)
+        ->names('admin.posts');
+    Route::post('/admin/posts/{post}/toggle-publish', [BlogPostController::class, 'togglePublish'])
+        ->middleware('permission:posts.update')
+        ->name('admin.posts.toggle-publish');
+    Route::post('/admin/posts/{post}/toggle-featured', [BlogPostController::class, 'toggleFeatured'])
+        ->middleware('permission:posts.update')
+        ->name('admin.posts.toggle-featured');
+    Route::post('/admin/posts/{post}/duplicate', [BlogPostController::class, 'duplicate'])
+        ->middleware('permission:posts.delete')
+        ->name('admin.posts.duplicate');
+    Route::post('/admin/upload-image', [BlogPostController::class, 'uploadImage'])
+        ->middleware('permission:posts.update')
+        ->name('admin.upload.image');
+    Route::post('/admin/posts/bulk-action', [BlogPostController::class, 'bulkAction'])
+        ->middleware('permission:posts.update')
+        ->name('admin.posts.bulk-action');
 
 
 /*===========================================
 | SERVICE CONTACT
 ===========================================*/
 
-    Route::delete('/admin/servicecontact/bulk-delete',[ServiceContractController::class,'bulkDelete'])->name('admin.servicecontact.bulk-delete');
-    Route::post('/admin/servicecontact/{servicecontact}/toggle-status',[ServiceContractController::class,'toggleStatus'])->name('admin.servicecontact.toggle-status');
+    Route::delete('/admin/servicecontact/bulk-delete',[ServiceContractController::class,'bulkDelete'])
+        ->middleware('permission:servicequeries.delete')
+        ->name('admin.servicecontact.bulk-delete');
+    Route::post('/admin/servicecontact/{servicecontact}/toggle-status',[ServiceContractController::class,'toggleStatus'])
+        ->middleware('permission:servicequeries.resolve')
+        ->name('admin.servicecontact.toggle-status');
     Route::resource('/admin/servicecontact',ServiceContractController::class)->names('admin.servicecontact');
 
 
@@ -236,38 +312,107 @@ Route::middleware(['auth', 'admin'])->group(function(){
 | COMMENTS - ADMIN
 ===========================================*/
 
-    Route::get('/admin/comments',[AdminCommentController::class,'index'])->name('admin.comments.index');
-    Route::delete('/admin/comments/bulk-delete',[AdminCommentController::class,'bulkDelete'])->name('admin.comments.bulk-delete');
-    Route::get('/admin/comments/{comment}/reply',[AdminCommentController::class,'createReply'])->name('admin.comments.reply.create');
-    Route::post('/admin/comments/{comment}/reply',[AdminCommentController::class,'storeReply'])->name('admin.comments.reply.store');
-    Route::get('/admin/comments/{comment}/reply/{reply}/edit',[AdminCommentController::class,'editReply'])->name('admin.comments.reply.edit');
-    Route::put('/admin/comments/{comment}/reply/{reply}',[AdminCommentController::class,'updateReply'])->name('admin.comments.reply.update');
-    Route::post('/admin/comments/{comment}/approve',[AdminCommentController::class,'approve'])->name('admin.comments.approve');
-    Route::delete('/admin/comments/{comment}',[AdminCommentController::class,'destroy'])->name('admin.comments.destroy');
+    Route::get('/admin/comments',[AdminCommentController::class,'index'])
+        ->middleware('permission:comments.view')
+        ->name('admin.comments.index');
+    Route::delete('/admin/comments/bulk-delete',[AdminCommentController::class,'bulkDelete'])
+        ->middleware('permission:comments.delete')
+        ->name('admin.comments.bulk-delete');
+    Route::get('/admin/comments/{comment}/reply',[AdminCommentController::class,'createReply'])
+        ->middleware('permission:comments.reply')
+        ->name('admin.comments.reply.create');
+    Route::post('/admin/comments/{comment}/reply',[AdminCommentController::class,'storeReply'])
+        ->middleware('permission:comments.reply')
+        ->name('admin.comments.reply.store');
+    Route::get('/admin/comments/{comment}/reply/{reply}/edit',[AdminCommentController::class,'editReply'])
+        ->middleware('permission:comments.reply')
+        ->name('admin.comments.reply.edit');
+    Route::put('/admin/comments/{comment}/reply/{reply}',[AdminCommentController::class,'updateReply'])
+        ->middleware('permission:comments.reply')
+        ->name('admin.comments.reply.update');
+    Route::post('/admin/comments/{comment}/approve',[AdminCommentController::class,'approve'])
+        ->middleware('permission:comments.reply')
+        ->name('admin.comments.approve');
+    Route::delete('/admin/comments/{comment}',[AdminCommentController::class,'destroy'])
+        ->middleware('permission:comments.delete')
+        ->name('admin.comments.destroy');
     
     
 /*===========================================
 | PARTNERS - ADMIN
 ===========================================*/    
-    Route::get('/admin/partners', [PartnerController::class, 'index'])
+        Route::get('/admin/partners', [PartnerController::class, 'index'])
+            ->middleware('permission:partners.view')
             ->name('partners.index');
     
     Route::get('/admin/partners/create', [PartnerController::class, 'create'])
+        ->middleware('permission:partners.create')
         ->name('partners.create');
 
     Route::post('/admin/partners', [PartnerController::class, 'store'])
+        ->middleware('permission:partners.create')
         ->name('partners.store');
 
     Route::get('/admin/partners/{partner}/edit', [PartnerController::class, 'edit'])
+        ->middleware('permission:partners.update')
         ->name('partners.edit');
 
     Route::put('/admin/partners/{partner}', [PartnerController::class, 'update'])
+        ->middleware('permission:partners.update')
         ->name('partners.update');
 
     Route::delete('/admin/partners/bulk-delete', [PartnerController::class, 'bulkDelete'])
+        ->middleware('permission:partners.delete')
         ->name('partners.bulk-delete');
     Route::delete('/admin/partners/{partner}', [PartnerController::class, 'destroy'])
+        ->middleware('permission:partners.delete')
         ->name('partners.destroy');
+
+/*===========================================
+| USERS, ROLES, PERMISSIONS
+===========================================*/
+
+    Route::get('/admin/users/roles', [RoleController::class, 'index'])
+        ->middleware('permission:roles.manage')
+        ->name('admin.roles.index');
+    Route::post('/admin/users/roles', [RoleController::class, 'store'])
+        ->middleware('permission:roles.manage')
+        ->name('admin.roles.store');
+    Route::get('/admin/users/roles/{role}/edit', [RoleController::class, 'edit'])
+        ->middleware('permission:roles.manage')
+        ->name('admin.roles.edit');
+    Route::put('/admin/users/roles/{role}', [RoleController::class, 'update'])
+        ->middleware('permission:roles.manage')
+        ->name('admin.roles.update');
+
+    Route::get('/admin/users/permissions', [RolePermissionController::class, 'index'])
+        ->middleware('permission:permissions.manage')
+        ->name('admin.permissions.index');
+    Route::post('/admin/users/permissions/{role}', [RolePermissionController::class, 'update'])
+        ->middleware('permission:permissions.manage')
+        ->name('admin.permissions.update');
+
+    Route::get('/admin/users', [AdminUserController::class, 'index'])
+        ->middleware('permission:users.view')
+        ->name('admin.users.index');
+    Route::get('/admin/users/create', [AdminUserController::class, 'create'])
+        ->middleware('permission:users.create')
+        ->name('admin.users.create');
+    Route::post('/admin/users', [AdminUserController::class, 'store'])
+        ->middleware('permission:users.create')
+        ->name('admin.users.store');
+    Route::get('/admin/users/{user}/edit', [AdminUserController::class, 'edit'])
+        ->middleware('permission:users.update')
+        ->name('admin.users.edit');
+    Route::put('/admin/users/{user}', [AdminUserController::class, 'update'])
+        ->middleware('permission:users.update')
+        ->name('admin.users.update');
+    Route::post('/admin/users/{user}/reset-password', [AdminUserController::class, 'resetPassword'])
+        ->middleware('permission:users.reset_password')
+        ->name('admin.users.reset-password');
+    Route::delete('/admin/users/{user}', [AdminUserController::class, 'destroy'])
+        ->middleware('permission:users.delete')
+        ->name('admin.users.destroy');
 
 /*===========================================
 | GOOGLE ANALYTICS
