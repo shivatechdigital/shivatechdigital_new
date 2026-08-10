@@ -30,6 +30,12 @@
           <span>Search Console Details</span>
         </a>
       </li>
+      <li class="{{ request()->routeIs('admin.gsc.inspect') ? 'active-page' : '' }}">
+        <a href="{{ route('admin.gsc.inspect') }}" class="{{ request()->routeIs('admin.gsc.inspect') ? 'active-page' : '' }}">
+          <iconify-icon icon="solar:radar-2-bold-duotone" class="menu-icon"></iconify-icon>
+          <span>GSC URL Inspection</span>
+        </a>
+      </li>
       @endif
       @if($can('sitedetails.manage'))
       <li class="{{ request()->routeIs('sitedetails') ? 'active-page' : '' }} mb-2">

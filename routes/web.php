@@ -158,6 +158,13 @@ Route::middleware(['auth', 'admin'])->group(function(){
         ->middleware('permission:dashboard.view')
         ->name('admin.analytics.search-console');
 
+    Route::get('/admin/gsc-inspect', [AnalyticsController::class, 'gscInspectPage'])
+        ->middleware('permission:dashboard.view')
+        ->name('admin.gsc.inspect');
+    Route::post('/admin/gsc-inspect/run', [AnalyticsController::class, 'gscInspectRun'])
+        ->middleware('permission:dashboard.view')
+        ->name('admin.gsc.inspect.run');
+
 
 /*===========================================
 | SETTINGS & SITE DETAILS

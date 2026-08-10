@@ -384,6 +384,140 @@ class AnalyticsController extends Controller
         return array_values(array_unique(array_filter($candidates)));
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // GSC URL INSPECTION UI
+    // ─────────────────────────────────────────────────────────────────────────
+
+    public function gscInspectPage()
+    {
+        return view('adminDashboard.pages.analytics.gsc-inspect');
+    }
+
+    public function gscInspectRun(Request $request)
+    {
+        set_time_limit(300);
+
+        $siteUrl    = 'sc-domain:shivatechdigital.com';
+        $baseDomain = 'https://shivatechdigital.com';
+
+        $client = new Client();
+        $client->setAuthConfig($this->googleCredentialsPath());
+        $client->addScope('https://www.googleapis.com/auth/webmasters.readonly');
+        $httpClient = $client->authorize();
+
+        $urls = $this->gscInspectUrlList($baseDomain);
+        $results = [];
+
+        foreach ($urls as $url) {
+            try {
+                $response = $httpClient->post(
+                    'https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',
+                    ['json' => ['inspectionUrl' => $url, 'siteUrl' => $siteUrl]]
+                );
+
+                $data   = json_decode((string) $response->getBody(), true);
+                $result = $data['inspectionResult']    ?? [];
+                $index  = $result['indexStatusResult'] ?? [];
+                $rich   = $result['richResultsResult'] ?? [];
+                $mobile = $result['mobileUsabilityResult'] ?? [];
+
+                $richIssues = [];
+                foreach ($rich['detectedItems'] ?? [] as $det) {
+                    foreach ($det['items'] ?? [] as $item) {
+                        foreach ($item['issues'] ?? [] as $issue) {
+                            if (!empty($issue['issueMessage'])) {
+                                $richIssues[] = $issue['issueMessage'];
+                            }
+                        }
+                    }
+                }
+
+                $mobileIssues = array_column($mobile['issues'] ?? [], 'issueType');
+
+                $results[] = [
+                    'url'            => $url,
+                    'verdict'        => $index['verdict']       ?? 'UNKNOWN',
+                    'coverage'       => $index['coverageState'] ?? '',
+                    'indexing'       => $index['indexingState'] ?? '',
+                    'last_crawl'     => $index['lastCrawlTime'] ?? '',
+                    'crawled_as'     => $index['crawledAs']     ?? '',
+                    'robots'         => $index['robotsTxtState'] ?? '',
+                    'canonical'      => $index['googleCanonical'] ?? '',
+                    'rich_verdict'   => $rich['verdict']   ?? 'N/A',
+                    'rich_issues'    => implode(' | ', $richIssues),
+                    'mobile_verdict' => $mobile['verdict'] ?? 'N/A',
+                    'mobile_issues'  => implode(' | ', $mobileIssues),
+                ];
+            } catch (\Exception $e) {
+                $results[] = [
+                    'url'            => $url,
+                    'verdict'        => 'ERROR',
+                    'coverage'       => $e->getMessage(),
+                    'indexing'       => '', 'last_crawl' => '',
+                    'crawled_as'     => '', 'robots'     => '',
+                    'canonical'      => '', 'rich_verdict' => '',
+                    'rich_issues'    => '', 'mobile_verdict' => '',
+                    'mobile_issues'  => '',
+                ];
+            }
+
+            usleep(150000); // 150ms between requests
+        }
+
+        return response()->json(['results' => $results]);
+    }
+
+    private function gscInspectUrlList(string $base): array
+    {
+        $urls = [
+            $base . '/',
+            $base . '/about',
+            $base . '/services',
+            $base . '/contact',
+            $base . '/portfolio',
+            $base . '/privacy-policy',
+            $base . '/terms-of-service',
+            $base . '/blog',
+            $base . '/services/our-services',
+            $base . '/services/web-development',
+            $base . '/services/mobile-app-development',
+            $base . '/services/ui-ux-design',
+            $base . '/services/ecommerce-development',
+            $base . '/services/digital-marketing',
+            $base . '/services/seo-services',
+            $base . '/services/social-media-marketing',
+            $base . '/services/content-marketing',
+            $base . '/services/cloud-solutions',
+            $base . '/services/maintenance-support',
+            $base . '/services/branding-services',
+            $base . '/services/graphic-design',
+            $base . '/services/video-production',
+            $base . '/services/web-development-noida',
+            $base . '/services/web-development-delhi',
+            $base . '/services/web-development-gurgaon',
+            $base . '/services/web-development-ghaziabad',
+            $base . '/services/mobile-app-development-noida',
+            $base . '/services/mobile-app-development-delhi',
+            $base . '/services/mobile-app-development-gurgaon',
+            $base . '/services/mobile-app-development-ghaziabad',
+            $base . '/services/cloud-migration-noida',
+            $base . '/services/cloud-migration-delhi',
+            $base . '/services/cloud-migration-gurgaon',
+            $base . '/services/cloud-migration-ghaziabad',
+        ];
+
+        \App\Models\BlogPost::where('status', 'published')->pluck('slug')
+            ->each(fn ($s) => $urls[] = $base . '/blog/' . $s);
+
+        \App\Models\Category::pluck('slug')
+            ->each(fn ($s) => $urls[] = $base . '/category/' . $s);
+
+        \App\Models\Tag::pluck('slug')
+            ->each(fn ($s) => $urls[] = $base . '/tag/' . $s);
+
+        return array_unique($urls);
+    }
+
     private function googleCredentialsPath(): string
     {
         $configuredPath = config('services.google.credentials_json_path');
