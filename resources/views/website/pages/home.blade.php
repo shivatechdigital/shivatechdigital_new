@@ -315,89 +315,6 @@
 
 
 .partner-card{border: 1px solid #d9d3d3 !important; background: rgb(177 174 174 / 6%);}
-
-/* ===== TESTIMONIALS SECTION ===== */
-.testimonials-section { background: #f8fafc; }
-.testi-card {
-    background: #fff;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 18px;
-    padding: 28px;
-    position: relative;
-    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
-    box-shadow: 0 4px 18px rgba(0,0,0,.05);
-    display: flex;
-    flex-direction: column;
-}
-.testi-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 14px 40px rgba(102,126,234,.15);
-    border-color: #667eea;
-}
-.testi-quote-icon {
-    font-size: 2rem;
-    color: #667eea;
-    opacity: .18;
-    position: absolute;
-    top: 18px;
-    right: 22px;
-    line-height: 1;
-}
-.testi-stars { display: flex; gap: 3px; margin-bottom: 14px; }
-.testi-star-fill { color: #f59e0b; font-size: .85rem; }
-.testi-star-empty { color: #cbd5e1; font-size: .85rem; }
-.testi-review {
-    color: #475569;
-    font-size: .92rem;
-    line-height: 1.7;
-    flex: 1;
-    margin-bottom: 20px;
-    font-style: italic;
-}
-.testi-author {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-top: 18px;
-    border-top: 1px solid #f1f5f9;
-    flex-wrap: wrap;
-}
-.testi-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #e0e7ff;
-    flex-shrink: 0;
-}
-.testi-avatar-placeholder {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: 700;
-    font-size: 1.1rem;
-    flex-shrink: 0;
-}
-.testi-author-info { flex: 1; min-width: 0; }
-.testi-name { display: block; font-size: .92rem; color: #1a1a2e; font-weight: 700; }
-.testi-meta { display: block; font-size: .78rem; color: #64748b; margin-top: 2px; }
-.testi-service-badge {
-    font-size: .68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .6px;
-    background: linear-gradient(135deg, #667eea20, #764ba220);
-    color: #667eea;
-    border: 1px solid #667eea40;
-    border-radius: 30px;
-    padding: 3px 10px;
-    white-space: nowrap;
-}
 .faq-section { background: #f8fafc !important; }
 .slide-web      { background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 60%, #dbeafe 100%) !important; }
 .slide-android  { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #d1fae5 100%) !important; }
@@ -1835,65 +1752,74 @@
     <!-- ========================================
          TESTIMONIALS SECTION
     ======================================== -->
-    <section class="testimonials-section py-5" id="testimonials" aria-labelledby="testimonials-heading"
-             itemscope itemtype="https://schema.org/ItemList">
+    <section class="testimonials-creative py-5" id="testimonials" aria-labelledby="testimonials-heading">
         <div class="container">
             <header class="section-header text-center mb-5" data-aos="fade-up">
-                <span class="section-label">Client Reviews</span>
-                <h2 class="section-title-creative-dark" id="testimonials-heading" itemprop="name">
-                    What Our Clients Say
-                </h2>
-                <p class="section-subtitle-creative">
-                    Real feedback from businesses we've helped grow across Noida, Delhi NCR and beyond.
-                </p>
+                <span class="section-label">Client Testimonials</span>
+                <h2 class="section-title-creative-dark" id="testimonials-heading">What Our Delhi NCR Clients Say</h2>
+                <p class="section-subtitle-creative">Real feedback from startups and businesses we've helped grow across Noida, Delhi NCR and beyond.</p>
             </header>
 
-            <div class="row g-4 justify-content-center">
-                @foreach($testimonials as $testi)
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($loop->index % 3) * 100 }}"
-                     itemprop="itemListElement" itemscope itemtype="https://schema.org/Review">
-                    <article class="testi-card h-100" itemprop="reviewBody">
-                        <div class="testi-quote-icon" aria-hidden="true">
-                            <i class="fas fa-quote-left"></i>
-                        </div>
-                        <div class="testi-stars" aria-label="{{ $testi->rating }} out of 5 stars"
-                             itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
-                            <meta itemprop="ratingValue" content="{{ $testi->rating }}">
-                            <meta itemprop="bestRating" content="5">
-                            @for($s = 1; $s <= 5; $s++)
-                                <i class="fas fa-star {{ $s <= $testi->rating ? 'testi-star-fill' : 'testi-star-empty' }}"
-                                   aria-hidden="true"></i>
-                            @endfor
-                        </div>
-                        <p class="testi-review" itemprop="description">"{{ $testi->review }}"</p>
-                        <div class="testi-author" itemprop="author" itemscope itemtype="https://schema.org/Person">
-                            @if($testi->client_photo)
-                                <img src="{{ asset('storage/' . $testi->client_photo) }}"
-                                     alt="{{ $testi->client_name }}"
-                                     class="testi-avatar"
+            <div class="testimonials-slider" data-aos="fade-up" data-aos-delay="200" role="region" aria-label="Client testimonials carousel">
+                <div class="testimonials-track" id="testimonialsTrack">
+                    @foreach($testimonials as $testi)
+                    <article class="testimonial-card-creative" itemscope itemtype="https://schema.org/Review">
+                        <span itemprop="itemReviewed" itemscope itemtype="https://schema.org/Service" class="visually-hidden">
+                            <meta itemprop="name" content="Shiva Tech Digital {{ $testi->service_type ?? 'Services' }}">
+                        </span>
+                        <div class="testimonial-bg-glow" aria-hidden="true"></div>
+                        <div class="client-info-creative mb-3">
+                            <div class="client-avatar">
+                                <img src="{{ $testi->client_photo ? asset('storage/' . $testi->client_photo) : 'https://ui-avatars.com/api/?name=' . urlencode($testi->client_name) . '&background=667eea&color=fff' }}"
+                                     alt="{{ $testi->client_name }}{{ $testi->client_company ? ' - ' . $testi->client_company : '' }}"
                                      loading="lazy"
-                                     width="48" height="48"
-                                     itemprop="image">
-                            @else
-                                <span class="testi-avatar-placeholder" aria-hidden="true">
-                                    {{ strtoupper(substr($testi->client_name, 0, 1)) }}
-                                </span>
-                            @endif
-                            <div class="testi-author-info">
-                                <strong class="testi-name" itemprop="name">{{ $testi->client_name }}</strong>
-                                @if($testi->client_role || $testi->client_company)
-                                <span class="testi-meta">
-                                    {{ $testi->client_role }}{{ $testi->client_role && $testi->client_company ? ', ' : '' }}{{ $testi->client_company }}
-                                </span>
-                                @endif
+                                     width="60"
+                                     height="60"
+                                     onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($testi->client_name) }}&background=667eea&color=fff'">
+                                <div class="avatar-ring" aria-hidden="true"></div>
                             </div>
-                            @if($testi->service_type)
-                            <span class="testi-service-badge ms-auto">{{ $testi->service_type }}</span>
-                            @endif
+                            <div class="client-details">
+                                <h3 itemprop="author" itemscope itemtype="https://schema.org/Person">
+                                    <span itemprop="name">{{ $testi->client_name }}</span>
+                                </h3>
+                                <p class="client-position">
+                                    {{ $testi->client_role }}{{ $testi->client_role && $testi->client_company ? ', ' : '' }}{{ $testi->client_company }}
+                                </p>
+                                <div class="stars-rating" itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating"
+                                     aria-label="{{ $testi->rating }} out of 5 stars">
+                                    <meta itemprop="ratingValue" content="{{ $testi->rating }}">
+                                    <meta itemprop="bestRating" content="5">
+                                    @for($s = 1; $s <= $testi->rating; $s++)
+                                        <i class="fas fa-star" aria-hidden="true"></i>
+                                    @endfor
+                                    @for($s = $testi->rating + 1; $s <= 5; $s++)
+                                        <i class="far fa-star" aria-hidden="true" style="color:#475569;"></i>
+                                    @endfor
+                                </div>
+                            </div>
                         </div>
+                        <blockquote class="testimonial-text" itemprop="reviewBody">
+                            "{{ $testi->review }}"
+                        </blockquote>
+                        @if($testi->service_type)
+                        <span style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;background:rgba(99,102,241,.12);color:#818cf8;border:1px solid rgba(99,102,241,.25);border-radius:30px;padding:3px 12px;display:inline-block;">
+                            {{ $testi->service_type }}
+                        </span>
+                        @endif
+                        <meta itemprop="datePublished" content="{{ $testi->created_at->toDateString() }}">
                     </article>
+                    @endforeach
                 </div>
-                @endforeach
+
+                <nav class="slider-controls" aria-label="Testimonials navigation">
+                    <button class="slider-btn prev-btn" id="prevTestimonial" aria-label="View previous testimonial">
+                        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <div class="slider-dots" id="testimonialDots" role="tablist" aria-label="Testimonial slides"></div>
+                    <button class="slider-btn next-btn" id="nextTestimonial" aria-label="View next testimonial">
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </nav>
             </div>
         </div>
     </section>
