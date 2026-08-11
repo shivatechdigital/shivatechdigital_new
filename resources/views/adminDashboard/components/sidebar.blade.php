@@ -129,6 +129,28 @@
           </ul>
         </li>
       @endif
+
+      @if($can('testimonials.view'))
+        <!-- Testimonials Management -->
+        <li class="dropdown {{ request()->routeIs('admin.testimonials.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.testimonials.*') ? 'active-page' : '' }}">
+            <iconify-icon icon="solar:star-outline" class="menu-icon"></iconify-icon>
+            <span>Testimonials</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="{{ route('admin.testimonials.index') }}" class="{{ request()->routeIs('admin.testimonials.index') || request()->routeIs('admin.testimonials.edit') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> All Testimonials
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('admin.testimonials.create') }}" class="{{ request()->routeIs('admin.testimonials.create') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add Testimonial
+              </a>
+            </li>
+          </ul>
+        </li>
+      @endif
         
       @if($can('tags.view'))
         <!-- Tags Management -->

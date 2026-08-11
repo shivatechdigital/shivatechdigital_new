@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\RolePermissionController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\TestimonialController;
 
 /*===========================================
 | Correct Route
@@ -475,5 +476,26 @@ Route::middleware(['auth', 'admin'])->group(function(){
         return redirect('/');
     })->where('any', '.*\.html');
 
+/*===========================================
+| TESTIMONIALS
+===========================================*/
+    Route::get('/admin/testimonials', [TestimonialController::class, 'index'])
+        ->middleware('permission:testimonials.view')
+        ->name('admin.testimonials.index');
+    Route::get('/admin/testimonials/create', [TestimonialController::class, 'create'])
+        ->middleware('permission:testimonials.create')
+        ->name('admin.testimonials.create');
+    Route::post('/admin/testimonials', [TestimonialController::class, 'store'])
+        ->middleware('permission:testimonials.create')
+        ->name('admin.testimonials.store');
+    Route::get('/admin/testimonials/{testimonial}/edit', [TestimonialController::class, 'edit'])
+        ->middleware('permission:testimonials.update')
+        ->name('admin.testimonials.edit');
+    Route::put('/admin/testimonials/{testimonial}', [TestimonialController::class, 'update'])
+        ->middleware('permission:testimonials.update')
+        ->name('admin.testimonials.update');
+    Route::delete('/admin/testimonials/{testimonial}', [TestimonialController::class, 'destroy'])
+        ->middleware('permission:testimonials.delete')
+        ->name('admin.testimonials.destroy');
 
 });
