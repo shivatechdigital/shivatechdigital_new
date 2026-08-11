@@ -44,6 +44,33 @@
 .navbar-toggler { border: 1.5px solid rgba(30,41,59,0.2) !important; border-radius: 8px !important; padding: 6px 10px !important; }
 .navbar-toggler:focus { box-shadow: none !important; }
 .navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231e293b' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important; }
+.profile-menu { margin-left: 10px; }
+.profile-trigger {
+    width: 44px;
+    height: 44px;
+    border: 2px solid rgba(255,255,255,.32);
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #e2e8f0;
+    background: rgba(15, 23, 42, .32);
+    font-weight: 800;
+    font-size: .9rem;
+    text-decoration: none;
+    transition: all .2s ease;
+}
+.profile-trigger:hover { color: #fff; border-color: #60a5fa; box-shadow: 0 0 0 4px rgba(37,99,235,.2); }
+.profile-menu .dropdown-menu {
+    min-width: 170px;
+    margin-top: 10px;
+    border: 1px solid #dbeafe;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(2, 8, 23, .18);
+}
+.profile-menu .dropdown-item { font-size: .86rem; font-weight: 600; color: #0f172a; }
+.profile-menu .dropdown-item:hover { background: #eff6ff; color: #1d4ed8; }
+.profile-menu:hover .dropdown-menu { display: block; }
 
 /* ---- MEGA MENU ---- */
 .mega-dropdown { position: static !important; }
@@ -235,6 +262,23 @@
                         <li><a class="dropdown-item" href="{{ route('pricing') }}">Pricing</a></li>
                     </ul>
                 </li>
+
+                @auth
+                    <li class="nav-item dropdown profile-menu">
+                        <a href="#" class="profile-trigger" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu">
+                            {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                            <li><a class="dropdown-item" href="{{ route('user.profile.edit') }}"><i class="fas fa-user-edit me-2"></i>Profile Edit</a></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item"><i class="fas fa-right-from-bracket me-2"></i>Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                @endauth
 
                 <li class="nav-item"><a class="nav-link btn-get-started" href="{{ route('contact') }}"><i class="fas fa-rocket"></i> Get Started</a></li>
             </ul>

@@ -13,6 +13,7 @@ use App\Http\Controllers\Frontend\QuoteCalculatorController;
 use App\Http\Controllers\Frontend\CareerController;
 use App\Http\Controllers\Frontend\CaseStudyController;
 use App\Http\Controllers\Frontend\ClientPortalController;
+use App\Http\Controllers\Frontend\UserProfileController;
 use App\Http\Controllers\WebServiceContactController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
@@ -90,6 +91,8 @@ Route::post('/service-contact-submit',[WebServiceContactController::class,'submi
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/client/portal', [ClientPortalController::class, 'index'])->name('client.portal.index');
     Route::get('/client/portal/{slug}', [ClientPortalController::class, 'show'])->name('client.portal.show');
+    Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::put('/profile/edit', [UserProfileController::class, 'update'])->name('user.profile.update');
 });
 
 // BLOG
