@@ -421,7 +421,6 @@
         row.dataset.rich    = r.rich_verdict;
         if (!rowMatchesFilter(r)) row.style.display = 'none';
 
-        const important  = isSeoImportant(r.url);
         const hasIssues  = r.rich_verdict === 'FAIL' || !!r.rich_issues;
         const liveBtnId  = 'live-' + idx;
         const idxBtnId   = 'idx-'  + idx;
