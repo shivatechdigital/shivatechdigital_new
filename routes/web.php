@@ -14,6 +14,7 @@ use App\Http\Controllers\Frontend\CareerController;
 use App\Http\Controllers\Frontend\CaseStudyController;
 use App\Http\Controllers\Frontend\ClientPortalController;
 use App\Http\Controllers\Frontend\UserProfileController;
+use App\Http\Controllers\Auth\GuestEmailVerificationController;
 use App\Http\Controllers\WebServiceContactController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
@@ -88,11 +89,18 @@ Route::get('/privacy-policy', fn()=>view('website.pages.privacy-policy'))->name(
 Route::get('/terms-of-service', fn()=>view('website.pages.terms-of-service'))->name('terms-of-service');
 Route::post('/service-contact-submit',[WebServiceContactController::class,'submit'])->name('servicecontact.submit');
 
+Route::get('/email/verify-account/{id}/{hash}', GuestEmailVerificationController::class)
+    ->middleware(['signed'])
+    ->name('verification.guest.verify');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::put('/profile/edit', [UserProfileController::class, 'update'])->name('user.profile.update');
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/client/portal', [ClientPortalController::class, 'index'])->name('client.portal.index');
     Route::get('/client/portal/{slug}', [ClientPortalController::class, 'show'])->name('client.portal.show');
-    Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('user.profile.edit');
-    Route::put('/profile/edit', [UserProfileController::class, 'update'])->name('user.profile.update');
 });
 
 // BLOG
