@@ -14,7 +14,7 @@ return new class extends Migration
             $table->date('quotation_valid_till')->nullable()->after('quotation_subject');
             $table->json('quotation_line_items')->nullable()->after('quotation_valid_till');
             $table->unsignedInteger('quotation_discount')->default(0)->after('quotation_line_items');
-            $table->unsignedDecimal('quotation_tax_percent', 5, 2)->default(0)->after('quotation_discount');
+            $table->decimal('quotation_tax_percent', 5, 2)->unsigned()->default(0)->after('quotation_discount');
             $table->text('quotation_terms')->nullable()->after('quotation_tax_percent');
         });
     }
