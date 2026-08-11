@@ -216,17 +216,26 @@
                 </li>
 
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('portfolio') ? 'active' : '' }}" href="{{ route('portfolio') }}">Portfolio</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('case-studies.*') ? 'active' : '' }}" href="{{ route('case-studies.index') }}">Case Studies</a></li>
                 <li class="nav-item"><a class="nav-link {{ Request::is('blog*') ? 'active' : '' }}" href="{{ route('blog.index') }}">Blog</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('careers') ? 'active' : '' }}" href="{{ route('careers') }}">Careers</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('quote-calculator') ? 'active' : '' }}" href="{{ route('quote-calculator') }}">Quote</a></li>
-                @auth
-                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('client.portal.*') ? 'active' : '' }}" href="{{ route('client.portal.index') }}">Tracker</a></li>
-                @else
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Client Login</a></li>
-                @endauth
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('pricing') ? 'active' : '' }}" href="{{ route('pricing') }}">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact</a></li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {{ request()->routeIs('case-studies.*') || request()->routeIs('careers') || request()->routeIs('quote-calculator') || request()->routeIs('client.portal.*') || request()->routeIs('pricing') ? 'active' : '' }}" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="dropdown-toggle-icon">More <i class="fas fa-chevron-down chevron ms-1"></i></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="moreDropdown">
+                        <li><a class="dropdown-item" href="{{ route('case-studies.index') }}">Case Study</a></li>
+                        <li><a class="dropdown-item" href="{{ route('careers') }}">Carrer</a></li>
+                        <li><a class="dropdown-item" href="{{ route('quote-calculator') }}">Quote</a></li>
+                        @auth
+                            <li><a class="dropdown-item" href="{{ route('client.portal.index') }}">Tracker</a></li>
+                        @else
+                            <li><a class="dropdown-item" href="{{ route('login') }}">Tracker</a></li>
+                        @endauth
+                        <li><a class="dropdown-item" href="{{ route('pricing') }}">Pricing</a></li>
+                    </ul>
+                </li>
+
                 <li class="nav-item"><a class="nav-link btn-get-started" href="{{ route('contact') }}"><i class="fas fa-rocket"></i> Get Started</a></li>
             </ul>
         </div>
