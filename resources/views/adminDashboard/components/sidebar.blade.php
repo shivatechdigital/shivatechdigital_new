@@ -173,6 +173,20 @@
           </ul>
         </li>
       @endif
+
+      @if($can('subscribers.manage'))
+        <!-- Newsletter Subscribers -->
+        <li class="{{ request()->routeIs('admin.subscribers.*') ? 'active-page' : '' }}">
+          <a href="{{ route('admin.subscribers.index') }}" class="{{ request()->routeIs('admin.subscribers.*') ? 'active-page' : '' }}">
+            <iconify-icon icon="solar:letter-outline" class="menu-icon"></iconify-icon>
+            <span>Newsletter</span>
+            @php $activeCount = \App\Models\Subscriber::where('status','active')->count(); @endphp
+            @if($activeCount > 0)
+              <span class="badge text-sm fw-semibold rounded-pill bg-success-main text-white radius-4 px-8 py-4">{{ $activeCount }}</span>
+            @endif
+          </a>
+        </li>
+      @endif
         
       @if($can('tags.view'))
         <!-- Tags Management -->

@@ -61,13 +61,58 @@
 .blog-results-count { font-size: 0.9rem; color: #475569; white-space: nowrap; }
 .blog-results-count strong { color: #0f172a; font-size: 1.1rem; }
 
-.blog-search-form .input-group { width: 280px; max-width: 100%; }
+.blog-search-form .input-group { width: 320px; max-width: 100%; position: relative; }
 .blog-search-form .form-control {
     border: 1.5px solid #e2e8f0; border-radius: 10px 0 0 10px;
     padding: 8px 14px; font-size: 0.87rem; color: #374151;
 }
 .blog-search-form .form-control:focus { border-color: #2563eb; box-shadow: none; }
 .blog-search-form .btn { border-radius: 0 10px 10px 0; background: #2563eb; border: none; padding: 8px 14px; }
+
+/* Live search dropdown */
+.live-search-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0; right: 0;
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.15);
+    z-index: 9999;
+    display: none;
+    overflow: hidden;
+    max-height: 420px;
+    overflow-y: auto;
+}
+.live-search-dropdown.open { display: block; }
+.live-search-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    text-decoration: none;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background .15s;
+}
+.live-search-item:last-child { border-bottom: none; }
+.live-search-item:hover { background: #f8fafc; }
+.live-search-thumb {
+    width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0;
+}
+.live-search-thumb-placeholder {
+    width: 44px; height: 44px; border-radius: 8px; flex-shrink: 0;
+    background: #eff6ff; display: flex; align-items: center; justify-content: center; color: #93c5fd;
+}
+.live-search-title {
+    font-size: .83rem; font-weight: 600; color: #0f172a;
+    display: block; line-height: 1.3; margin-bottom: 2px;
+}
+.live-search-meta { font-size: .72rem; color: #94a3b8; }
+.live-search-cat { color: #2563eb; font-weight: 600; }
+.live-search-empty { padding: 14px; text-align: center; color: #94a3b8; font-size: .85rem; }
+.live-search-footer {
+    padding: 10px 14px; text-align: center; background: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+}
+.live-search-footer a { font-size: .8rem; color: #2563eb; font-weight: 600; text-decoration: none; }
 
 /* Main area */
 .blog-main { background: #fff; min-height: 60vh; }
@@ -288,8 +333,15 @@
             </div>
             <form action="{{ route('blog.index') }}" method="GET" class="blog-search-form d-flex" style="gap:0;">
                 <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Search articles..." value="{{ request('search') }}">
-                    <button class="btn" type="submit" style="background:#2563eb;color:#fff;border-radius:0 10px 10px 0;padding:0 14px;"><i class="fas fa-search"></i></button>
+                    <input type="text" id="blogSearchInput" name="search" class="form-control"
+                        placeholder="Search articles..." value="{{ request('search') }}"
+                        autocomplete="off" aria-label="Search blog articles">
+                    <button class="btn" type="submit" aria-label="Submit search"
+                        style="background:#2563eb;color:#fff;border-radius:0 10px 10px 0;padding:0 14px;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    {{-- Live search dropdown --}}
+                    <div id="liveSearchDropdown" class="live-search-dropdown" role="listbox" aria-label="Search suggestions"></div>
                 </div>
                 @foreach(request()->except(['search','page']) as $key => $val)
                 <input type="hidden" name="{{ $key }}" value="{{ $val }}">
@@ -452,11 +504,77 @@
                     </div>
                 </div>
                 @endif
+
+                {{-- Newsletter CTA Banner (below posts) --}}
+                <div class="newsletter-cta-banner mt-4" style="background:linear-gradient(135deg,#eff6ff 0%,#eef2ff 100%);border:1.5px solid #bfdbfe;border-radius:16px;padding:28px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+                    <div style="width:52px;height:52px;background:linear-gradient(135deg,#2563eb,#7c3aed);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="fas fa-bell" style="color:#fff;font-size:1.2rem;"></i>
+                    </div>
+                    <div style="flex:1;min-width:200px;">
+                        <h4 style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:4px;">Never Miss an Article!</h4>
+                        <p style="font-size:.83rem;color:#475569;margin:0;">Get the latest web development tips and digital marketing insights straight to your inbox.</p>
+                    </div>
+                    @if(session('newsletter_success'))
+                    <div style="color:#10b981;font-size:.85rem;font-weight:600;"><i class="fas fa-check-circle me-1"></i>Subscribed!</div>
+                    @else
+                    <form action="{{ route('newsletter.subscribe') }}" method="POST" style="display:flex;gap:8px;flex-wrap:wrap;">
+                        @csrf
+                        <input type="hidden" name="source" value="blog_banner">
+                        <input type="email" name="email" required placeholder="Enter your email"
+                            style="flex:1;min-width:200px;border:1.5px solid #bfdbfe;border-radius:8px;padding:9px 14px;font-size:.85rem;color:#374151;outline:none;"
+                            aria-label="Email for newsletter">
+                        <button type="submit" class="btn btn-primary" style="background:#2563eb;border:none;border-radius:8px;padding:9px 18px;font-size:.85rem;font-weight:700;white-space:nowrap;">
+                            <i class="fas fa-paper-plane me-1"></i>Subscribe
+                        </button>
+                    </form>
+                    @endif
+                </div>
+
             </div>
 
-            {{-- SIDEBAR (no Newsletter, no Popular Tags) --}}
+            {{-- SIDEBAR --}}
             <div class="col-lg-4">
                 <div class="sidebar-sticky">
+
+                    {{-- Newsletter Subscribe Widget --}}
+                    <div class="sidebar-widget newsletter-widget mb-3" style="border:none;overflow:visible;">
+                        <div style="background:linear-gradient(135deg,#0f172a 0%,#1e40af 100%);border-radius:14px;padding:24px;position:relative;overflow:hidden;">
+                            <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,.05);border-radius:50%;"></div>
+                            <div style="position:absolute;bottom:-30px;left:-10px;width:80px;height:80px;background:rgba(99,102,241,.15);border-radius:50%;"></div>
+                            <div style="position:relative;z-index:1;">
+                                <div style="width:40px;height:40px;background:linear-gradient(135deg,#6366f1,#818cf8);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+                                    <i class="fas fa-envelope" style="color:#fff;font-size:.9rem;"></i>
+                                </div>
+                                <h4 style="color:#fff;font-size:.95rem;font-weight:700;margin-bottom:6px;">Get Weekly Insights</h4>
+                                <p style="color:rgba(255,255,255,.7);font-size:.8rem;line-height:1.6;margin-bottom:16px;">
+                                    Web development tips, SEO guides & digital marketing strategies — delivered every week.
+                                </p>
+                                @if(session('newsletter_success'))
+                                <div style="background:rgba(16,185,129,.2);border:1px solid rgba(16,185,129,.4);border-radius:8px;padding:10px 14px;color:#6ee7b7;font-size:.8rem;margin-bottom:12px;">
+                                    <i class="fas fa-check-circle me-1"></i>{{ session('newsletter_success') }}
+                                </div>
+                                @endif
+                                <form action="{{ route('newsletter.subscribe') }}" method="POST" id="sidebarNewsletterForm">
+                                    @csrf
+                                    <input type="hidden" name="source" value="blog_sidebar">
+                                    <div style="margin-bottom:8px;">
+                                        <input type="email" name="email" required placeholder="Your email address"
+                                            style="width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;outline:none;"
+                                            onfocus="this.style.borderColor='rgba(99,102,241,.8)'"
+                                            onblur="this.style.borderColor='rgba(255,255,255,.2)'"
+                                            aria-label="Email address for newsletter">
+                                    </div>
+                                    <button type="submit"
+                                        style="width:100%;background:linear-gradient(135deg,#6366f1,#818cf8);border:none;border-radius:8px;padding:10px 14px;color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;transition:opacity .2s;">
+                                        <i class="fas fa-paper-plane me-1"></i> Subscribe Free
+                                    </button>
+                                </form>
+                                <p style="color:rgba(255,255,255,.4);font-size:.72rem;text-align:center;margin-top:10px;margin-bottom:0;">
+                                    No spam. Unsubscribe anytime.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
                     {{-- Archives --}}
                     <div class="sidebar-widget">
@@ -569,3 +687,101 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    'use strict';
+
+    const input    = document.getElementById('blogSearchInput');
+    const dropdown = document.getElementById('liveSearchDropdown');
+    if (!input || !dropdown) return;
+
+    const LIVE_URL = '{{ route("blog.search.live") }}';
+    let debounceTimer, lastQuery = '';
+
+    function closeDropdown() {
+        dropdown.classList.remove('open');
+        dropdown.innerHTML = '';
+    }
+
+    function renderResults(items, q) {
+        if (!items.length) {
+            dropdown.innerHTML = `<div class="live-search-empty"><i class="fas fa-search-minus me-2"></i>No results for "<strong>${escHtml(q)}</strong>"</div>`;
+        } else {
+            const rows = items.map(item => `
+                <a href="${item.slug}" class="live-search-item" role="option">
+                    ${item.image
+                        ? `<img src="${item.image}" class="live-search-thumb" alt="${escHtml(item.title)}" loading="lazy">`
+                        : `<div class="live-search-thumb-placeholder"><i class="fas fa-image"></i></div>`}
+                    <div style="min-width:0">
+                        <span class="live-search-title">${highlightMatch(item.title, q)}</span>
+                        <span class="live-search-meta">
+                            ${item.category ? `<span class="live-search-cat">${escHtml(item.category)}</span> · ` : ''}
+                            ${item.read_time ? `${item.read_time} min read · ` : ''}
+                            ${item.date ?? ''}
+                        </span>
+                    </div>
+                </a>
+            `).join('');
+            const footer = `<div class="live-search-footer">
+                <a href="{{ route('blog.index') }}?search=${encodeURIComponent(q)}">
+                    <i class="fas fa-search me-1"></i>See all results for "${escHtml(q)}"
+                </a>
+            </div>`;
+            dropdown.innerHTML = rows + footer;
+        }
+        dropdown.classList.add('open');
+    }
+
+    function escHtml(str) {
+        return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    function highlightMatch(text, q) {
+        const escaped = escHtml(text);
+        const safeQ   = escHtml(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return escaped.replace(new RegExp(`(${safeQ})`, 'gi'), '<mark style="background:#dbeafe;color:#1d4ed8;border-radius:3px;padding:0 2px;">$1</mark>');
+    }
+
+    input.addEventListener('input', function () {
+        const q = this.value.trim();
+        clearTimeout(debounceTimer);
+
+        if (q.length < 2) { closeDropdown(); lastQuery = ''; return; }
+        if (q === lastQuery) return;
+
+        debounceTimer = setTimeout(() => {
+            lastQuery = q;
+            fetch(`${LIVE_URL}?q=${encodeURIComponent(q)}`, { headers: { 'Accept': 'application/json' } })
+                .then(r => r.json())
+                .then(data => { if (input.value.trim() === q) renderResults(data, q); })
+                .catch(() => closeDropdown());
+        }, 280);
+    });
+
+    // Keyboard navigation
+    input.addEventListener('keydown', function (e) {
+        const items = dropdown.querySelectorAll('.live-search-item');
+        const focused = dropdown.querySelector('.live-search-item:focus');
+        if (e.key === 'Escape') { closeDropdown(); input.blur(); return; }
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (!focused && items[0]) { items[0].focus(); }
+            else if (focused) { const next = focused.nextElementSibling; if (next?.classList.contains('live-search-item')) next.focus(); }
+        }
+        if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (focused) {
+                const prev = focused.previousElementSibling;
+                if (prev?.classList.contains('live-search-item')) prev.focus(); else input.focus();
+            }
+        }
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!input.closest('.input-group').contains(e.target)) closeDropdown();
+    });
+})();
+</script>
+@endpush

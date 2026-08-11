@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\PortfolioController;
 use App\Http\Controllers\WebServiceContactController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NewsletterController;
 
 use App\Http\Controllers\Admin\ContactManagementController;
 use App\Http\Controllers\Admin\SettingController;
@@ -32,6 +33,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\PortfolioProjectController;
+use App\Http\Controllers\Admin\SubscriberController;
 
 /*===========================================
 | Correct Route
@@ -78,6 +80,7 @@ Route::post('/service-contact-submit',[WebServiceContactController::class,'submi
 
 // BLOG
 Route::get('/blog',[BlogController::class,'index'])->name('blog.index');
+Route::get('/blog/search/live',[BlogController::class,'liveSearch'])->name('blog.search.live');
 Route::get('/blog/{slug}',[BlogController::class,'show'])->name('blog.show');
 Route::get('/category/{slug}',[BlogController::class,'category'])->name('blog.category');
 Route::get('/tag/{slug}',[BlogController::class,'tag'])->name('blog.tag');
@@ -85,6 +88,10 @@ Route::get('/tag/{slug}',[BlogController::class,'tag'])->name('blog.tag');
 // Comment System
 Route::post('/post/{post}/comment',[CommentController::class,'store'])->name('comment.store');
 Route::delete('/comment/{comment}',[CommentController::class,'destroy'])->name('comment.destroy');
+
+// Newsletter
+Route::post('/newsletter/subscribe', [NewsletterController::class,'subscribe'])->name('newsletter.subscribe');
+Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class,'unsubscribe'])->name('newsletter.unsubscribe');
 
 //services
 Route::prefix('services')->name('services.')->group(function () {
@@ -521,5 +528,18 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::delete('/admin/portfolio/{portfolio}', [PortfolioProjectController::class, 'destroy'])
         ->middleware('permission:portfolio.delete')
         ->name('admin.portfolio.destroy');
+
+/*===========================================
+| NEWSLETTER SUBSCRIBERS
+===========================================*/
+    Route::get('/admin/subscribers', [SubscriberController::class, 'index'])
+        ->middleware('permission:subscribers.manage')
+        ->name('admin.subscribers.index');
+    Route::delete('/admin/subscribers/{subscriber}', [SubscriberController::class, 'destroy'])
+        ->middleware('permission:subscribers.manage')
+        ->name('admin.subscribers.destroy');
+    Route::get('/admin/subscribers/export', [SubscriberController::class, 'exportCsv'])
+        ->middleware('permission:subscribers.manage')
+        ->name('admin.subscribers.export');
 
 });

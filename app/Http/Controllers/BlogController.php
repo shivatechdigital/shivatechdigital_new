@@ -180,10 +180,43 @@ class BlogController extends Controller
     }
 
     /**
+     * AJAX Live Search — returns JSON suggestions
+     */
+    public function liveSearch(Request $request)
+    {
+        $q = trim((string) $request->input('q', ''));
+
+        if (mb_strlen($q) < 2) {
+            return response()->json([]);
+        }
+
+        $results = BlogPost::published()
+            ->search($q)
+            ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'reading_time', 'published_at')
+            ->with('category:id,name,slug')
+            ->limit(6)
+            ->get()
+            ->map(fn ($post) => [
+                'title'    => $post->title,
+                'slug'     => route('blog.show', $post->slug),
+                'excerpt'  => \Str::limit($post->excerpt ?? '', 80),
+                'category' => $post->category?->name,
+                'image'    => $post->featured_image
+                    ? (\Illuminate\Support\Str::startsWith($post->featured_image, 'http')
+                        ? $post->featured_image
+                        : asset('storage/' . $post->featured_image))
+                    : null,
+                'read_time' => $post->reading_time,
+                'date'      => $post->published_at?->format('M d, Y'),
+            ]);
+
+        return response()->json($results);
+    }
+
+    /**
      * Single Blog Page
      */
-    public function show($slug)
-    {
+    public function show($slug)    {
         $post = BlogPost::published()
             ->with([
                 'category',
