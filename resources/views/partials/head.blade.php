@@ -11,13 +11,20 @@
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
 @php
-    try {
-        $adminVite = Vite::useManifestFilename('manifest.json')
-            ->withEntryPoints(['resources/css/app.css', 'resources/js/app.js'])
-            ->toHtml();
-    } catch (\Exception $e) {
-        $adminVite = ''; // Vite manifest missing - skip gracefully
-    }
+    $manifestPath = public_path('build/manifest.json');
+    $manifest = file_exists($manifestPath)
+        ? json_decode(file_get_contents($manifestPath), true)
+        : null;
+
+    $cssEntry = is_array($manifest) ? ($manifest['resources/css/app.css']['file'] ?? null) : null;
+    $jsEntry = is_array($manifest) ? ($manifest['resources/js/app.js']['file'] ?? null) : null;
 @endphp
-{!! $adminVite !!}
+
+@if($cssEntry && $jsEntry)
+    <link rel="stylesheet" href="{{ asset('build/' . $cssEntry) }}">
+    <script type="module" src="{{ asset('build/' . $jsEntry) }}"></script>
+@else
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+@endif
+
 @fluxAppearance
