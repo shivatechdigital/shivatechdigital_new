@@ -947,6 +947,8 @@
         </div>
     </section>
 
+    @include('website.partials.google-reviews-widget')
+
 @endsection
 
 @push('scripts')

@@ -41,7 +41,7 @@ use App\Http\Controllers\Admin\SubscriberController;
 
 Route::redirect('/about-us', '/about', 301);
 Route::redirect('/contact.html', '/contact', 301);
-Route::redirect('/faq', '/contact', 301);
+Route::get('/faq', fn()=>view('website.pages.faq'))->name('faq');
 
 Route::get('/{slug}.html', function ($slug) {
     return redirect('/' . $slug, 301);
@@ -74,6 +74,7 @@ Route::get('/services', fn()=>view('website.pages.services'))->name('services');
 Route::get('/contact', [ContactController::class,'index'])->name('contact');
 Route::post('/contact', [ContactController::class,'store'])->name('contact.store');
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
+Route::get('/pricing', fn()=>view('website.pages.pricing'))->name('pricing');
 Route::get('/privacy-policy', fn()=>view('website.pages.privacy-policy'))->name('privacy-policy');
 Route::get('/terms-of-service', fn()=>view('website.pages.terms-of-service'))->name('terms-of-service');
 Route::post('/service-contact-submit',[WebServiceContactController::class,'submit'])->name('servicecontact.submit');

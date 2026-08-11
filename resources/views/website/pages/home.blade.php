@@ -1540,6 +1540,8 @@
     <!-- ========================================
          FAQ SECTION - NOIDA FOCUSED
     ======================================== -->
+    @include('website.partials.google-reviews-widget', ['widgetTestimonials' => $testimonials])
+
     <section class="faq-section py-5" id="faq" aria-labelledby="faq-heading">
         <div class="container">
             <header class="section-header text-center mb-5" data-aos="fade-up">
