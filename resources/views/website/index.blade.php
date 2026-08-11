@@ -325,6 +325,42 @@
     @include('website.js.script')
     @stack('scripts')
 
+    {{-- Live Chat Integration (Crisp / Tawk.to) --}}
+    @php
+        $liveChatProvider = config('services.live_chat.provider');
+        $crispWebsiteId = config('services.live_chat.crisp_website_id');
+        $tawkPropertyId = config('services.live_chat.tawk_property_id');
+        $tawkWidgetId = config('services.live_chat.tawk_widget_id');
+    @endphp
+
+    @if($liveChatProvider === 'crisp' && !empty($crispWebsiteId))
+        <script>
+            window.$crisp = window.$crisp || [];
+            window.CRISP_WEBSITE_ID = @json($crispWebsiteId);
+            (function () {
+                var d = document;
+                var s = d.createElement('script');
+                s.src = 'https://client.crisp.chat/l.js';
+                s.async = 1;
+                d.getElementsByTagName('head')[0].appendChild(s);
+            })();
+        </script>
+    @elseif($liveChatProvider === 'tawk' && !empty($tawkPropertyId) && !empty($tawkWidgetId))
+        <script>
+            var Tawk_API = Tawk_API || {};
+            var Tawk_LoadStart = new Date();
+            (function () {
+                var s1 = document.createElement('script');
+                var s0 = document.getElementsByTagName('script')[0];
+                s1.async = true;
+                s1.src = 'https://embed.tawk.to/' + @json($tawkPropertyId) + '/' + @json($tawkWidgetId);
+                s1.charset = 'UTF-8';
+                s1.setAttribute('crossorigin', '*');
+                s0.parentNode.insertBefore(s1, s0);
+            })();
+        </script>
+    @endif
+
     {{-- Exit Intent Lead Capture Popup --}}
     @include('website.partials.exit-popup')
 

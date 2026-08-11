@@ -75,6 +75,11 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    public function clientProjects()
+    {
+        return $this->hasMany(ClientProject::class);
+    }
+
     public function roleRecord()
     {
         return $this->belongsTo(Role::class, 'role', 'name');

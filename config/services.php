@@ -51,4 +51,11 @@ return [
         'site_url' => env('SEARCH_CONSOLE_SITE_URL', env('GSC_PROPERTY', 'sc-domain:shivatechdigital.com')),
     ],
 
+    'live_chat' => [
+        'provider' => env('LIVE_CHAT_PROVIDER', ''), // crisp|tawk
+        'crisp_website_id' => env('CRISP_WEBSITE_ID', ''),
+        'tawk_property_id' => env('TAWK_PROPERTY_ID', ''),
+        'tawk_widget_id' => env('TAWK_WIDGET_ID', ''),
+    ],
+
 ];

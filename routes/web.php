@@ -9,6 +9,10 @@ use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\ServicesController;
 use App\Http\Controllers\Frontend\PortfolioController;
+use App\Http\Controllers\Frontend\QuoteCalculatorController;
+use App\Http\Controllers\Frontend\CareerController;
+use App\Http\Controllers\Frontend\CaseStudyController;
+use App\Http\Controllers\Frontend\ClientPortalController;
 use App\Http\Controllers\WebServiceContactController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
@@ -74,10 +78,19 @@ Route::get('/services', fn()=>view('website.pages.services'))->name('services');
 Route::get('/contact', [ContactController::class,'index'])->name('contact');
 Route::post('/contact', [ContactController::class,'store'])->name('contact.store');
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
+Route::get('/quote-calculator', [QuoteCalculatorController::class, 'index'])->name('quote-calculator');
+Route::get('/careers', [CareerController::class, 'index'])->name('careers');
+Route::get('/case-studies', [CaseStudyController::class, 'index'])->name('case-studies.index');
+Route::get('/case-studies/{slug}', [CaseStudyController::class, 'show'])->name('case-studies.show');
 Route::get('/pricing', fn()=>view('website.pages.pricing'))->name('pricing');
 Route::get('/privacy-policy', fn()=>view('website.pages.privacy-policy'))->name('privacy-policy');
 Route::get('/terms-of-service', fn()=>view('website.pages.terms-of-service'))->name('terms-of-service');
 Route::post('/service-contact-submit',[WebServiceContactController::class,'submit'])->name('servicecontact.submit');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/client/portal', [ClientPortalController::class, 'index'])->name('client.portal.index');
+    Route::get('/client/portal/{slug}', [ClientPortalController::class, 'show'])->name('client.portal.show');
+});
 
 // BLOG
 Route::get('/blog',[BlogController::class,'index'])->name('blog.index');
