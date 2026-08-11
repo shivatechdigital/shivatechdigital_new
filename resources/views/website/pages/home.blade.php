@@ -1,12 +1,12 @@
 ﻿@extends('website.index')
 
-@section('title', $settings->meta_title ?? 'Affordable Web Development Company in Noida | Shiva Tech Digital | Delhi NCR')
+@section('title', $settings->meta_title ?? 'Best Web Design Company in Noida | Affordable Web Development | Shiva Tech Digital')
 
-@section('meta_title', $settings->meta_title ?? 'Affordable Web Development Company in Noida | Shiva Tech Digital')
+@section('meta_title', $settings->meta_title ?? 'Best Web Design Company in Noida | Shiva Tech Digital')
 
-@section('meta_description', $settings->meta_description ?? 'Shiva Tech Digital is an affordable web development, mobile app development & digital marketing in Noida, Delhi NCR.-friendly pricing. Get free consultation today!')
+@section('meta_description', $settings->meta_description ?? 'Shiva Tech Digital — Best web design & development company in Noida Sector 62, Delhi NCR. Affordable websites, mobile apps, SEO & digital marketing. Free consultation. Trusted by 100+ clients.')
 
-@section('meta_keywords', 'web development company Noida, affordable web developer Noida, mobile app development Noida, digital marketing agency Noida, SEO services Noida, website design company Noida, web development Delhi NCR, React developer Noida, Laravel development company Noida, website development Noida, cheap website design Noida')
+@section('meta_keywords', 'best web design company in noida, best web development company noida, web design company noida, web developer noida sector 62, affordable web developer noida, web development company delhi ncr, mobile app development noida, digital marketing agency noida, SEO services noida, website design company noida')
 
 @section('canonical')
 <link rel="canonical" href="https://shivatechdigital.com/">

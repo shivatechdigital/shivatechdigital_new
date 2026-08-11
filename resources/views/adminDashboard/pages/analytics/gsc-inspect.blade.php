@@ -98,9 +98,14 @@
                 Test All Issues
             </button>
             <button id="btn-request-all" class="btn btn-outline-primary d-flex align-items-center gap-2" disabled
-                    title="SEO-important pages jo indexed nahi hain unko request karega">
+                    title="Saare pages ka indexing request Google ko bhejo">
                 <iconify-icon icon="solar:refresh-bold"></iconify-icon>
-                Request Indexing (SEO pages only)
+                Request All
+            </button>
+            <button id="btn-request-not-indexed" class="btn btn-outline-warning d-flex align-items-center gap-2" disabled
+                    title="Sirf jo PASS nahi hain unhe request karo (NEUTRAL + FAIL + UNKNOWN)">
+                <iconify-icon icon="solar:danger-bold"></iconify-icon>
+                Request Not-Indexed
             </button>
             <button id="btn-export" class="btn btn-outline-success d-flex align-items-center gap-2" disabled>
                 <iconify-icon icon="solar:download-bold"></iconify-icon>
@@ -133,14 +138,19 @@
 
     {{-- Filter bar --}}
     <div id="gi-filter-bar" class="gi-panel mb-3 d-flex align-items-center gap-3 flex-wrap" style="display:none!important; padding:14px 20px;">
-        <span style="font-size:13px;color:var(--gi-muted);font-weight:600;">Filter:</span>
+        <span style="font-size:13px;color:var(--gi-muted);font-weight:600;">Index:</span>
         <div class="d-flex gap-2 flex-wrap">
             <button class="btn btn-sm btn-outline-secondary gi-filter active" data-filter="all">All</button>
             <button class="btn btn-sm btn-outline-success gi-filter"   data-filter="PASS">Indexed</button>
             <button class="btn btn-sm btn-outline-warning gi-filter"   data-filter="NEUTRAL">Neutral</button>
             <button class="btn btn-sm btn-outline-danger gi-filter"    data-filter="FAIL">Not Indexed</button>
             <button class="btn btn-sm btn-outline-secondary gi-filter" data-filter="UNKNOWN">Unknown</button>
-            <button class="btn btn-sm btn-outline-danger gi-filter"    data-filter="rich-issues">Rich Issues</button>
+        </div>
+        <span style="font-size:13px;color:var(--gi-muted);font-weight:600;margin-left:8px;">Rich:</span>
+        <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-sm btn-outline-success gi-filter"  data-filter="rich-pass">Rich PASS</button>
+            <button class="btn btn-sm btn-outline-danger gi-filter"   data-filter="rich-fail">Rich FAIL</button>
+            <button class="btn btn-sm btn-outline-secondary gi-filter" data-filter="rich-na">Rich N/A</button>
         </div>
         <input type="text" id="gi-search" class="form-control form-control-sm ms-auto" style="max-width:220px;" placeholder="Search URL...">
     </div>
@@ -181,11 +191,12 @@
     const LOAD_EP        = '{{ route("admin.gsc.inspect.load") }}';
     const CLEAR_EP       = '{{ route("admin.gsc.inspect.clear") }}';
 
-    const runBtn        = document.getElementById('btn-run');
-    const resumeBtn     = document.getElementById('btn-resume');
-    const testIssuesBtn = document.getElementById('btn-test-issues');
-    const reqAllBtn     = document.getElementById('btn-request-all');
-    const expBtn        = document.getElementById('btn-export');
+    const runBtn           = document.getElementById('btn-run');
+    const resumeBtn        = document.getElementById('btn-resume');
+    const testIssuesBtn    = document.getElementById('btn-test-issues');
+    const reqAllBtn        = document.getElementById('btn-request-all');
+    const reqNotIndexedBtn = document.getElementById('btn-request-not-indexed');
+    const expBtn           = document.getElementById('btn-export');
 
     let allResults   = [];
     let activeFilter = 'all';
@@ -291,6 +302,7 @@
         runBtn.innerHTML        = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Start Fresh';
         testIssuesBtn.disabled  = false;
         reqAllBtn.disabled      = false;
+        reqNotIndexedBtn.disabled = false;
         expBtn.disabled         = false;
 
         if (!isComplete) {
@@ -343,12 +355,18 @@
             if (data.success) {
                 btn.textContent = '✓ Sent';
                 btn.classList.add('sent');
-                btn.title = 'Sent at ' + (data.notifyTime || 'now');
+                btn.title = `Accepted by Google at ${data.notifyTime || 'now'}\n${data.note || ''}`;
             } else {
-                btn.textContent = '✗ Error';
+                btn.textContent = '✗ Failed';
                 btn.classList.add('error');
-                btn.title = data.error || 'Unknown error';
+                btn.title = data.hint
+                    ? `${data.error}\n\n💡 ${data.hint}`
+                    : (data.error || 'Unknown error');
                 btn.disabled = false;
+                // Show alert for 403 (permission issue)
+                if (data.httpStatus === 403) {
+                    console.warn('GSC Indexing API 403:', data.hint);
+                }
             }
         } catch(e) {
             btn.textContent = '✗ Error';
@@ -423,9 +441,7 @@
             <td>${hasIssues
                 ? `<button id="${liveBtnId}" class="gi-live-btn" data-url="${r.url}" title="Live page fetch + JSON-LD validation">Live Test</button>`
                 : `<span style="font-size:11px;color:#22c55e;">✓ Clean</span>`}</td>
-            <td>${important
-                ? `<button id="${idxBtnId}" class="gi-idx-btn" data-url="${r.url}">Request</button>`
-                : `<span style="font-size:11px;color:var(--gi-muted);">—</span>`}</td>`;
+            <td><button id="${idxBtnId}" class="gi-idx-btn" data-url="${r.url}">Request</button></td>`;
 
         tbody.appendChild(row);
         if (scroll) row.scrollIntoView({ behavior:'smooth', block:'nearest' });
@@ -436,12 +452,10 @@
                 runLiveTest(this.dataset.url, this);
             });
         }
-        // Wire request index button (always independent)
-        if (important) {
-            document.getElementById(idxBtnId)?.addEventListener('click', function() {
-                requestIndexing(this.dataset.url, this);
-            });
-        }
+        // Wire request index button (always available for all pages)
+        document.getElementById(idxBtnId)?.addEventListener('click', function() {
+            requestIndexing(this.dataset.url, this);
+        });
     }
 
     function renderAllRows(results) {
@@ -450,12 +464,34 @@
     }
 
     function rowMatchesFilter(r) {
-        if (activeFilter === 'all')         return true;
-        if (activeFilter === 'rich-issues') return r.rich_verdict === 'FAIL' || !!r.rich_issues;
-        return r.verdict === activeFilter;
+        switch (activeFilter) {
+            case 'all':         return true;
+            case 'PASS':        return r.verdict === 'PASS';
+            case 'NEUTRAL':     return r.verdict === 'NEUTRAL';
+            case 'FAIL':        return r.verdict === 'FAIL';
+            case 'UNKNOWN':     return r.verdict === 'UNKNOWN' || r.verdict === 'ERROR';
+            case 'rich-pass':   return r.rich_verdict === 'PASS';
+            case 'rich-fail':   return r.rich_verdict === 'FAIL' || !!r.rich_issues;
+            case 'rich-na':     return !r.rich_verdict || r.rich_verdict === 'N/A';
+            case 'rich-issues': return r.rich_verdict === 'FAIL' || !!r.rich_issues;
+            default:            return true;
+        }
     }
 
-    function updateStats() {
+    function applyFilter() {
+        const search = document.getElementById('gi-search').value.toLowerCase();
+        document.querySelectorAll('#gi-tbody tr:not(.gi-placeholder)').forEach(row => {
+            const mockR = {
+                verdict:      row.dataset.verdict,
+                rich_verdict: row.dataset.rich,
+                rich_issues:  row.querySelector('td:nth-child(9)')?.textContent?.trim() !== '—' ? 'yes' : '',
+            };
+            let show = rowMatchesFilter(mockR);
+            if (show && search) show = (row.querySelector('a')?.href || '').toLowerCase().includes(search);
+            row.style.display = show ? '' : 'none';
+        });
+    }
+
         const c = { PASS:0, NEUTRAL:0, FAIL:0, UNKNOWN:0, ERROR:0 };
         let rf = 0;
         allResults.forEach(r => { c[r.verdict] = (c[r.verdict]||0) + 1; if (r.rich_verdict==='FAIL') rf++; });
@@ -515,6 +551,7 @@
         runBtn.innerHTML        = '<span class="spinner-border spinner-border-sm"></span> Running... <small>(click to stop)</small>';
         resumeBtn.style.display = 'none';
         reqAllBtn.disabled      = true;
+        reqNotIndexedBtn.disabled = true;
         testIssuesBtn.disabled  = true;
         expBtn.disabled         = true;
         showPanels();
@@ -565,10 +602,11 @@
         }
 
         running = false;
-        runBtn.innerHTML      = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Start Fresh';
-        testIssuesBtn.disabled = allResults.length === 0;
-        reqAllBtn.disabled    = allResults.length === 0;
-        expBtn.disabled       = allResults.length === 0;
+        runBtn.innerHTML          = '<iconify-icon icon="solar:refresh-bold"></iconify-icon> Start Fresh';
+        testIssuesBtn.disabled    = allResults.length === 0;
+        reqAllBtn.disabled        = allResults.length === 0;
+        reqNotIndexedBtn.disabled = allResults.length === 0;
+        expBtn.disabled           = allResults.length === 0;
     }
 
     runBtn.addEventListener('click', () => {
@@ -607,31 +645,40 @@
         runLoop(allResults.length);
     });
 
-    // ── Request All Indexing (SEO-important + not already perfect — no live test required)
+    // ── Request All Indexing — ALL pages, no filter
     reqAllBtn.addEventListener('click', async () => {
         if (!allResults.length) return;
-
-        const eligible = [...document.querySelectorAll('.gi-idx-btn:not(.sent):not(.error)')].filter(btn => {
-            const r = allResults.find(x => x.url === btn.dataset.url);
-            if (!r) return false;
-            if (r.verdict === 'PASS' && r.rich_verdict !== 'FAIL') return false;
-            return true;
-        });
-
-        if (!eligible.length) {
-            reqAllBtn.innerHTML = '✓ All eligible pages already indexed!';
-            return;
-        }
-
+        const eligible = [...document.querySelectorAll('.gi-idx-btn:not(.sent):not(.error)')];
+        if (!eligible.length) { reqAllBtn.innerHTML = '✓ All requested!'; return; }
         reqAllBtn.disabled = true;
         let done = 0;
         for (const btn of eligible) {
             await requestIndexing(btn.dataset.url, btn);
             done++;
-            reqAllBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${done}/${eligible.length} requested...`;
+            reqAllBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${done}/${eligible.length}...`;
             await new Promise(r => setTimeout(r, 500));
         }
-        reqAllBtn.innerHTML = `✓ ${done} URLs requested!`;
+        reqAllBtn.innerHTML = `✓ ${done} requested!`;
+    });
+
+    // ── Request Not-Indexed only (NEUTRAL + FAIL + UNKNOWN)
+    reqNotIndexedBtn.addEventListener('click', async () => {
+        if (!allResults.length) return;
+        const notPassed = ['NEUTRAL', 'FAIL', 'UNKNOWN', 'ERROR'];
+        const eligible = [...document.querySelectorAll('.gi-idx-btn:not(.sent):not(.error)')].filter(btn => {
+            const r = allResults.find(x => x.url === btn.dataset.url);
+            return r && notPassed.includes(r.verdict);
+        });
+        if (!eligible.length) { reqNotIndexedBtn.innerHTML = '✓ All non-indexed requested!'; return; }
+        reqNotIndexedBtn.disabled = true;
+        let done = 0;
+        for (const btn of eligible) {
+            await requestIndexing(btn.dataset.url, btn);
+            done++;
+            reqNotIndexedBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> ${done}/${eligible.length}...`;
+            await new Promise(r => setTimeout(r, 500));
+        }
+        reqNotIndexedBtn.innerHTML = `✓ ${done} not-indexed requested!`;
     });
 
     expBtn.addEventListener('click', () => {

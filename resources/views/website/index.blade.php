@@ -137,40 +137,79 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "LocalBusiness",
+        "@type": ["LocalBusiness", "ProfessionalService"],
         "@id": "https://shivatechdigital.com/#localbusiness",
         "name": "Shiva Tech Digital",
-        "image": "https://shivatechdigital.com/web_assets/img/og-default.jpg",
+        "alternateName": ["ShivaTechDigital", "Shiva Tech Digital Noida", "Shiva Tech Digital Web Development"],
+        "image": [
+            "https://shivatechdigital.com/web_assets/img/og-default.jpg",
+            "https://shivatechdigital.com/web_assets/img/logo.png"
+        ],
         "logo": "https://shivatechdigital.com/web_assets/img/logo.png",
         "url": "https://shivatechdigital.com/",
         "telephone": "+91-7007294764",
         "email": "info@shivatechdigital.com",
-        "priceRange": "$",
-        "description": "Affordable web development and digital marketing startup in Noida, Delhi NCR.",
+        "priceRange": "₹₹",
+        "description": "Shiva Tech Digital is an affordable web development and digital marketing company in Noida Sector 62, Delhi NCR. We specialize in website development, mobile app development (Android & iOS), SEO services, UI/UX design, e-commerce development, and cloud solutions for startups and businesses.",
+        "slogan": "Empowering Businesses with Affordable Digital Solutions",
+        "foundingDate": "2022",
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Sector 62",
+            "streetAddress": "Block A, Industrial Area, Sector 62",
             "addressLocality": "Noida",
             "addressRegion": "Uttar Pradesh",
-            "postalCode": "201301",
+            "postalCode": "201309",
             "addressCountry": "IN"
         },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "28.6274",
+            "longitude": "77.3649"
+        },
+        "hasMap": "https://maps.google.com/?q=Shiva+Tech+Digital+Sector+62+Noida",
+        "areaServed": [
+            {"@type": "City", "name": "Noida", "sameAs": "https://en.wikipedia.org/wiki/Noida"},
+            {"@type": "City", "name": "Greater Noida"},
+            {"@type": "City", "name": "Delhi", "sameAs": "https://en.wikipedia.org/wiki/Delhi"},
+            {"@type": "City", "name": "Gurgaon", "sameAs": "https://en.wikipedia.org/wiki/Gurugram"},
+            {"@type": "City", "name": "Ghaziabad", "sameAs": "https://en.wikipedia.org/wiki/Ghaziabad,_Uttar_Pradesh"},
+            {"@type": "City", "name": "Faridabad"},
+            {"@type": "AdministrativeArea", "name": "Delhi NCR"}
+        ],
         "openingHoursSpecification": [
             {
                 "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
                 "opens": "09:00",
-                "closes": "18:00"
+                "closes": "21:00"
             },
             {
                 "@type": "OpeningHoursSpecification",
-                "dayOfWeek": "Saturday",
+                "dayOfWeek": "Sunday",
                 "opens": "10:00",
-                "closes": "16:00"
+                "closes": "18:00"
             }
         ],
-        "currenciesAccepted": "INR, USD",
-        "paymentAccepted": "Cash, Credit Card, UPI, Bank Transfer",
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Digital Services",
+            "itemListElement": [
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Web Development Services Noida"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Mobile App Development Noida"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "SEO Services Noida"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "UI/UX Design Services"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "E-commerce Development"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Digital Marketing Noida"}},
+                {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Cloud Solutions"}}
+            ]
+        },
+        "currenciesAccepted": "INR",
+        "paymentAccepted": "Cash, Credit Card, UPI, Bank Transfer, EMI",
+        "knowsAbout": [
+            "Web Development", "Mobile App Development", "Laravel", "React", "Flutter",
+            "SEO", "Digital Marketing", "UI/UX Design", "Shopify", "Cloud Migration",
+            "E-commerce Development", "Android App Development", "iOS App Development"
+        ],
         "sameAs": [
             "https://www.facebook.com/profile.php?id=61585380713440",
             "https://www.instagram.com/shivatechdigital",

@@ -26,11 +26,13 @@ class GenerateSitemap extends Command
 
         // ✅ Static pages + legal pages
         $staticPages = [
-            '/about' => ['priority' => 0.8, 'freq' => 'monthly'],
-            '/contact' => ['priority' => 0.7, 'freq' => 'monthly'],
-            '/services' => ['priority' => 0.9, 'freq' => 'weekly'],
-            '/privacy-policy' => ['priority' => 0.4, 'freq' => 'yearly'],
-            '/terms-of-service' => ['priority' => 0.4, 'freq' => 'yearly'],
+            '/about'            => ['priority' => 0.8,  'freq' => 'monthly'],
+            '/contact'          => ['priority' => 0.7,  'freq' => 'monthly'],
+            '/services'         => ['priority' => 0.9,  'freq' => 'weekly'],
+            '/portfolio'        => ['priority' => 0.8,  'freq' => 'monthly'],
+            '/blog'             => ['priority' => 0.85, 'freq' => 'weekly'],
+            '/privacy-policy'   => ['priority' => 0.4,  'freq' => 'yearly'],
+            '/terms-of-service' => ['priority' => 0.4,  'freq' => 'yearly'],
         ];
 
         foreach ($staticPages as $path => $meta) {
@@ -43,19 +45,20 @@ class GenerateSitemap extends Command
 
         // ✅ Core service pages
         $servicePages = [
-            '/services/web-development' => ['priority' => 0.85, 'freq' => 'weekly'],
-            '/services/mobile-app-development' => ['priority' => 0.85, 'freq' => 'weekly'],
-            '/services/ui-ux-design' => ['priority' => 0.8, 'freq' => 'weekly'],
-            '/services/ecommerce-development' => ['priority' => 0.8, 'freq' => 'weekly'],
-            '/services/digital-marketing' => ['priority' => 0.8, 'freq' => 'weekly'],
-            '/services/seo-services' => ['priority' => 0.8, 'freq' => 'weekly'],
-            '/services/social-media-marketing' => ['priority' => 0.75, 'freq' => 'weekly'],
-            '/services/content-marketing' => ['priority' => 0.75, 'freq' => 'weekly'],
-            '/services/cloud-solutions' => ['priority' => 0.8, 'freq' => 'weekly'],
-            '/services/maintenance-support' => ['priority' => 0.7, 'freq' => 'monthly'],
-            '/services/branding-services' => ['priority' => 0.75, 'freq' => 'monthly'],
-            '/services/graphic-design' => ['priority' => 0.7, 'freq' => 'monthly'],
-            '/services/video-production' => ['priority' => 0.65, 'freq' => 'monthly'],
+            '/services/our-services'          => ['priority' => 0.85, 'freq' => 'weekly'],
+            '/services/web-development'       => ['priority' => 0.85, 'freq' => 'weekly'],
+            '/services/mobile-app-development'=> ['priority' => 0.85, 'freq' => 'weekly'],
+            '/services/ui-ux-design'          => ['priority' => 0.8,  'freq' => 'weekly'],
+            '/services/ecommerce-development' => ['priority' => 0.8,  'freq' => 'weekly'],
+            '/services/digital-marketing'     => ['priority' => 0.8,  'freq' => 'weekly'],
+            '/services/seo-services'          => ['priority' => 0.8,  'freq' => 'weekly'],
+            '/services/social-media-marketing'=> ['priority' => 0.75, 'freq' => 'weekly'],
+            '/services/content-marketing'     => ['priority' => 0.75, 'freq' => 'weekly'],
+            '/services/cloud-solutions'       => ['priority' => 0.8,  'freq' => 'weekly'],
+            '/services/maintenance-support'   => ['priority' => 0.7,  'freq' => 'monthly'],
+            '/services/branding-services'     => ['priority' => 0.75, 'freq' => 'monthly'],
+            '/services/graphic-design'        => ['priority' => 0.7,  'freq' => 'monthly'],
+            '/services/video-production'      => ['priority' => 0.65, 'freq' => 'monthly'],
         ];
 
         foreach ($servicePages as $path => $meta) {
@@ -90,8 +93,11 @@ class GenerateSitemap extends Command
             );
         }
 
-        // ✅ Sirf published + indexable blog posts
+        // ✅ Sirf published + indexable blog posts (placeholder slugs exclude)
+        $placeholderSlugs = ['blog-post-2026', 'exact-topic-from-research'];
+
         BlogPost::where('status', 'published')
+            ->whereNotIn('slug', $placeholderSlugs)
             ->orderBy('updated_at', 'desc')
             ->each(function (BlogPost $post) use ($sitemap) {
                 $sitemap->add(

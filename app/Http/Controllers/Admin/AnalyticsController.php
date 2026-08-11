@@ -563,19 +563,37 @@ class AnalyticsController extends Controller
                 ['json' => ['url' => $url, 'type' => 'URL_UPDATED']]
             );
 
+            $statusCode = $response->getStatusCode();
             $data = json_decode((string) $response->getBody(), true);
 
             return response()->json([
                 'success'      => true,
                 'url'          => $url,
+                'httpStatus'   => $statusCode,
                 'notifyTime'   => $data['urlNotificationMetadata']['latestUpdate']['notifyTime'] ?? now()->toISOString(),
+                'note'         => 'Request accepted. Google will crawl within 1-3 days. GSC status updates after crawl.',
+            ]);
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $errorBody = (string) $e->getResponse()->getBody();
+            $errorData = json_decode($errorBody, true);
+            $errorMsg  = $errorData['error']['message'] ?? $errorBody;
+            $errorCode = $e->getResponse()->getStatusCode();
+
+            return response()->json([
+                'success'    => false,
+                'url'        => $url,
+                'httpStatus' => $errorCode,
+                'error'      => $errorMsg,
+                'hint'       => $errorCode === 403
+                    ? 'Service account ko GSC mein Owner permission chahiye. GSC → Settings → Users mein check karo.'
+                    : null,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'url'     => $url,
                 'error'   => $e->getMessage(),
-            ], 200); // 200 so frontend handles it gracefully
+            ]);
         }
     }
 

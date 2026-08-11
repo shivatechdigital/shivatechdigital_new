@@ -3,9 +3,9 @@
 {{-- 🔥 SEO SLUG - This loads meta from service_meta table --}}
 @section('seo_slug', 'services/web-development')
 
-@section('title', 'Web Development Services in Noida')
-@section('meta_description', 'Expert web development services in India. We build custom websites, web applications, and enterprise solutions using React, Angular, Node.js, Laravel & more. Get a free quote today!')
-@section('meta_keywords', 'web development services, custom website development, web application development, frontend development, backend development, React development, Angular development, Laravel development, Node.js development, PHP development, website development company India')
+@section('title', 'Best Web Development Company in Noida | Affordable Website Design | Shiva Tech Digital')
+@section('meta_description', 'Shiva Tech Digital — Best web development company in Noida Sector 62. Affordable custom websites, web apps & e-commerce. Laravel, React, Next.js. Free consultation. 100+ projects delivered in Delhi NCR.')
+@section('meta_keywords', 'best web development company noida, web development company noida, web designer noida sector 62, affordable web development noida, custom website development noida, laravel developer noida, react developer noida, web development delhi ncr')
 
 @section('og_title', 'Professional Web Development Services | Shiva Tech Digital')
 @section('og_description', 'Expert custom web development services. Build scalable, high-performance websites and web applications with our experienced team.')
