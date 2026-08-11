@@ -336,22 +336,38 @@
         <div style="margin-top:56px;" data-aos="fade-up">
             <h3 style="font-size:1.4rem;font-weight:800;color:#0f172a;text-align:center;margin-bottom:28px;">Pricing FAQs</h3>
             <div class="row g-3">
-                @php $priceFaqs2 = [
-                    ['q'=>'Are there any hidden charges?','a'=>'No. All quotes include everything discussed. The only additional costs are third-party services like domain, hosting, or paid APIs — and we always inform you upfront.'],
-                    ['q'=>'Can I pay in installments?','a'=>'Yes! We typically take 50% advance and 50% on delivery. For larger projects, we can split into 3–4 milestones. EMI available for projects above ₹10,000.'],
-                    ['q'=>'Do prices include hosting?','a'=>'Prices do not include hosting costs (typically ₹3,000–₹10,000/year) but we guide you through the best affordable options and set it up for you free of charge.'],
-                    ['q'=>'What if I need changes after delivery?','a'=>'Minor changes within 30 days are free. Beyond that, small changes are ₹500–₹1,000, or you can opt for our Pro Care maintenance plan for unlimited monthly edits.'],
-                ]; @endphp
-                @foreach($priceFaqs2 as $pf)
                 <div class="col-md-6">
                     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px;">
                         <h4 style="font-size:.9rem;font-weight:700;color:#0f172a;margin-bottom:8px;">
-                            <i class="fas fa-circle-question me-2" style="color:#667eea;font-size:.8rem;"></i>{{ $pf['q'] }}
+                            <i class="fas fa-circle-question me-2" style="color:#667eea;font-size:.8rem;"></i>Are there any hidden charges?
                         </h4>
-                        <p style="font-size:.83rem;color:#475569;margin:0;line-height:1.6;">{{ $pf['a'] }}</p>
+                        <p style="font-size:.83rem;color:#475569;margin:0;line-height:1.6;">No. All quotes include everything discussed. The only additional costs are third-party services like domain, hosting, or paid APIs, and we always inform you upfront.</p>
                     </div>
                 </div>
-                @endforeach
+                <div class="col-md-6">
+                    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px;">
+                        <h4 style="font-size:.9rem;font-weight:700;color:#0f172a;margin-bottom:8px;">
+                            <i class="fas fa-circle-question me-2" style="color:#667eea;font-size:.8rem;"></i>Can I pay in installments?
+                        </h4>
+                        <p style="font-size:.83rem;color:#475569;margin:0;line-height:1.6;">Yes. We typically take 50% advance and 50% on delivery. For larger projects, we can split into 3-4 milestones. EMI is available for projects above Rs 10,000.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px;">
+                        <h4 style="font-size:.9rem;font-weight:700;color:#0f172a;margin-bottom:8px;">
+                            <i class="fas fa-circle-question me-2" style="color:#667eea;font-size:.8rem;"></i>Do prices include hosting?
+                        </h4>
+                        <p style="font-size:.83rem;color:#475569;margin:0;line-height:1.6;">Prices do not include hosting costs (typically Rs 3,000-Rs 10,000 per year), but we guide you to affordable options and set it up for you at no additional service charge.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px;">
+                        <h4 style="font-size:.9rem;font-weight:700;color:#0f172a;margin-bottom:8px;">
+                            <i class="fas fa-circle-question me-2" style="color:#667eea;font-size:.8rem;"></i>What if I need changes after delivery?
+                        </h4>
+                        <p style="font-size:.83rem;color:#475569;margin:0;line-height:1.6;">Minor changes within 30 days are free. Beyond that, small changes are billed separately, or you can opt for the Pro Care maintenance plan for ongoing edits.</p>
+                    </div>
+                </div>
             </div>
             <div style="text-align:center;margin-top:20px;">
                 <a href="{{ route('faq') }}" style="color:#667eea;font-size:.85rem;font-weight:600;text-decoration:none;">
