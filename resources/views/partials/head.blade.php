@@ -27,4 +27,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 @endif
 
+@php
+    $fluxCssPath = base_path('vendor/livewire/flux/dist/flux.css');
+@endphp
+@if(file_exists($fluxCssPath))
+    <style>{!! file_get_contents($fluxCssPath) !!}</style>
+@endif
+
 @fluxAppearance
