@@ -491,6 +491,7 @@
         });
     }
 
+    function updateStats() {
         const c = { PASS:0, NEUTRAL:0, FAIL:0, UNKNOWN:0, ERROR:0 };
         let rf = 0;
         allResults.forEach(r => { c[r.verdict] = (c[r.verdict]||0) + 1; if (r.rich_verdict==='FAIL') rf++; });
@@ -500,19 +501,6 @@
         document.getElementById('stat-fail').textContent      = c.FAIL;
         document.getElementById('stat-unknown').textContent   = (c.UNKNOWN||0) + (c.ERROR||0);
         document.getElementById('stat-rich-fail').textContent = rf;
-    }
-
-    function applyFilter() {
-        const search = document.getElementById('gi-search').value.toLowerCase();
-        document.querySelectorAll('#gi-tbody tr:not(.gi-placeholder)').forEach(row => {
-            const v = row.dataset.verdict, r = row.dataset.rich;
-            const url = row.querySelector('a')?.href?.toLowerCase() || '';
-            let show = activeFilter === 'all' ? true
-                : activeFilter === 'rich-issues' ? (r === 'FAIL' || row.querySelector('td:nth-child(9)')?.textContent?.trim() !== '—')
-                : v === activeFilter;
-            if (show && search) show = url.includes(search);
-            row.style.display = show ? '' : 'none';
-        });
     }
 
     document.querySelectorAll('.gi-filter').forEach(btn => {
