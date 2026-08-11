@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
+use App\Http\Responses\LoginResponse;
+use App\Http\Responses\RegisterResponse;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -22,7 +26,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+        $this->app->singleton(RegisterResponseContract::class, RegisterResponse::class);
     }
 
     /**
@@ -52,23 +57,7 @@ class FortifyServiceProvider extends ServiceProvider
             return $user;
         });
         
-        /* |----------------------- | Redirect Back To Same Page After Login/Register |---------------------- */ 
-        Fortify::redirects('login', function () { 
-            // Admin redirect 
-            if (auth()->check() && (auth()->user()->role === 'admin' || auth()->user()->hasPermission('dashboard.view'))) {
-                return '/index'; 
-            } 
-            // Normal user redirect (never push user to admin/dashboard URLs)
-            $intended = session()->pull('url.intended', '/');
-            if (str_starts_with($intended, '/dashboard') || str_starts_with($intended, '/admin') || $intended === '/index') {
-                return '/';
-            }
-
-            return $intended; 
-        });
-        Fortify::redirects('register', function () {
-            return route('verification.notice');
-        });
+        // Redirect responses are handled by custom Fortify response bindings.
     }
 
     /**
