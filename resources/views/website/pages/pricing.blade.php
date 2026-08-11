@@ -23,6 +23,38 @@
 @endpush
 
 @section('website.content')
+@php
+    $fallbackPlans = [
+        'website' => [
+            ['title' => 'Starter Website', 'price_label' => 'Rs 5,000 - Rs 10,000', 'description' => 'Landing page, responsive design, contact form.', 'features' => []],
+            ['title' => 'Business Website', 'price_label' => 'Rs 10,000 - Rs 20,000', 'description' => 'CMS, blog, speed optimization and analytics setup.', 'features' => []],
+            ['title' => 'Custom Platform', 'price_label' => 'Rs 20,000+', 'description' => 'Advanced custom web apps and portal solutions.', 'features' => []],
+        ],
+        'mobile' => [
+            ['title' => 'Basic App', 'price_label' => 'Rs 30,000 - Rs 60,000', 'description' => 'Cross-platform app with core user flows.', 'features' => []],
+            ['title' => 'Business App', 'price_label' => 'Rs 60,000 - Rs 150,000', 'description' => 'Payments, chat, notifications and dashboards.', 'features' => []],
+            ['title' => 'Enterprise App', 'price_label' => 'Rs 150,000+', 'description' => 'Custom backend APIs and scalable architecture.', 'features' => []],
+        ],
+        'seo' => [
+            ['title' => 'Basic SEO', 'price_label' => 'Rs 5,000 / month', 'description' => 'On-page SEO and local optimization for growth.', 'features' => []],
+            ['title' => 'Growth SEO', 'price_label' => 'Rs 12,000 / month', 'description' => 'Technical SEO plus ads and content strategy.', 'features' => []],
+            ['title' => 'Full Marketing', 'price_label' => 'Rs 25,000 / month', 'description' => 'SEO, paid campaigns and full-funnel analytics.', 'features' => []],
+        ],
+        'maintenance' => [
+            ['title' => 'Basic Care', 'price_label' => 'Rs 2,000 / month', 'description' => 'Backups, updates and monthly health checks.', 'features' => []],
+            ['title' => 'Pro Care', 'price_label' => 'Rs 5,000 / month', 'description' => 'Daily backup, speed optimization and support.', 'features' => []],
+            ['title' => 'Premium Support', 'price_label' => 'Rs 12,000 / month', 'description' => 'Priority support for mission-critical platforms.', 'features' => []],
+        ],
+    ];
+
+    $tabLabels = [
+        'website' => 'Website',
+        'mobile' => 'Mobile App',
+        'seo' => 'SEO',
+        'maintenance' => 'Maintenance',
+    ];
+@endphp
+
 <section class="pricing-hero">
     <div class="container text-center text-white">
         <h1 style="font-weight:900;">Pricing Plans</h1>
@@ -33,43 +65,39 @@
 <section style="background:#f8fafc;padding:50px 0 70px;">
     <div class="container">
         <div class="d-flex justify-content-center flex-wrap gap-2 mb-4">
-            <button class="price-tab-btn active" onclick="switchTab(this,'website')">Website</button>
-            <button class="price-tab-btn" onclick="switchTab(this,'mobile')">Mobile App</button>
-            <button class="price-tab-btn" onclick="switchTab(this,'seo')">SEO</button>
-            <button class="price-tab-btn" onclick="switchTab(this,'maintenance')">Maintenance</button>
+            @foreach($tabLabels as $tabKey => $tabLabel)
+                <button class="price-tab-btn {{ $loop->first ? 'active' : '' }}" onclick="switchTab(this,'{{ $tabKey }}')">{{ $tabLabel }}</button>
+            @endforeach
         </div>
 
-        <div id="tab-website" class="price-section active">
-            <div class="row g-4">
-                <div class="col-lg-4"><div class="pricing-card"><h3>Starter Website</h3><p class="price">Rs 5,000 - Rs 10,000</p><p>Landing page, responsive design, contact form.</p></div></div>
-                <div class="col-lg-4"><div class="pricing-card"><h3>Business Website</h3><p class="price">Rs 10,000 - Rs 20,000</p><p>CMS, blog, speed optimization and analytics setup.</p></div></div>
-                <div class="col-lg-4"><div class="pricing-card"><h3>Custom Platform</h3><p class="price">Rs 20,000+</p><p>Advanced custom web apps and portal solutions.</p></div></div>
+        @foreach($tabLabels as $tabKey => $tabLabel)
+            @php
+                $items = ($plansByCategory[$tabKey] ?? collect())->isNotEmpty() ? $plansByCategory[$tabKey] : collect($fallbackPlans[$tabKey]);
+            @endphp
+            <div id="tab-{{ $tabKey }}" class="price-section {{ $loop->first ? 'active' : '' }}">
+                <div class="row g-4">
+                    @foreach($items as $plan)
+                        <div class="col-lg-4">
+                            <div class="pricing-card">
+                                <h3>{{ is_array($plan) ? $plan['title'] : $plan->title }}</h3>
+                                <p class="price">{{ is_array($plan) ? $plan['price_label'] : $plan->price_label }}</p>
+                                <p>{{ is_array($plan) ? ($plan['description'] ?? '') : $plan->description }}</p>
+                                @php
+                                    $features = is_array($plan) ? ($plan['features'] ?? []) : ($plan->features ?? []);
+                                @endphp
+                                @if(!empty($features))
+                                    <ul class="mb-0 mt-2" style="font-size:.85rem;color:#475569;line-height:1.65;">
+                                        @foreach($features as $feature)
+                                            <li>{{ $feature }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
-
-        <div id="tab-mobile" class="price-section">
-            <div class="row g-4">
-                <div class="col-lg-4"><div class="pricing-card"><h3>Basic App</h3><p class="price">Rs 30,000 - Rs 60,000</p><p>Cross-platform app with core user flows.</p></div></div>
-                <div class="col-lg-4"><div class="pricing-card"><h3>Business App</h3><p class="price">Rs 60,000 - Rs 150,000</p><p>Payments, chat, notifications and dashboards.</p></div></div>
-                <div class="col-lg-4"><div class="pricing-card"><h3>Enterprise App</h3><p class="price">Rs 150,000+</p><p>Custom backend APIs and scalable architecture.</p></div></div>
-            </div>
-        </div>
-
-        <div id="tab-seo" class="price-section">
-            <div class="row g-4">
-                <div class="col-lg-4"><div class="pricing-card"><h3>Basic SEO</h3><p class="price">Rs 5,000 / month</p><p>On-page SEO and local optimization for growth.</p></div></div>
-                <div class="col-lg-4"><div class="pricing-card"><h3>Growth SEO</h3><p class="price">Rs 12,000 / month</p><p>Technical SEO plus ads and content strategy.</p></div></div>
-                <div class="col-lg-4"><div class="pricing-card"><h3>Full Marketing</h3><p class="price">Rs 25,000 / month</p><p>SEO, paid campaigns and full-funnel analytics.</p></div></div>
-            </div>
-        </div>
-
-        <div id="tab-maintenance" class="price-section">
-            <div class="row g-4">
-                <div class="col-lg-4"><div class="pricing-card"><h3>Basic Care</h3><p class="price">Rs 2,000 / month</p><p>Backups, updates and monthly health checks.</p></div></div>
-                <div class="col-lg-4"><div class="pricing-card"><h3>Pro Care</h3><p class="price">Rs 5,000 / month</p><p>Daily backup, speed optimization and support.</p></div></div>
-                <div class="col-lg-4"><div class="pricing-card"><h3>Premium Support</h3><p class="price">Rs 12,000 / month</p><p>Priority support for mission-critical platforms.</p></div></div>
-            </div>
-        </div>
+        @endforeach
 
         <div class="text-center mt-5">
             <a href="{{ route('quote-calculator') }}" class="btn btn-primary me-2">Open Quote Calculator</a>

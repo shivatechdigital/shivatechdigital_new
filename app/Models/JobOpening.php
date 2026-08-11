@@ -53,6 +53,11 @@ class JobOpening extends Model
         return $query->where('is_active', true);
     }
 
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class);
+    }
+
     protected static function booted(): void
     {
         static::creating(function (self $model) {

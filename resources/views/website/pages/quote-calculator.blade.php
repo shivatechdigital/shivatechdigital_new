@@ -14,29 +14,58 @@
 @section('website.content')
 <section class="quote-wrap">
     <div class="container">
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="text-center mb-5">
             <span class="badge-soft">Instant Estimation</span>
             <h1 class="mt-3" style="font-weight:800;color:#0f172a;">Project Quote Calculator</h1>
             <p style="max-width:680px;margin:0 auto;color:#475569;">Project type, features, timeline, and support select karke instant budget range pao. Final proposal discovery call ke baad share hoga.</p>
         </div>
 
+        <form action="{{ route('quote-calculator.store') }}" method="POST" id="quoteForm">
+            @csrf
         <div class="row g-4 align-items-stretch">
             <div class="col-lg-7">
                 <div class="quote-card p-4 p-lg-5 h-100">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="quote-label">Your Name</label>
+                            <input type="text" name="name" class="form-control" value="{{ old('name', auth()->user()->name ?? '') }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="quote-label">Email</label>
+                            <input type="email" name="email" class="form-control" value="{{ old('email', auth()->user()->email ?? '') }}" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="quote-label">Phone</label>
+                            <input type="text" name="phone" class="form-control" value="{{ old('phone') }}">
+                        </div>
+                    </div>
+
                     <div class="mb-4">
                         <label class="quote-label">Project Type</label>
-                        <select class="form-select" id="projectType">
-                            <option value="website">Business Website</option>
-                            <option value="ecommerce">E-commerce Store</option>
-                            <option value="webapp">Custom Web App</option>
-                            <option value="mobile">Mobile App</option>
-                            <option value="marketing">SEO + Digital Marketing</option>
+                        <select class="form-select" id="projectType" name="project_type">
+                            @foreach($projectTypes as $typeKey => $amount)
+                                <option value="{{ $typeKey }}">{{ ucwords(str_replace('_', ' ', $typeKey)) }}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     <div class="mb-4">
                         <label class="quote-label">Budget Preference</label>
-                        <input type="range" class="form-range" min="1" max="5" value="3" id="budgetLevel">
+                        <input type="range" class="form-range" min="1" max="5" value="{{ old('budget_level', 3) }}" id="budgetLevel" name="budget_level">
                         <div class="d-flex justify-content-between" style="font-size:.78rem;color:#64748b;">
                             <span>Lean</span><span>Balanced</span><span>Premium</span>
                         </div>
@@ -45,20 +74,30 @@
                     <div class="mb-4">
                         <label class="quote-label">Timeline</label>
                         <div class="d-flex gap-2 flex-wrap" id="timelineOptions">
-                            <button type="button" class="btn btn-outline-primary active" data-multiplier="1.2">Urgent (2-4 weeks)</button>
-                            <button type="button" class="btn btn-outline-primary" data-multiplier="1">Standard (1-3 months)</button>
-                            <button type="button" class="btn btn-outline-primary" data-multiplier="0.85">Flexible (3+ months)</button>
+                            @foreach($timelineOptions as $index => $timeline)
+                                <button type="button" class="btn btn-outline-primary {{ $index === 0 ? 'active' : '' }}" data-multiplier="{{ $timeline['multiplier'] }}" data-key="{{ $timeline['key'] }}">{{ $timeline['label'] }}</button>
+                            @endforeach
                         </div>
+                        <input type="hidden" name="timeline" id="timelineInput" value="{{ $timelineOptions[0]['key'] ?? 'urgent' }}">
                     </div>
 
                     <div>
                         <label class="quote-label">Features</label>
                         <div class="row g-2">
-                            <div class="col-md-6"><label class="form-check"><input class="form-check-input feature-input" type="checkbox" value="12000"> Admin Dashboard</label></div>
-                            <div class="col-md-6"><label class="form-check"><input class="form-check-input feature-input" type="checkbox" value="9000"> Payment Integration</label></div>
-                            <div class="col-md-6"><label class="form-check"><input class="form-check-input feature-input" type="checkbox" value="15000"> CRM/Automation</label></div>
-                            <div class="col-md-6"><label class="form-check"><input class="form-check-input feature-input" type="checkbox" value="7000"> Advanced SEO Setup</label></div>
+                            @foreach($featureOptions as $feature)
+                                <div class="col-md-6">
+                                    <label class="form-check">
+                                        <input class="form-check-input feature-input" type="checkbox" value="{{ $feature['base_price'] }}" name="selected_features[]" data-key="{{ $feature['option_key'] }}">
+                                        {{ $feature['label'] }}
+                                    </label>
+                                </div>
+                            @endforeach
                         </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="quote-label">Requirements</label>
+                        <textarea name="requirements" rows="3" class="form-control" placeholder="Aapke project requirements...">{{ old('requirements') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -81,7 +120,11 @@
                     </div>
 
                     <div class="mt-4">
-                        <a id="ctaLink" href="{{ route('contact') }}" class="btn btn-light w-100 fw-bold">Book Free Consultation</a>
+                        <input type="hidden" name="estimated_amount" id="estimatedAmountInput" value="0">
+                        <input type="hidden" name="estimated_min" id="estimatedMinInput" value="0">
+                        <input type="hidden" name="estimated_max" id="estimatedMaxInput" value="0">
+
+                        <button type="submit" class="btn btn-light w-100 fw-bold">Submit Quote Request</button>
                         @auth
                             <a href="{{ route('client.portal.index') }}" class="btn btn-outline-light w-100 mt-2">Open Client Tracker</a>
                         @else
@@ -91,6 +134,7 @@
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </section>
 @endsection
@@ -98,13 +142,7 @@
 @push('scripts')
 <script>
 (() => {
-    const baseMap = {
-        website: 35000,
-        ecommerce: 60000,
-        webapp: 90000,
-        mobile: 120000,
-        marketing: 28000,
-    };
+    const baseMap = @json($projectTypes);
 
     const typeEl = document.getElementById('projectType');
     const budgetEl = document.getElementById('budgetLevel');
@@ -112,7 +150,10 @@
     const timelineButtons = Array.from(document.querySelectorAll('#timelineOptions button'));
     const estimateValue = document.getElementById('estimateValue');
     const estimateRange = document.getElementById('estimateRange');
-    const ctaLink = document.getElementById('ctaLink');
+    const timelineInput = document.getElementById('timelineInput');
+    const estimatedAmountInput = document.getElementById('estimatedAmountInput');
+    const estimatedMinInput = document.getElementById('estimatedMinInput');
+    const estimatedMaxInput = document.getElementById('estimatedMaxInput');
 
     let timelineMultiplier = 1.2;
 
@@ -129,12 +170,9 @@
 
         estimateValue.textContent = formatInr(estimate);
         estimateRange.textContent = `Range: ${formatInr(min)} - ${formatInr(max)}`;
-
-        const query = new URLSearchParams({
-            project_type: typeEl.value,
-            estimate: String(estimate),
-        });
-        ctaLink.href = `{{ route('contact') }}?${query.toString()}`;
+        estimatedAmountInput.value = String(estimate);
+        estimatedMinInput.value = String(min);
+        estimatedMaxInput.value = String(max);
     }
 
     timelineButtons.forEach((btn) => {
@@ -142,6 +180,7 @@
             timelineButtons.forEach((b) => b.classList.remove('active'));
             btn.classList.add('active');
             timelineMultiplier = Number(btn.dataset.multiplier || 1);
+            timelineInput.value = btn.dataset.key || 'standard';
             calculate();
         });
     });

@@ -4,11 +4,40 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\QuoteOption;
+use App\Models\QuoteRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
-class QuoteCalculatorController extends Controller
+class QuoteRequestController extends Controller
 {
-    public function index()
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:30',
+            'project_type' => 'required|string|max:100',
+            'budget_level' => 'required|integer|min:1|max:5',
+            'timeline' => 'nullable|string|max:120',
+            'selected_features' => 'nullable|array',
+            'selected_features.*' => 'string|max:100',
+            'estimated_amount' => 'required|integer|min:0',
+            'estimated_min' => 'required|integer|min:0',
+            'estimated_max' => 'required|integer|min:0',
+            'requirements' => 'nullable|string|max:1500',
+        ]);
+
+        QuoteRequest::create([
+            ...$validated,
+            'selected_features' => $validated['selected_features'] ?? [],
+            'user_id' => $request->user()?->id,
+            'status' => 'submitted',
+        ]);
+
+        return back()->with('success', 'Quote request submitted successfully.');
+    }
+
+    public function calculatorData(): array
     {
         $projectTypes = [
             'website' => 35000,
@@ -49,12 +78,14 @@ class QuoteCalculatorController extends Controller
             $projectTypes = ['website' => 35000];
         }
 
-        $timelineOptions = [
-            ['label' => 'Urgent (2-4 weeks)', 'multiplier' => 1.2, 'key' => 'urgent'],
-            ['label' => 'Standard (1-3 months)', 'multiplier' => 1.0, 'key' => 'standard'],
-            ['label' => 'Flexible (3+ months)', 'multiplier' => 0.85, 'key' => 'flexible'],
+        return [
+            'projectTypes' => $projectTypes,
+            'featureOptions' => $featureOptions,
+            'timelineOptions' => [
+                ['label' => 'Urgent (2-4 weeks)', 'multiplier' => 1.2, 'key' => 'urgent'],
+                ['label' => 'Standard (1-3 months)', 'multiplier' => 1.0, 'key' => 'standard'],
+                ['label' => 'Flexible (3+ months)', 'multiplier' => 0.85, 'key' => 'flexible'],
+            ],
         ];
-
-        return view('website.pages.quote-calculator', compact('projectTypes', 'featureOptions', 'timelineOptions'));
     }
 }

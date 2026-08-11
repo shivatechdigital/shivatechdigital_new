@@ -10,9 +10,12 @@ use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\ServicesController;
 use App\Http\Controllers\Frontend\PortfolioController;
 use App\Http\Controllers\Frontend\QuoteCalculatorController;
+use App\Http\Controllers\Frontend\QuoteRequestController;
 use App\Http\Controllers\Frontend\CareerController;
 use App\Http\Controllers\Frontend\CaseStudyController;
 use App\Http\Controllers\Frontend\ClientPortalController;
+use App\Http\Controllers\Frontend\PricingController;
+use App\Http\Controllers\Frontend\JobApplicationController;
 use App\Http\Controllers\Frontend\UserProfileController;
 use App\Http\Controllers\Auth\GuestEmailVerificationController;
 use App\Http\Controllers\WebServiceContactController;
@@ -40,6 +43,13 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\PortfolioProjectController;
 use App\Http\Controllers\Admin\SubscriberController;
+use App\Http\Controllers\Admin\CaseStudyController as AdminCaseStudyController;
+use App\Http\Controllers\Admin\JobOpeningController as AdminJobOpeningController;
+use App\Http\Controllers\Admin\JobApplicationController as AdminJobApplicationController;
+use App\Http\Controllers\Admin\PricingPlanController;
+use App\Http\Controllers\Admin\QuoteConfigController;
+use App\Http\Controllers\Admin\QuoteRequestController as AdminQuoteRequestController;
+use App\Http\Controllers\Admin\ClientProjectController;
 
 /*===========================================
 | Correct Route
@@ -81,10 +91,13 @@ Route::get('/contact', [ContactController::class,'index'])->name('contact');
 Route::post('/contact', [ContactController::class,'store'])->name('contact.store');
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
 Route::get('/quote-calculator', [QuoteCalculatorController::class, 'index'])->name('quote-calculator');
+Route::post('/quote-calculator', [QuoteRequestController::class, 'store'])->name('quote-calculator.store');
 Route::get('/careers', [CareerController::class, 'index'])->name('careers');
+Route::get('/careers/{slug}/apply', [JobApplicationController::class, 'create'])->name('careers.apply');
+Route::post('/careers/{slug}/apply', [JobApplicationController::class, 'store'])->name('careers.apply.store');
 Route::get('/case-studies', [CaseStudyController::class, 'index'])->name('case-studies.index');
 Route::get('/case-studies/{slug}', [CaseStudyController::class, 'show'])->name('case-studies.show');
-Route::get('/pricing', fn()=>view('website.pages.pricing'))->name('pricing');
+Route::get('/pricing', [PricingController::class, 'index'])->name('pricing');
 Route::get('/privacy-policy', fn()=>view('website.pages.privacy-policy'))->name('privacy-policy');
 Route::get('/terms-of-service', fn()=>view('website.pages.terms-of-service'))->name('terms-of-service');
 Route::post('/service-contact-submit',[WebServiceContactController::class,'submit'])->name('servicecontact.submit');
@@ -553,6 +566,136 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::delete('/admin/portfolio/{portfolio}', [PortfolioProjectController::class, 'destroy'])
         ->middleware('permission:portfolio.delete')
         ->name('admin.portfolio.destroy');
+
+/*===========================================
+| CASE STUDIES
+===========================================*/
+    Route::get('/admin/case-studies', [AdminCaseStudyController::class, 'index'])
+        ->middleware('permission:casestudies.view')
+        ->name('admin.case-studies.index');
+    Route::get('/admin/case-studies/create', [AdminCaseStudyController::class, 'create'])
+        ->middleware('permission:casestudies.create')
+        ->name('admin.case-studies.create');
+    Route::post('/admin/case-studies', [AdminCaseStudyController::class, 'store'])
+        ->middleware('permission:casestudies.create')
+        ->name('admin.case-studies.store');
+    Route::get('/admin/case-studies/{caseStudy}/edit', [AdminCaseStudyController::class, 'edit'])
+        ->middleware('permission:casestudies.update')
+        ->name('admin.case-studies.edit');
+    Route::put('/admin/case-studies/{caseStudy}', [AdminCaseStudyController::class, 'update'])
+        ->middleware('permission:casestudies.update')
+        ->name('admin.case-studies.update');
+    Route::delete('/admin/case-studies/{caseStudy}', [AdminCaseStudyController::class, 'destroy'])
+        ->middleware('permission:casestudies.delete')
+        ->name('admin.case-studies.destroy');
+
+/*===========================================
+| JOB OPENINGS & APPLICATIONS
+===========================================*/
+    Route::get('/admin/jobs', [AdminJobOpeningController::class, 'index'])
+        ->middleware('permission:jobs.view')
+        ->name('admin.jobs.index');
+    Route::get('/admin/jobs/create', [AdminJobOpeningController::class, 'create'])
+        ->middleware('permission:jobs.create')
+        ->name('admin.jobs.create');
+    Route::post('/admin/jobs', [AdminJobOpeningController::class, 'store'])
+        ->middleware('permission:jobs.create')
+        ->name('admin.jobs.store');
+    Route::get('/admin/jobs/{job}/edit', [AdminJobOpeningController::class, 'edit'])
+        ->middleware('permission:jobs.update')
+        ->name('admin.jobs.edit');
+    Route::put('/admin/jobs/{job}', [AdminJobOpeningController::class, 'update'])
+        ->middleware('permission:jobs.update')
+        ->name('admin.jobs.update');
+    Route::delete('/admin/jobs/{job}', [AdminJobOpeningController::class, 'destroy'])
+        ->middleware('permission:jobs.delete')
+        ->name('admin.jobs.destroy');
+
+    Route::get('/admin/job-applications', [AdminJobApplicationController::class, 'index'])
+        ->middleware('permission:jobapplications.view')
+        ->name('admin.job-applications.index');
+    Route::put('/admin/job-applications/{application}', [AdminJobApplicationController::class, 'update'])
+        ->middleware('permission:jobapplications.update')
+        ->name('admin.job-applications.update');
+    Route::delete('/admin/job-applications/{application}', [AdminJobApplicationController::class, 'destroy'])
+        ->middleware('permission:jobapplications.delete')
+        ->name('admin.job-applications.destroy');
+
+/*===========================================
+| PRICING & QUOTES
+===========================================*/
+    Route::get('/admin/pricing', [PricingPlanController::class, 'index'])
+        ->middleware('permission:pricing.view')
+        ->name('admin.pricing.index');
+    Route::get('/admin/pricing/create', [PricingPlanController::class, 'create'])
+        ->middleware('permission:pricing.create')
+        ->name('admin.pricing.create');
+    Route::post('/admin/pricing', [PricingPlanController::class, 'store'])
+        ->middleware('permission:pricing.create')
+        ->name('admin.pricing.store');
+    Route::get('/admin/pricing/{plan}/edit', [PricingPlanController::class, 'edit'])
+        ->middleware('permission:pricing.update')
+        ->name('admin.pricing.edit');
+    Route::put('/admin/pricing/{plan}', [PricingPlanController::class, 'update'])
+        ->middleware('permission:pricing.update')
+        ->name('admin.pricing.update');
+    Route::delete('/admin/pricing/{plan}', [PricingPlanController::class, 'destroy'])
+        ->middleware('permission:pricing.delete')
+        ->name('admin.pricing.destroy');
+
+    Route::get('/admin/quote-options', [QuoteConfigController::class, 'index'])
+        ->middleware('permission:quotes.manage')
+        ->name('admin.quote-options.index');
+    Route::post('/admin/quote-options', [QuoteConfigController::class, 'store'])
+        ->middleware('permission:quotes.manage')
+        ->name('admin.quote-options.store');
+    Route::put('/admin/quote-options/{option}', [QuoteConfigController::class, 'update'])
+        ->middleware('permission:quotes.manage')
+        ->name('admin.quote-options.update');
+    Route::delete('/admin/quote-options/{option}', [QuoteConfigController::class, 'destroy'])
+        ->middleware('permission:quotes.manage')
+        ->name('admin.quote-options.destroy');
+
+    Route::get('/admin/quote-requests', [AdminQuoteRequestController::class, 'index'])
+        ->middleware('permission:quotes.view')
+        ->name('admin.quote-requests.index');
+    Route::put('/admin/quote-requests/{quoteRequest}', [AdminQuoteRequestController::class, 'update'])
+        ->middleware('permission:quotes.manage')
+        ->name('admin.quote-requests.update');
+    Route::get('/admin/quote-requests/{quoteRequest}/quotation', [AdminQuoteRequestController::class, 'quotation'])
+        ->middleware('permission:quotes.manage')
+        ->name('admin.quote-requests.quotation');
+    Route::post('/admin/quote-requests/{quoteRequest}/quotation', [AdminQuoteRequestController::class, 'saveQuotation'])
+        ->middleware('permission:quotes.manage')
+        ->name('admin.quote-requests.quotation.save');
+    Route::get('/admin/quote-requests/{quoteRequest}/download-doc', [AdminQuoteRequestController::class, 'downloadDoc'])
+        ->middleware('permission:quotes.manage')
+        ->name('admin.quote-requests.download-doc');
+    Route::get('/admin/quote-requests/{quoteRequest}/download-pdf', [AdminQuoteRequestController::class, 'downloadPdf'])
+        ->middleware('permission:quotes.manage')
+        ->name('admin.quote-requests.download-pdf');
+
+/*===========================================
+| CLIENT PROJECT TRACKER
+===========================================*/
+    Route::get('/admin/client-projects', [ClientProjectController::class, 'index'])
+        ->middleware('permission:clientprojects.view')
+        ->name('admin.client-projects.index');
+    Route::get('/admin/client-projects/create', [ClientProjectController::class, 'create'])
+        ->middleware('permission:clientprojects.create')
+        ->name('admin.client-projects.create');
+    Route::post('/admin/client-projects', [ClientProjectController::class, 'store'])
+        ->middleware('permission:clientprojects.create')
+        ->name('admin.client-projects.store');
+    Route::get('/admin/client-projects/{clientProject}/edit', [ClientProjectController::class, 'edit'])
+        ->middleware('permission:clientprojects.update')
+        ->name('admin.client-projects.edit');
+    Route::put('/admin/client-projects/{clientProject}', [ClientProjectController::class, 'update'])
+        ->middleware('permission:clientprojects.update')
+        ->name('admin.client-projects.update');
+    Route::delete('/admin/client-projects/{clientProject}', [ClientProjectController::class, 'destroy'])
+        ->middleware('permission:clientprojects.delete')
+        ->name('admin.client-projects.destroy');
 
 /*===========================================
 | NEWSLETTER SUBSCRIBERS

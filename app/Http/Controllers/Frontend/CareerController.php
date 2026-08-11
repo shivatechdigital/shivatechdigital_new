@@ -23,6 +23,7 @@ class CareerController extends Controller
             $jobs = collect([
                 (object) [
                     'title' => 'Laravel Developer',
+                    'slug' => 'laravel-developer',
                     'department' => 'Engineering',
                     'location' => 'Noida / Hybrid',
                     'employment_type_label' => 'Full Time',
@@ -31,6 +32,7 @@ class CareerController extends Controller
                 ],
                 (object) [
                     'title' => 'SEO Executive',
+                    'slug' => 'seo-executive',
                     'department' => 'Marketing',
                     'location' => 'Noida / Remote',
                     'employment_type_label' => 'Full Time',
@@ -39,6 +41,7 @@ class CareerController extends Controller
                 ],
                 (object) [
                     'title' => 'UI/UX Design Intern',
+                    'slug' => 'ui-ux-design-intern',
                     'department' => 'Design',
                     'location' => 'Remote',
                     'employment_type_label' => 'Internship',

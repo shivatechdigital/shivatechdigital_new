@@ -174,6 +174,121 @@
         </li>
       @endif
 
+      @if($can('casestudies.view'))
+        <li class="dropdown {{ request()->routeIs('admin.case-studies.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.case-studies.*') ? 'active-page' : '' }}">
+            <iconify-icon icon="solar:file-text-outline" class="menu-icon"></iconify-icon>
+            <span>Case Studies</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="{{ route('admin.case-studies.index') }}" class="{{ request()->routeIs('admin.case-studies.index') || request()->routeIs('admin.case-studies.edit') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> All Case Studies
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('admin.case-studies.create') }}" class="{{ request()->routeIs('admin.case-studies.create') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add Case Study
+              </a>
+            </li>
+          </ul>
+        </li>
+      @endif
+
+      @if($can('jobs.view') || $can('jobapplications.view'))
+        <li class="dropdown {{ request()->routeIs('admin.jobs.*') || request()->routeIs('admin.job-applications.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.jobs.*') || request()->routeIs('admin.job-applications.*') ? 'active-page' : '' }}">
+            <iconify-icon icon="solar:case-round-outline" class="menu-icon"></iconify-icon>
+            <span>Jobs</span>
+          </a>
+          <ul class="sidebar-submenu">
+            @if($can('jobs.view'))
+            <li>
+              <a href="{{ route('admin.jobs.index') }}" class="{{ request()->routeIs('admin.jobs.index') || request()->routeIs('admin.jobs.edit') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Job Openings
+              </a>
+            </li>
+            @endif
+            @if($can('jobs.create'))
+            <li>
+              <a href="{{ route('admin.jobs.create') }}" class="{{ request()->routeIs('admin.jobs.create') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add Job
+              </a>
+            </li>
+            @endif
+            @if($can('jobapplications.view'))
+            <li>
+              <a href="{{ route('admin.job-applications.index') }}" class="{{ request()->routeIs('admin.job-applications.*') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Applications
+              </a>
+            </li>
+            @endif
+          </ul>
+        </li>
+      @endif
+
+      @if($can('pricing.view') || $can('quotes.view') || $can('quotes.manage'))
+        <li class="dropdown {{ request()->routeIs('admin.pricing.*') || request()->routeIs('admin.quote-*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.pricing.*') || request()->routeIs('admin.quote-*') ? 'active-page' : '' }}">
+            <iconify-icon icon="solar:wallet-outline" class="menu-icon"></iconify-icon>
+            <span>Pricing & Quotes</span>
+          </a>
+          <ul class="sidebar-submenu">
+            @if($can('pricing.view'))
+            <li>
+              <a href="{{ route('admin.pricing.index') }}" class="{{ request()->routeIs('admin.pricing.index') || request()->routeIs('admin.pricing.edit') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Pricing Plans
+              </a>
+            </li>
+            @endif
+            @if($can('pricing.create'))
+            <li>
+              <a href="{{ route('admin.pricing.create') }}" class="{{ request()->routeIs('admin.pricing.create') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add Plan
+              </a>
+            </li>
+            @endif
+            @if($can('quotes.view'))
+            <li>
+              <a href="{{ route('admin.quote-requests.index') }}" class="{{ request()->routeIs('admin.quote-requests.*') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Quote Requests
+              </a>
+            </li>
+            @endif
+            @if($can('quotes.manage'))
+            <li>
+              <a href="{{ route('admin.quote-options.index') }}" class="{{ request()->routeIs('admin.quote-options.*') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Quote Options
+              </a>
+            </li>
+            @endif
+          </ul>
+        </li>
+      @endif
+
+      @if($can('clientprojects.view'))
+        <li class="dropdown {{ request()->routeIs('admin.client-projects.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.client-projects.*') ? 'active-page' : '' }}">
+            <iconify-icon icon="solar:clipboard-list-outline" class="menu-icon"></iconify-icon>
+            <span>Client Projects</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="{{ route('admin.client-projects.index') }}" class="{{ request()->routeIs('admin.client-projects.index') || request()->routeIs('admin.client-projects.edit') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Project Tracker
+              </a>
+            </li>
+            @if($can('clientprojects.create'))
+            <li>
+              <a href="{{ route('admin.client-projects.create') }}" class="{{ request()->routeIs('admin.client-projects.create') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add Project
+              </a>
+            </li>
+            @endif
+          </ul>
+        </li>
+      @endif
+
       @if($can('subscribers.manage'))
         <!-- Newsletter Subscribers -->
         <li class="{{ request()->routeIs('admin.subscribers.*') ? 'active-page' : '' }}">

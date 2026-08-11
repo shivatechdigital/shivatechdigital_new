@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClientProject;
+use App\Models\QuoteRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -12,6 +13,7 @@ class ClientPortalController extends Controller
     public function index(Request $request)
     {
         $projects = collect();
+        $quoteRequests = collect();
 
         if (Schema::hasTable('client_projects')) {
             $query = ClientProject::with('user')->active()->orderByDesc('last_updated_at');
@@ -23,7 +25,17 @@ class ClientPortalController extends Controller
             $projects = $query->get();
         }
 
-        return view('website.pages.client-portal.index', compact('projects'));
+        if (Schema::hasTable('quote_requests')) {
+            $quoteQuery = QuoteRequest::query()->latest();
+
+            if ($request->user()->role !== 'admin') {
+                $quoteQuery->where('user_id', $request->user()->id);
+            }
+
+            $quoteRequests = $quoteQuery->take(20)->get();
+        }
+
+        return view('website.pages.client-portal.index', compact('projects', 'quoteRequests'));
     }
 
     public function show(Request $request, string $slug)

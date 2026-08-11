@@ -34,7 +34,7 @@
 
                         <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
                             <small style="color:#64748b;">Experience: {{ $job->experience_level ?? 'As per role' }}</small>
-                            <a href="mailto:info@shivatechdigital.com?subject=Application%20for%20{{ urlencode($job->title) }}" class="btn btn-sm btn-primary">Apply Now</a>
+                            <a href="{{ !empty($job->slug) ? route('careers.apply', $job->slug) : '#' }}" class="btn btn-sm btn-primary {{ empty($job->slug) ? 'disabled' : '' }}">Apply Now</a>
                         </div>
                     </article>
                 </div>
