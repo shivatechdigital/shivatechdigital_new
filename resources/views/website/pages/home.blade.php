@@ -393,7 +393,7 @@
 
 .hero-indicators { bottom: 24px !important; gap: 8px; }
 .hero-indicators button { width: 32px !important; height: 4px !important; border-radius: 4px !important; background: rgba(15,23,42,0.2) !important; border: none !important; opacity: 1 !important; transition: all 0.3s ease; }
-.hero-indicators button.active { width: 52px !important; background: #2563eb !important; }
+.hero-indicators button.active { width: 17px !important; height: 17px !important; border-radius: 50% !important; background: #2563eb !important; }
 .hero-ctrl { width: 50px !important; height: 50px !important; background: rgba(255,255,255,0.92) !important; border-radius: 50% !important; top: 50% !important; transform: translateY(-50%) !important; box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important; border: 1.5px solid #e2e8f0 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
 .hero-ctrl i { color: #0f172a !important; font-size: 1rem !important; }
 .carousel-control-prev.hero-ctrl { left: 20px !important; }
@@ -423,7 +423,19 @@
 #process .process-step-horizontal.active .step-content-horizontal h4 { color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; }
 #process .process-step-horizontal.active .step-content-horizontal p { color: #475569 !important; }
 #process .process-step-horizontal.active .step-features-horizontal li { color: #2563eb !important; }
+.flow-dot.active{
+    background: var(--gradient);
+    transform: scale(1.8);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+    border-color: black;
+    height: 12px !important;
+    width: 12px !important;
+}
 
+.control-btn {
+    width: 33px !important;
+    height: 33px !important;
+}
 /* ===== LEAD FORM SECTION ===== */
 .lead-form-section { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
 .hero-lead-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 30px; margin-top: 0; border-radius: 16px; text-align: center; }
