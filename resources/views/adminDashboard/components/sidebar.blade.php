@@ -151,6 +151,28 @@
           </ul>
         </li>
       @endif
+
+      @if($can('portfolio.view'))
+        <!-- Portfolio Management -->
+        <li class="dropdown {{ request()->routeIs('admin.portfolio.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.portfolio.*') ? 'active-page' : '' }}">
+            <iconify-icon icon="solar:gallery-minimalistic-outline" class="menu-icon"></iconify-icon>
+            <span>Portfolio</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="{{ route('admin.portfolio.index') }}" class="{{ request()->routeIs('admin.portfolio.index') || request()->routeIs('admin.portfolio.edit') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> All Projects
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('admin.portfolio.create') }}" class="{{ request()->routeIs('admin.portfolio.create') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add Project
+              </a>
+            </li>
+          </ul>
+        </li>
+      @endif
         
       @if($can('tags.view'))
         <!-- Tags Management -->

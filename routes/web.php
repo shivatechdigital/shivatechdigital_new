@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\ServicesController;
+use App\Http\Controllers\Frontend\PortfolioController;
 use App\Http\Controllers\WebServiceContactController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CommentController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\PortfolioProjectController;
 
 /*===========================================
 | Correct Route
@@ -69,7 +71,7 @@ Route::get('/about', [AboutController::class,'index'])->name('about');
 Route::get('/services', fn()=>view('website.pages.services'))->name('services');
 Route::get('/contact', [ContactController::class,'index'])->name('contact');
 Route::post('/contact', [ContactController::class,'store'])->name('contact.store');
-Route::get('/portfolio', fn()=>view('website.pages.portfolio'))->name('portfolio');
+Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
 Route::get('/privacy-policy', fn()=>view('website.pages.privacy-policy'))->name('privacy-policy');
 Route::get('/terms-of-service', fn()=>view('website.pages.terms-of-service'))->name('terms-of-service');
 Route::post('/service-contact-submit',[WebServiceContactController::class,'submit'])->name('servicecontact.submit');
@@ -497,5 +499,27 @@ Route::middleware(['auth', 'admin'])->group(function(){
     Route::delete('/admin/testimonials/{testimonial}', [TestimonialController::class, 'destroy'])
         ->middleware('permission:testimonials.delete')
         ->name('admin.testimonials.destroy');
+
+/*===========================================
+| PORTFOLIO PROJECTS
+===========================================*/
+    Route::get('/admin/portfolio', [PortfolioProjectController::class, 'index'])
+        ->middleware('permission:portfolio.view')
+        ->name('admin.portfolio.index');
+    Route::get('/admin/portfolio/create', [PortfolioProjectController::class, 'create'])
+        ->middleware('permission:portfolio.create')
+        ->name('admin.portfolio.create');
+    Route::post('/admin/portfolio', [PortfolioProjectController::class, 'store'])
+        ->middleware('permission:portfolio.create')
+        ->name('admin.portfolio.store');
+    Route::get('/admin/portfolio/{portfolio}/edit', [PortfolioProjectController::class, 'edit'])
+        ->middleware('permission:portfolio.update')
+        ->name('admin.portfolio.edit');
+    Route::put('/admin/portfolio/{portfolio}', [PortfolioProjectController::class, 'update'])
+        ->middleware('permission:portfolio.update')
+        ->name('admin.portfolio.update');
+    Route::delete('/admin/portfolio/{portfolio}', [PortfolioProjectController::class, 'destroy'])
+        ->middleware('permission:portfolio.delete')
+        ->name('admin.portfolio.destroy');
 
 });

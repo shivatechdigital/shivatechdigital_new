@@ -723,281 +723,213 @@
                     <i class="fas fa-paint-brush" aria-hidden="true"></i>
                     <span>UI/UX Design</span>
                 </button>
+                <button class="filter-btn" data-filter="ecommerce" role="tab" aria-selected="false" aria-controls="portfolio-grid">
+                    <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                    <span>E-commerce</span>
+                </button>
             </div>
 
             <div class="row g-4" id="portfolio-grid" role="tabpanel" aria-label="Portfolio projects">
-                
-                <!-- Portfolio Item 1: E-Commerce Platform -->
-                <article class="col-lg-4 col-md-6 portfolio-item" data-category="web" data-aos="fade-up" itemscope itemtype="https://schema.org/CreativeWork">
-                    <div class="portfolio-card-creative">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=400&fit=crop" 
-                                 alt="E-Commerce Platform - Web Application Development by Shiva Tech Digital" 
-                                 loading="lazy"
-                                 width="500"
-                                 height="400"
-                                 itemprop="image">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-content">
-                                    <span class="portfolio-category" itemprop="genre">Web Application</span>
-                                    <h3 itemprop="name">E-Commerce Platform</h3>
-                                    <p itemprop="description">Modern online shopping experience with Laravel & React</p>
-                                    <a href="#" class="portfolio-link" aria-label="View E-Commerce Platform project details">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-tags" itemprop="keywords">
-                                <span><i class="fab fa-react" aria-hidden="true"></i> React</span>
-                                <span><i class="fab fa-laravel" aria-hidden="true"></i> Laravel</span>
-                            </div>
-                        </div>
-                        <meta itemprop="creator" content="Shiva Tech Digital">
-                    </div>
-                </article>
 
-                <!-- Portfolio Item 2: Fitness Tracking App -->
-                <article class="col-lg-4 col-md-6 portfolio-item" data-category="mobile" data-aos="fade-up" data-aos-delay="100" itemscope itemtype="https://schema.org/MobileApplication">
-                    <div class="portfolio-card-creative">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=400&fit=crop" 
-                                 alt="Fitness Tracking Mobile App - iOS & Android Development" 
-                                 loading="lazy"
-                                 width="500"
-                                 height="400"
-                                 itemprop="image">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-content">
-                                    <span class="portfolio-category" itemprop="applicationCategory">Mobile App</span>
-                                    <h3 itemprop="name">Fitness Tracking App</h3>
-                                    <p itemprop="description">Health & wellness tracking for iOS & Android</p>
-                                    <a href="#" class="portfolio-link" aria-label="View Fitness App project details">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                    </a>
+                @if(isset($projects) && $projects->count())
+                    {{-- ====== DYNAMIC PROJECTS FROM DATABASE ====== --}}
+                    @foreach($projects as $project)
+                    <article class="col-lg-4 col-md-6 portfolio-item"
+                             data-category="{{ $project->category }}"
+                             data-aos="fade-up"
+                             data-aos-delay="{{ ($loop->index % 3) * 100 }}"
+                             itemscope itemtype="https://schema.org/CreativeWork">
+                        <div class="portfolio-card-creative {{ $project->is_featured ? 'portfolio-featured' : '' }}">
+                            <div class="portfolio-image">
+                                @if($project->image)
+                                    <img src="{{ asset('storage/' . $project->image) }}"
+                                         alt="{{ $project->title }} - {{ $project->category_label }} by Shiva Tech Digital"
+                                         loading="lazy" width="500" height="400" itemprop="image">
+                                @else
+                                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=400&fit=crop"
+                                         alt="{{ $project->title }}"
+                                         loading="lazy" width="500" height="400" itemprop="image">
+                                @endif
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-content">
+                                        <span class="portfolio-category" itemprop="genre">{{ $project->category_label }}</span>
+                                        <h3 itemprop="name">{{ $project->title }}</h3>
+                                        @if($project->description)
+                                            <p itemprop="description">{{ $project->description }}</p>
+                                        @endif
+                                        @if($project->project_url)
+                                        <a href="{{ $project->project_url }}" target="_blank" rel="noopener noreferrer"
+                                           class="portfolio-link" aria-label="View {{ $project->title }} live project">
+                                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                        </a>
+                                        @else
+                                        <a href="#" class="portfolio-link" aria-label="{{ $project->title }}">
+                                            <i class="fas fa-eye" aria-hidden="true"></i>
+                                        </a>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-tags">
-                                <span><i class="fab fa-apple" aria-hidden="true"></i> iOS</span>
-                                <span><i class="fab fa-android" aria-hidden="true"></i> Android</span>
+                            <div class="portfolio-info">
+                                <div class="portfolio-tags" itemprop="keywords">
+                                    @if($project->technologies)
+                                        @foreach(array_slice($project->technologies, 0, 3) as $tech)
+                                            <span>{{ $tech }}</span>
+                                        @endforeach
+                                    @endif
+                                    @if($project->client_name)
+                                        <span style="margin-left:auto;color:#94a3b8;font-size:.75rem;">
+                                            <i class="fas fa-user" style="font-size:.65rem;"></i> {{ $project->client_name }}
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
+                            <meta itemprop="creator" content="Shiva Tech Digital">
                         </div>
-                        <meta itemprop="operatingSystem" content="iOS, Android">
-                    </div>
-                </article>
+                    </article>
+                    @endforeach
 
-                <!-- Portfolio Item 3: SEO Campaign -->
-                <article class="col-lg-4 col-md-6 portfolio-item" data-category="marketing" data-aos="fade-up" data-aos-delay="200" itemscope itemtype="https://schema.org/CreativeWork">
-                    <div class="portfolio-card-creative">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=500&h=400&fit=crop" 
-                                 alt="SEO Campaign - 300% Traffic Increase - Digital Marketing" 
-                                 loading="lazy"
-                                 width="500"
-                                 height="400"
-                                 itemprop="image">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-content">
-                                    <span class="portfolio-category" itemprop="genre">Digital Marketing</span>
-                                    <h3 itemprop="name">SEO Campaign Success</h3>
-                                    <p itemprop="description">300% traffic increase in 6 months</p>
-                                    <a href="#" class="portfolio-link" aria-label="View SEO Campaign case study">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                    </a>
+                @else
+                    {{-- ====== STATIC FALLBACK (when no DB projects yet) ====== --}}
+                    <!-- Portfolio Item 1: E-Commerce Platform -->
+                    <article class="col-lg-4 col-md-6 portfolio-item" data-category="web" data-aos="fade-up" itemscope itemtype="https://schema.org/CreativeWork">
+                        <div class="portfolio-card-creative">
+                            <div class="portfolio-image">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=400&fit=crop" alt="E-Commerce Platform - Web Application Development by Shiva Tech Digital" loading="lazy" width="500" height="400" itemprop="image">
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-content">
+                                        <span class="portfolio-category" itemprop="genre">Web Application</span>
+                                        <h3 itemprop="name">E-Commerce Platform</h3>
+                                        <p itemprop="description">Modern online shopping experience with Laravel & React</p>
+                                        <a href="#" class="portfolio-link" aria-label="View E-Commerce Platform project details"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-tags" itemprop="keywords">
-                                <span><i class="fas fa-search" aria-hidden="true"></i> SEO</span>
-                                <span><i class="fas fa-chart-line" aria-hidden="true"></i> Analytics</span>
+                            <div class="portfolio-info">
+                                <div class="portfolio-tags" itemprop="keywords">
+                                    <span><i class="fab fa-react" aria-hidden="true"></i> React</span>
+                                    <span><i class="fab fa-laravel" aria-hidden="true"></i> Laravel</span>
+                                </div>
                             </div>
+                            <meta itemprop="creator" content="Shiva Tech Digital">
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Portfolio Item 4: SaaS Dashboard -->
-                <article class="col-lg-4 col-md-6 portfolio-item" data-category="web" data-aos="fade-up" itemscope itemtype="https://schema.org/WebApplication">
-                    <div class="portfolio-card-creative">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=500&h=400&fit=crop" 
-                                 alt="SaaS Dashboard - Analytics & Reporting Platform Development" 
-                                 loading="lazy"
-                                 width="500"
-                                 height="400"
-                                 itemprop="image">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-content">
-                                    <span class="portfolio-category" itemprop="applicationCategory">Web Application</span>
-                                    <h3 itemprop="name">SaaS Dashboard</h3>
-                                    <p itemprop="description">Analytics & reporting platform with Vue.js</p>
-                                    <a href="#" class="portfolio-link" aria-label="View SaaS Dashboard project">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                    </a>
+                    <!-- Portfolio Item 2: Fitness Tracking App -->
+                    <article class="col-lg-4 col-md-6 portfolio-item" data-category="mobile" data-aos="fade-up" data-aos-delay="100" itemscope itemtype="https://schema.org/MobileApplication">
+                        <div class="portfolio-card-creative">
+                            <div class="portfolio-image">
+                                <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=400&fit=crop" alt="Fitness Tracking Mobile App - iOS & Android Development" loading="lazy" width="500" height="400" itemprop="image">
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-content">
+                                        <span class="portfolio-category" itemprop="applicationCategory">Mobile App</span>
+                                        <h3 itemprop="name">Fitness Tracking App</h3>
+                                        <p itemprop="description">Health & wellness tracking for iOS & Android</p>
+                                        <a href="#" class="portfolio-link" aria-label="View Fitness App project details"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-info">
+                                <div class="portfolio-tags">
+                                    <span><i class="fab fa-apple" aria-hidden="true"></i> iOS</span>
+                                    <span><i class="fab fa-android" aria-hidden="true"></i> Android</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-tags" itemprop="keywords">
-                                <span><i class="fab fa-vuejs" aria-hidden="true"></i> Vue.js</span>
-                                <span><i class="fab fa-python" aria-hidden="true"></i> Python</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Portfolio Item 5: Food Delivery App -->
-                <article class="col-lg-4 col-md-6 portfolio-item" data-category="mobile" data-aos="fade-up" data-aos-delay="100" itemscope itemtype="https://schema.org/MobileApplication">
-                    <div class="portfolio-card-creative">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&h=400&fit=crop" 
-                                 alt="Food Delivery Mobile App - React Native Development" 
-                                 loading="lazy"
-                                 width="500"
-                                 height="400"
-                                 itemprop="image">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-content">
-                                    <span class="portfolio-category" itemprop="applicationCategory">Mobile App</span>
-                                    <h3 itemprop="name">Food Delivery App</h3>
-                                    <p itemprop="description">On-demand delivery solution with real-time tracking</p>
-                                    <a href="#" class="portfolio-link" aria-label="View Food Delivery App project">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                    </a>
+                    <!-- Portfolio Item 3: SEO Campaign -->
+                    <article class="col-lg-4 col-md-6 portfolio-item" data-category="marketing" data-aos="fade-up" data-aos-delay="200" itemscope itemtype="https://schema.org/CreativeWork">
+                        <div class="portfolio-card-creative">
+                            <div class="portfolio-image">
+                                <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=500&h=400&fit=crop" alt="SEO Campaign - 300% Traffic Increase - Digital Marketing" loading="lazy" width="500" height="400" itemprop="image">
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-content">
+                                        <span class="portfolio-category" itemprop="genre">Digital Marketing</span>
+                                        <h3 itemprop="name">SEO Campaign Success</h3>
+                                        <p itemprop="description">300% traffic increase in 6 months</p>
+                                        <a href="#" class="portfolio-link" aria-label="View SEO Campaign case study"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-info">
+                                <div class="portfolio-tags" itemprop="keywords">
+                                    <span><i class="fas fa-search" aria-hidden="true"></i> SEO</span>
+                                    <span><i class="fas fa-chart-line" aria-hidden="true"></i> Analytics</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-tags" itemprop="keywords">
-                                <span><i class="fab fa-react" aria-hidden="true"></i> React Native</span>
-                                <span>Firebase</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Portfolio Item 6: Banking App Redesign -->
-                <article class="col-lg-4 col-md-6 portfolio-item" data-category="design" data-aos="fade-up" data-aos-delay="200" itemscope itemtype="https://schema.org/CreativeWork">
-                    <div class="portfolio-card-creative">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&h=400&fit=crop" 
-                                 alt="Banking App UI/UX Redesign - Modern Interface Design" 
-                                 loading="lazy"
-                                 width="500"
-                                 height="400"
-                                 itemprop="image">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-content">
-                                    <span class="portfolio-category" itemprop="genre">UI/UX Design</span>
-                                    <h3 itemprop="name">Banking App Redesign</h3>
-                                    <p itemprop="description">Modern & secure interface with improved UX</p>
-                                    <a href="#" class="portfolio-link" aria-label="View Banking App UI/UX project">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                    </a>
+                    <!-- Portfolio Item 4: SaaS Dashboard -->
+                    <article class="col-lg-4 col-md-6 portfolio-item" data-category="web" data-aos="fade-up" itemscope itemtype="https://schema.org/WebApplication">
+                        <div class="portfolio-card-creative">
+                            <div class="portfolio-image">
+                                <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=500&h=400&fit=crop" alt="SaaS Dashboard - Analytics & Reporting Platform Development" loading="lazy" width="500" height="400" itemprop="image">
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-content">
+                                        <span class="portfolio-category" itemprop="applicationCategory">Web Application</span>
+                                        <h3 itemprop="name">SaaS Dashboard</h3>
+                                        <p itemprop="description">Analytics & reporting platform with Vue.js</p>
+                                        <a href="#" class="portfolio-link" aria-label="View SaaS Dashboard project"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-info">
+                                <div class="portfolio-tags" itemprop="keywords">
+                                    <span><i class="fab fa-vuejs" aria-hidden="true"></i> Vue.js</span>
+                                    <span><i class="fab fa-python" aria-hidden="true"></i> Python</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-tags" itemprop="keywords">
-                                <span><i class="fas fa-pencil-ruler" aria-hidden="true"></i> Figma</span>
-                                <span><i class="fas fa-paint-brush" aria-hidden="true"></i> UI/UX</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Portfolio Item 7: Real Estate Portal -->
-                <article class="col-lg-4 col-md-6 portfolio-item" data-category="web" data-aos="fade-up" itemscope itemtype="https://schema.org/WebApplication">
-                    <div class="portfolio-card-creative">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=400&fit=crop" 
-                                 alt="Real Estate Portal - Property Listing Platform with Laravel" 
-                                 loading="lazy"
-                                 width="500"
-                                 height="400"
-                                 itemprop="image">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-content">
-                                    <span class="portfolio-category" itemprop="applicationCategory">Web Application</span>
-                                    <h3 itemprop="name">Real Estate Portal</h3>
-                                    <p itemprop="description">Property listing & management platform</p>
-                                    <a href="#" class="portfolio-link" aria-label="View Real Estate Portal project">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                    </a>
+                    <!-- Portfolio Item 5: Food Delivery App -->
+                    <article class="col-lg-4 col-md-6 portfolio-item" data-category="mobile" data-aos="fade-up" data-aos-delay="100" itemscope itemtype="https://schema.org/MobileApplication">
+                        <div class="portfolio-card-creative">
+                            <div class="portfolio-image">
+                                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&h=400&fit=crop" alt="Food Delivery Mobile App - React Native Development" loading="lazy" width="500" height="400" itemprop="image">
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-content">
+                                        <span class="portfolio-category" itemprop="applicationCategory">Mobile App</span>
+                                        <h3 itemprop="name">Food Delivery App</h3>
+                                        <p itemprop="description">On-demand delivery solution with real-time tracking</p>
+                                        <a href="#" class="portfolio-link" aria-label="View Food Delivery App project"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-info">
+                                <div class="portfolio-tags" itemprop="keywords">
+                                    <span><i class="fab fa-react" aria-hidden="true"></i> React Native</span>
+                                    <span>Firebase</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-tags" itemprop="keywords">
-                                <span><i class="fab fa-vuejs" aria-hidden="true"></i> Vue.js</span>
-                                <span><i class="fab fa-laravel" aria-hidden="true"></i> Laravel</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Portfolio Item 8: Brand Campaign -->
-                <article class="col-lg-4 col-md-6 portfolio-item" data-category="marketing" data-aos="fade-up" data-aos-delay="100" itemscope itemtype="https://schema.org/CreativeWork">
-                    <div class="portfolio-card-creative">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1557838923-2985c318be48?w=500&h=400&fit=crop" 
-                                 alt="Social Media Brand Campaign - 5M+ Impressions" 
-                                 loading="lazy"
-                                 width="500"
-                                 height="400"
-                                 itemprop="image">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-content">
-                                    <span class="portfolio-category" itemprop="genre">Social Media</span>
-                                    <h3 itemprop="name">Brand Campaign</h3>
-                                    <p itemprop="description">5M+ impressions achieved across platforms</p>
-                                    <a href="#" class="portfolio-link" aria-label="View Brand Campaign case study">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                    </a>
+                    <!-- Portfolio Item 6: Banking App Redesign -->
+                    <article class="col-lg-4 col-md-6 portfolio-item" data-category="design" data-aos="fade-up" data-aos-delay="200" itemscope itemtype="https://schema.org/CreativeWork">
+                        <div class="portfolio-card-creative">
+                            <div class="portfolio-image">
+                                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&h=400&fit=crop" alt="Banking App UI/UX Redesign - Modern Interface Design" loading="lazy" width="500" height="400" itemprop="image">
+                                <div class="portfolio-overlay">
+                                    <div class="portfolio-content">
+                                        <span class="portfolio-category" itemprop="genre">UI/UX Design</span>
+                                        <h3 itemprop="name">Banking App Redesign</h3>
+                                        <p itemprop="description">Modern & secure interface with improved UX</p>
+                                        <a href="#" class="portfolio-link" aria-label="View Banking App UI/UX project"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portfolio-info">
+                                <div class="portfolio-tags" itemprop="keywords">
+                                    <span>Figma</span>
+                                    <span>Prototype</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-tags" itemprop="keywords">
-                                <span><i class="fab fa-facebook" aria-hidden="true"></i> Facebook</span>
-                                <span><i class="fab fa-instagram" aria-hidden="true"></i> Instagram</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Portfolio Item 9: Travel Booking App -->
-                <article class="col-lg-4 col-md-6 portfolio-item" data-category="mobile" data-aos="fade-up" data-aos-delay="200" itemscope itemtype="https://schema.org/MobileApplication">
-                    <div class="portfolio-card-creative">
-                        <div class="portfolio-image">
-                            <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=400&fit=crop" 
-                                 alt="Travel Booking Mobile App - Flutter Development" 
-                                 loading="lazy"
-                                 width="500"
-                                 height="400"
-                                 itemprop="image">
-                            <div class="portfolio-overlay">
-                                <div class="portfolio-content">
-                                    <span class="portfolio-category" itemprop="applicationCategory">Mobile App</span>
-                                    <h3 itemprop="name">Travel Booking App</h3>
-                                    <p itemprop="description">Seamless booking experience with Flutter</p>
-                                    <a href="#" class="portfolio-link" aria-label="View Travel Booking App project">
-                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-tags" itemprop="keywords">
-                                <span>Flutter</span>
-                                <span>Firebase</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
+                    </article>
+                @endif
                 
             </div>
         </div>
@@ -1064,6 +996,36 @@
     <section class="technologies-section py-5" id="technologies" aria-labelledby="tech-heading">
         <div class="container">
             <header class="section-header text-center mb-5" data-aos="fade-up">
+                <span class="section-label">Our Tech Stack</span>
+                <article class="col-lg-4 col-md-6 portfolio-item" data-category="web" data-aos="fade-up" itemscope itemtype="https://schema.org/WebApplication">
+                    <div class="portfolio-card-creative">
+                        <div class="portfolio-image">
+                            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=500&h=400&fit=crop" 
+                                 alt="SaaS Dashboard - Analytics & Reporting Platform Development" 
+                                 loading="lazy"
+                                 width="500"
+                                 height="400"
+                                 itemprop="image">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-content">
+                                    <span class="portfolio-category" itemprop="applicationCategory">Web Application</span>
+                                    <h3 itemprop="name">SaaS Dashboard</h3>
+                                    <p itemprop="description">Analytics & reporting platform with Vue.js</p>
+                                    <a href="#" class="portfolio-link" aria-label="View SaaS Dashboard project">
+                                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="portfolio-tags" itemprop="keywords">
+                                <span><i class="fab fa-vuejs" aria-hidden="true"></i> Vue.js</span>
+                                <span><i class="fab fa-python" aria-hidden="true"></i> Python</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
                 <span class="section-label">Our Tech Stack</span>
                 <h2 class="section-title-creative-dark" id="tech-heading">Technologies We Use</h2>
                 <p class="section-subtitle-creative">Modern technologies for scalable, secure & high-performance solutions</p>
