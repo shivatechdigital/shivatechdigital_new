@@ -44,7 +44,15 @@
 .navbar-toggler { border: 1.5px solid rgba(30,41,59,0.2) !important; border-radius: 8px !important; padding: 6px 10px !important; }
 .navbar-toggler:focus { box-shadow: none !important; }
 .navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231e293b' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important; }
-.profile-menu { margin-left: 10px; }
+.profile-menu { margin-left: 10px; position: relative; }
+.profile-menu::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 12px;
+}
 .profile-trigger {
     width: 44px;
     height: 44px;
@@ -63,14 +71,19 @@
 .profile-trigger:hover { color: #fff; border-color: #60a5fa; box-shadow: 0 0 0 4px rgba(37,99,235,.2); }
 .profile-menu .dropdown-menu {
     min-width: 170px;
-    margin-top: 10px;
+    margin-top: 0;
+    top: calc(100% + 8px);
     border: 1px solid #dbeafe;
     border-radius: 12px;
     box-shadow: 0 12px 32px rgba(2, 8, 23, .18);
 }
 .profile-menu .dropdown-item { font-size: .86rem; font-weight: 600; color: #0f172a; }
 .profile-menu .dropdown-item:hover { background: #eff6ff; color: #1d4ed8; }
-.profile-menu:hover .dropdown-menu { display: block; }
+.profile-menu:hover .dropdown-menu,
+.profile-menu:focus-within .dropdown-menu,
+.profile-menu .dropdown-menu:hover {
+    display: block;
+}
 
 /* ---- MEGA MENU ---- */
 .mega-dropdown { position: static !important; }
