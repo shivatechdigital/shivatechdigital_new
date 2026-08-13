@@ -1175,7 +1175,7 @@
 
                 <div class="col-lg-6" data-aos="fade-left">
                     <div class="features-content">
-                        <span class="section-label">Why Choose Us</span>
+                        <span class="section-label">Choose US</span>
                         <h2 class="section-title-creative-dark" id="features-heading">
                             Why Noidas Choose Shiva Tech Digital?
                         </h2>
