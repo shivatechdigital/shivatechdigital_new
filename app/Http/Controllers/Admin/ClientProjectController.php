@@ -60,7 +60,7 @@ class ClientProjectController extends Controller
             'progress' => 'required|integer|min:0|max:100',
             'start_date' => 'nullable|date',
             'estimated_delivery_date' => 'nullable|date',
-            'client_note' => 'nullable|string|max:1200',
+            'client_note' => 'nullable|string',
             'milestones' => 'nullable|string',
             'is_active' => 'required|boolean',
         ]);
@@ -91,7 +91,7 @@ class ClientProjectController extends Controller
             'progress' => 'required|integer|min:0|max:100',
             'start_date' => 'nullable|date',
             'estimated_delivery_date' => 'nullable|date',
-            'client_note' => 'nullable|string|max:1200',
+            'client_note' => 'nullable|string',
             'milestones' => 'nullable|string',
             'is_active' => 'required|boolean',
         ]);

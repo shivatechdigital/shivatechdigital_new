@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\ClientProject;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,5 +24,24 @@ class DashboardTest extends TestCase
 
         $response = $this->get(route('dashboard'));
         $response->assertStatus(200);
+    }
+
+    public function test_admin_users_can_see_client_project_action_buttons(): void
+    {
+        $user = User::factory()->create(['role' => 'admin']);
+        ClientProject::create([
+            'user_id' => $user->id,
+            'title' => 'Anandeshwar Trader',
+            'project_type' => 'Mobile Application',
+            'status' => 'planning',
+            'progress' => 0,
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('admin.client-projects.index'))
+            ->assertOk()
+            ->assertSee('Edit')
+            ->assertSee('Delete');
     }
 }
