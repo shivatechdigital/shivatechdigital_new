@@ -410,36 +410,120 @@
     .hero-ctrl { display: none !important; }
 }
 
-/* ===== PROCESS SECTION FIX ===== */
+/* ===== PROJECT DELIVERY TIMELINE ===== */
+#process.process-section {
+    background: #030526 !important;
+    padding: 84px 0 54px !important;
+}
+#process.process-section::before,
+#process.process-section::after { display: none; }
+#process .section-label { color: #7dd3fc !important; }
 #process .section-title-creative,
-#process .section-title-creative-dark { color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; }
-
-/* Inactive cards → white */
-#process .step-content-horizontal { background: #ffffff !important; border: 1px solid #e2e8f0 !important; box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important; }
+#process .section-subtitle-creative { color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; }
+#process .section-subtitle-creative { opacity: .72; }
+#process .process-timeline-horizontal { max-width: 1320px; padding: 2rem 0 0; }
+#process .timeline-progress-line {
+    top: 104px;
+    left: 12.5%;
+    width: 75%;
+    height: 1px;
+    background: rgba(255,255,255,.12);
+    box-shadow: none;
+    overflow: hidden;
+}
+#process .timeline-progress-fill,
+#process .process-missile { display: none; }
+#process .process-steps-row { gap: 28px; }
+#process .process-step-horizontal { opacity: 1; transform: none !important; }
+#process .step-circle-horizontal,
+#process .process-step-horizontal.active .step-circle-horizontal,
+#process .process-step-horizontal.completed .step-circle-horizontal {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #5ed7f3) !important;
+    box-shadow: none;
+    transform: none;
+}
+#process .process-step-horizontal:nth-child(even) .step-circle-horizontal {
+    background: linear-gradient(135deg, #fb6b12, #ff9b2f) !important;
+}
+#process .step-ring,
+#process .step-pulse { display: none; }
+#process .step-icon-container i,
+#process .process-step-horizontal.active .step-icon-container i,
+#process .process-step-horizontal.completed .step-icon-container i {
+    color: #ffffff;
+    font-size: 3.65rem;
+    filter: none;
+    transform: none;
+}
+#process .step-number-badge,
+#process .process-step-horizontal.active .step-number-badge,
+#process .process-step-horizontal.completed .step-number-badge {
+    top: auto;
+    right: 14px;
+    bottom: 14px;
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    border: 3px solid #fb6b12;
+    color: transparent;
+    box-shadow: none;
+    transform: none;
+    animation: none;
+}
+#process .step-number-badge::after,
+#process .process-step-horizontal.completed .step-number-badge::after { display: none; }
+#process .step-content-horizontal,
+#process .process-step-horizontal.active .step-content-horizontal {
+    min-height: 0;
+    padding: 0 16px;
+    background: transparent !important;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+}
 #process .step-content-horizontal h3,
-#process .step-content-horizontal h4 { color: #94a3b8 !important; -webkit-text-fill-color: #94a3b8 !important; }
-#process .step-content-horizontal p { color: #94a3b8 !important; }
-#process .step-features-horizontal li { color: #94a3b8 !important; }
-
-/* Active card → heading black */
-#process .process-step-horizontal.active .step-content-horizontal { background: #ffffff !important; border: 2px solid #6366f1 !important; box-shadow: 0 12px 40px rgba(99,102,241,0.2) !important; }
+#process .step-content-horizontal h4,
 #process .process-step-horizontal.active .step-content-horizontal h3,
-#process .process-step-horizontal.active .step-content-horizontal h4 { color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; }
-#process .process-step-horizontal.active .step-content-horizontal p { color: #475569 !important; }
-#process .process-step-horizontal.active .step-features-horizontal li { color: #2563eb !important; }
-.flow-dot.active{
-    background: var(--gradient);
-    transform: scale(1.8);
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
-    border-color: black;
-    height: 12px !important;
-    width: 12px !important;
+#process .process-step-horizontal.active .step-content-horizontal h4 {
+    background: none;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+}
+#process .step-content-horizontal p { color: rgba(255,255,255,.86) !important; font-size: 1rem; }
+#process .step-features-horizontal { margin-top: 14px; text-align: center; }
+#process .step-features-horizontal li { color: rgba(255,255,255,.68); justify-content: center; }
+#process .step-features-horizontal i { color: #67e8f9; }
+#process .process-controls,
+#process .process-status { display: none; }
+
+@media (max-width: 991px) {
+    #process .process-steps-row { flex-wrap: wrap; justify-content: center; }
+    #process .process-step-horizontal { flex: 0 0 calc(50% - 28px); }
+    #process .timeline-progress-line { display: none; }
 }
 
-.control-btn {
-    width: 33px !important;
-    height: 33px !important;
+@media (max-width: 576px) {
+    #process.process-section { padding: 60px 0 36px !important; }
+    #process .process-steps-row { gap: 42px; }
+    #process .process-step-horizontal { flex-basis: 100%; }
+    #process .step-circle-horizontal,
+    #process .process-step-horizontal.active .step-circle-horizontal,
+    #process .process-step-horizontal.completed .step-circle-horizontal { width: 136px; height: 136px; margin-bottom: 26px; }
+    #process .step-icon-container i,
+    #process .process-step-horizontal.active .step-icon-container i,
+    #process .process-step-horizontal.completed .step-icon-container i { font-size: 2.8rem; }
+    #process .step-content-horizontal h3,
+    #process .step-content-horizontal h4 { font-size: 1.35rem; }
 }
+
 /* ===== LEAD FORM SECTION ===== */
 .lead-form-section { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
 .hero-lead-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 30px; margin-top: 0; border-radius: 16px; text-align: center; }
@@ -1194,7 +1278,7 @@
                                     <i class="fas fa-rupee-sign"></i>
                                 </div>
                                 <div class="feature-content-box">
-                                    <h3 style="color:white">Affordable Pricing</h3>
+                                    <h3>Affordable Pricing</h3>
                                     <p>30-50% cheaper than big agencies in Noida. No hidden costs, transparent quotes.</p>
                                 </div>
                             </article>
@@ -1204,7 +1288,7 @@
                                     <i class="fas fa-user-tie"></i>
                                 </div>
                                 <div class="feature-content-box">
-                                    <h3 style="color:white">Direct Founder Access</h3>
+                                    <h3>Direct Founder Access</h3>
                                     <p>Talk directly with decision makers, not account managers. Faster decisions, better results.</p>
                                 </div>
                             </article>
@@ -1214,7 +1298,7 @@
                                     <i class="fas fa-bolt"></i>
                                 </div>
                                 <div class="feature-content-box">
-                                    <h3 style="color:white">Fast Turnaround</h3>
+                                    <h3>Fast Turnaround</h3>
                                     <p>Startup agility means faster delivery. No corporate bureaucracy slowing things down.</p>
                                 </div>
                             </article>
@@ -1224,7 +1308,7 @@
                                     <i class="fas fa-handshake"></i>
                                 </div>
                                 <div class="feature-content-box">
-                                    <h3 style="color:white">Flexible Payment</h3>
+                                    <h3>Flexible Payment</h3>
                                     <p>EMI options, milestone-based payments. We work with your budget constraints.</p>
                                 </div>
                             </article>
