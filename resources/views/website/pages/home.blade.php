@@ -438,8 +438,8 @@
 #process .step-circle-horizontal,
 #process .process-step-horizontal.active .step-circle-horizontal,
 #process .process-step-horizontal.completed .step-circle-horizontal {
-    width: 132px;
-    height: 132px;
+    width: 100px;
+    height: 100px;
     margin-bottom: 32px;
     border: 0;
     border-radius: 50%;
@@ -455,7 +455,7 @@
     width: calc(100% + 8px);
     height: calc(100% + 8px);
     border: 0;
-    animation: processDotOrbit 4s linear infinite !important;
+    animation: processDotOrbit 5.5s linear infinite !important;
 }
 #process .step-ring::after {
     content: '';
@@ -479,7 +479,7 @@
 #process .process-step-horizontal.active .step-icon-container i,
 #process .process-step-horizontal.completed .step-icon-container i {
     color: #ffffff;
-    font-size: 2.8rem;
+    font-size: 2.2rem;
     filter: none;
     transform: none;
 }
@@ -516,12 +516,12 @@
     background: none;
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     margin-bottom: 16px;
 }
-#process .step-content-horizontal p { color: rgba(255,255,255,.86) !important; font-size: 1rem; }
+#process .step-content-horizontal p { color: rgba(255,255,255,.86) !important; font-size: .95rem; }
 #process .step-features-horizontal { margin-top: 14px; text-align: center; }
-#process .step-features-horizontal li { color: rgba(255,255,255,.68); justify-content: center; }
+#process .step-features-horizontal li { color: rgba(255,255,255,.68); font-size: .7rem; justify-content: center; }
 #process .step-features-horizontal i { color: #67e8f9; }
 #process .process-controls,
 #process .process-status { display: none; }
@@ -538,7 +538,7 @@
     #process .process-step-horizontal { flex-basis: 100%; }
     #process .step-circle-horizontal,
     #process .process-step-horizontal.active .step-circle-horizontal,
-    #process .process-step-horizontal.completed .step-circle-horizontal { width: 112px; height: 112px; margin-bottom: 22px; }
+    #process .process-step-horizontal.completed .step-circle-horizontal { width: 100px; height: 100px; margin-bottom: 22px; }
     #process .step-icon-container i,
     #process .process-step-horizontal.active .step-icon-container i,
     #process .process-step-horizontal.completed .step-icon-container i { font-size: 2.8rem; }
