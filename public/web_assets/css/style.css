@@ -40,6 +40,8 @@
 
 html {
     scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: clip;
 }
 
 body {
@@ -47,6 +49,14 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     background: var(--dark-color);
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+header,
+main,
+footer {
+    max-width: 100%;
 }
 
 img {
@@ -69,6 +79,13 @@ a {
     background: rgba(15, 23, 42, 0.95) !important;
     backdrop-filter: blur(10px);
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+.navbar > .container,
+.navbar > .container-fluid {
+    max-width: 100%;
 }
 
 .navbar.scrolled {

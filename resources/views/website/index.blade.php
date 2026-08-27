@@ -25,6 +25,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="msvalidate.01" content="5CCECD56E4416531BD002FB491E542C6" />
+    <style>
+        html, body { max-width: 100%; overflow-x: clip; }
+        header, main, footer { max-width: 100%; }
+    </style>
     {{-- ============================================ --}}
     {{-- 🔥 DYNAMIC SEO META - AUTO-MANAGED VIA CRM --}}
     {{-- ============================================ --}}
