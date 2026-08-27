@@ -19,12 +19,16 @@
                     <ul class="list-group list-group-flush mt-3">
                         @forelse(($project->milestones ?? []) as $milestone)
                             <li class="list-group-item px-0">
-                                <div class="d-flex justify-content-between gap-3">
+                                <div class="d-flex justify-content-between gap-3 milestone-content">
                                     <div>
-                                        <strong>{{ $milestone['title'] ?? 'Milestone' }}</strong>
-                                        <div style="font-size:.85rem;color:#64748b;">{{ $milestone['note'] ?? '' }}</div>
+                                        @if(($milestone['title'] ?? '') !== 'Milestones')
+                                            <strong>{{ $milestone['title'] ?? 'Milestone' }}</strong>
+                                        @endif
+                                        <div style="font-size:.9rem;color:#64748b;">{!! $milestone['note'] ?? '' !!}</div>
                                     </div>
-                                    <span class="badge text-bg-light align-self-start">{{ $milestone['status'] ?? 'Pending' }}</span>
+                                    @if(!empty($milestone['status']))
+                                        <span class="badge text-bg-light align-self-start">{{ $milestone['status'] }}</span>
+                                    @endif
                                 </div>
                             </li>
                         @empty
@@ -53,4 +57,10 @@
         </div>
     </div>
 </section>
+
+<style>
+    .milestone-content h2, .milestone-content h3, .milestone-content h4 { color: #0f172a; font-weight: 800; margin: 0 0 .5rem; }
+    .milestone-content p { margin-bottom: .75rem; }
+    .milestone-content ul, .milestone-content ol { margin-bottom: .75rem; padding-left: 1.25rem; }
+</style>
 @endsection

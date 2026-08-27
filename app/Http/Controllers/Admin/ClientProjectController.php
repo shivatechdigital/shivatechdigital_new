@@ -113,31 +113,28 @@ class ClientProjectController extends Controller
 
     private function parseMilestones(?string $input): ?array
     {
-        if (!$input) {
+        $content = $this->sanitizeMilestoneContent($input);
+
+        if ($content === '') {
             return null;
         }
 
-        $lines = preg_split('/\r\n|\r|\n/', $input) ?: [];
-        $milestones = [];
+        return [[
+            'title' => 'Milestones',
+            'status' => '',
+            'note' => $content,
+        ]];
+    }
 
-        foreach ($lines as $line) {
-            $line = trim($line);
-            if ($line === '') {
-                continue;
-            }
-
-            [$title, $status, $note] = array_pad(array_map('trim', explode('|', $line, 3)), 3, '');
-            if ($title === '') {
-                continue;
-            }
-
-            $milestones[] = [
-                'title' => $title,
-                'status' => $status ?: 'Pending',
-                'note' => $note,
-            ];
+    private function sanitizeMilestoneContent(?string $input): string
+    {
+        if (!$input) {
+            return '';
         }
 
-        return empty($milestones) ? null : $milestones;
+        $content = strip_tags($input, '<h2><h3><h4><p><strong><b><em><i><u><ol><ul><li><br>');
+        $content = preg_replace('/<([a-z0-9]+)\b[^>]*>/i', '<$1>', $content) ?? '';
+
+        return trim($content);
     }
 }

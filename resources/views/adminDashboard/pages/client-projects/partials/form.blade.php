@@ -1,7 +1,19 @@
 @php
     $milestonesText = old('milestones');
     if ($milestonesText === null && $clientProject?->milestones) {
-        $milestonesText = collect($clientProject->milestones)->map(fn($m) => ($m['title'] ?? '') . '|' . ($m['status'] ?? '') . '|' . ($m['note'] ?? ''))->implode("\n");
+        $milestonesText = collect($clientProject->milestones)->map(function ($milestone) {
+            $note = $milestone['note'] ?? '';
+
+            if (str_contains($note, '<')) {
+                return $note;
+            }
+
+            $title = e($milestone['title'] ?? 'Milestone');
+            $status = e($milestone['status'] ?? '');
+            $note = e($note);
+
+            return "<h3>{$title}</h3><p>" . ($status ? "<strong>Status:</strong> {$status}<br>" : '') . "{$note}</p>";
+        })->implode('');
     }
 @endphp
 
@@ -27,6 +39,21 @@
     <div class="col-md-3"><label class="form-label">Start Date</label><input type="date" name="start_date" class="form-control" value="{{ old('start_date', optional($clientProject?->start_date)->format('Y-m-d')) }}"></div>
     <div class="col-md-3"><label class="form-label">ETA</label><input type="date" name="estimated_delivery_date" class="form-control" value="{{ old('estimated_delivery_date', optional($clientProject?->estimated_delivery_date)->format('Y-m-d')) }}"></div>
     <div class="col-12"><label class="form-label">Client Note</label><textarea name="client_note" rows="3" class="form-control">{{ old('client_note', $clientProject?->client_note) }}</textarea></div>
-    <div class="col-12"><label class="form-label">Milestones</label><textarea name="milestones" rows="5" class="form-control" placeholder="Title|Status|Note\nUI Design|Completed|Approved by client">{{ $milestonesText }}</textarea><small class="text-muted">One per line, format: Title|Status|Note</small></div>
+    <div class="col-12">
+        <label class="form-label" for="milestones">Milestones</label>
+        <textarea name="milestones" id="milestones" rows="8" class="form-control">{!! $milestonesText !!}</textarea>
+        <small class="text-muted">Use headings, bold text, numbered lists, or bullet lists to share project updates.</small>
+    </div>
     <div class="col-md-3"><label class="form-label">Active</label><select name="is_active" class="form-select"><option value="1" {{ old('is_active', $clientProject?->is_active ?? true ? '1' : '0') == '1' ? 'selected' : '' }}>Yes</option><option value="0" {{ old('is_active', $clientProject?->is_active ?? true ? '1' : '0') == '0' ? 'selected' : '' }}>No</option></select></div>
 </div>
+
+@once
+    @push('scripts')
+        <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+        <script>
+            ClassicEditor.create(document.querySelector('#milestones'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'undo', 'redo']
+            });
+        </script>
+    @endpush
+@endonce
