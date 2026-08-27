@@ -42,10 +42,82 @@
     <div class="col-12">
         <label class="form-label" for="milestones">Milestones</label>
         <textarea name="milestones" id="milestones" rows="8" class="form-control">{!! $milestonesText !!}</textarea>
-        <small class="text-muted">Use headings, bold text, numbered lists, or bullet lists to share project updates.</small>
+        <small class="milestones-help-text">Use headings, bold text, numbered lists, or bullet lists to share project updates.</small>
     </div>
     <div class="col-md-3"><label class="form-label">Active</label><select name="is_active" class="form-select"><option value="1" {{ old('is_active', $clientProject?->is_active ?? true ? '1' : '0') == '1' ? 'selected' : '' }}>Yes</option><option value="0" {{ old('is_active', $clientProject?->is_active ?? true ? '1' : '0') == '0' ? 'selected' : '' }}>No</option></select></div>
 </div>
+
+@once
+    @push('styles')
+        <style>
+            .milestones-help-text {
+                color: #000000;
+            }
+
+            select.form-select {
+                padding-right: 3rem;
+                background-position: right 1rem center;
+            }
+
+            #milestones + .ck-editor {
+                border: 1px solid #cbd5e1;
+                border-radius: 6px;
+                overflow: hidden;
+            }
+
+            #milestones + .ck-editor .ck-toolbar {
+                background: #f8fafc;
+                border: 0;
+                border-bottom: 1px solid #cbd5e1;
+            }
+
+            #milestones + .ck-editor .ck-editor__main > .ck-editor__editable {
+                min-height: 320px;
+                background: #ffffff;
+                color: #1e293b;
+            }
+
+            #milestones + .ck-editor .ck-button,
+            #milestones + .ck-editor .ck-button .ck-button__label {
+                color: #334155;
+            }
+
+            html[data-theme="dark"] #milestones + .ck-editor {
+                border-color: #475569;
+            }
+
+            html[data-theme="dark"] .milestones-help-text {
+                color: #ffffff;
+            }
+
+            html[data-theme="dark"] #milestones + .ck-editor .ck-toolbar {
+                background: #1e293b;
+                border-bottom-color: #475569;
+            }
+
+            html[data-theme="dark"] #milestones + .ck-editor .ck-editor__main > .ck-editor__editable {
+                background: #0f172a;
+                color: #e2e8f0;
+            }
+
+            html[data-theme="dark"] #milestones + .ck-editor .ck-button,
+            html[data-theme="dark"] #milestones + .ck-editor .ck-button .ck-button__label,
+            html[data-theme="dark"] #milestones + .ck-editor .ck-dropdown__button .ck-button__label {
+                color: #e2e8f0;
+            }
+
+            html[data-theme="dark"] #milestones + .ck-editor .ck-button:not(.ck-disabled):hover,
+            html[data-theme="dark"] #milestones + .ck-editor .ck-button.ck-on {
+                background: #334155;
+            }
+
+            html[data-theme="dark"] #milestones + .ck-editor .ck-button .ck-icon,
+            html[data-theme="dark"] #milestones + .ck-editor .ck-button .ck-icon * {
+                color: #e2e8f0;
+            }
+        </style>
+    @endpush
+@endonce
 
 @once
     @push('scripts')
