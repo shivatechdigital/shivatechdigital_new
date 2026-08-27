@@ -37,6 +37,29 @@
         </a>
       </li>
       @endif
+      @if($can('clientprojects.view'))
+        <li class="dropdown {{ request()->routeIs('admin.client-projects.*') ? 'open' : '' }}">
+          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.client-projects.*') ? 'active-page' : '' }}">
+            <iconify-icon icon="solar:clipboard-list-outline" class="menu-icon"></iconify-icon>
+            <span>Client Projects</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="{{ route('admin.client-projects.index') }}" class="{{ request()->routeIs('admin.client-projects.index') || request()->routeIs('admin.client-projects.edit') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Project Tracker
+              </a>
+            </li>
+            @if($can('clientprojects.create'))
+            <li>
+              <a href="{{ route('admin.client-projects.create') }}" class="{{ request()->routeIs('admin.client-projects.create') ? 'active-submenu' : '' }}">
+                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add Project
+              </a>
+            </li>
+            @endif
+          </ul>
+        </li>
+      @endif
+
       @if($can('sitedetails.manage'))
       <li class="{{ request()->routeIs('sitedetails') ? 'active-page' : '' }} mb-2">
         <a href="{{ route('sitedetails') }}" class="{{ request()->routeIs('sitedetails') ? 'active-page' : '' }}">
@@ -259,29 +282,6 @@
             <li>
               <a href="{{ route('admin.quote-options.index') }}" class="{{ request()->routeIs('admin.quote-options.*') ? 'active-submenu' : '' }}">
                 <i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Quote Options
-              </a>
-            </li>
-            @endif
-          </ul>
-        </li>
-      @endif
-
-      @if($can('clientprojects.view'))
-        <li class="dropdown {{ request()->routeIs('admin.client-projects.*') ? 'open' : '' }}">
-          <a href="javascript:void(0)" class="{{ request()->routeIs('admin.client-projects.*') ? 'active-page' : '' }}">
-            <iconify-icon icon="solar:clipboard-list-outline" class="menu-icon"></iconify-icon>
-            <span>Client Projects</span>
-          </a>
-          <ul class="sidebar-submenu">
-            <li>
-              <a href="{{ route('admin.client-projects.index') }}" class="{{ request()->routeIs('admin.client-projects.index') || request()->routeIs('admin.client-projects.edit') ? 'active-submenu' : '' }}">
-                <i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Project Tracker
-              </a>
-            </li>
-            @if($can('clientprojects.create'))
-            <li>
-              <a href="{{ route('admin.client-projects.create') }}" class="{{ request()->routeIs('admin.client-projects.create') ? 'active-submenu' : '' }}">
-                <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Add Project
               </a>
             </li>
             @endif
