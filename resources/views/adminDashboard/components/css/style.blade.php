@@ -68,4 +68,19 @@
 		color: var(--text-secondary-light) !important;
 		opacity: 1;
 	}
+
+	/* Keep Bootstrap tables and their white utility containers aligned with the dashboard dark theme. */
+	[data-theme="dark"] .dashboard-main .table-responsive.bg-white {
+		background-color: var(--input-bg) !important;
+		border-color: var(--border-color) !important;
+	}
+
+	[data-theme="dark"] .dashboard-main .table {
+		--bs-table-bg: transparent;
+		--bs-table-color: var(--text-primary-light);
+		--bs-table-border-color: var(--border-color);
+		--bs-table-striped-bg: rgba(255, 255, 255, 0.04);
+		--bs-table-hover-bg: rgba(255, 255, 255, 0.07);
+		--bs-table-hover-color: var(--text-primary-light);
+	}
 </style>

@@ -43,8 +43,15 @@
     html[data-theme=dark] .gi-badge-unknown { background:#1e293b; color:#94a3b8; }
     html[data-theme=dark] .gi-badge-error   { background:#450a0a; color:#fca5a5; }
     html[data-theme=dark] .gi-badge-na      { background:#1e293b; color:#64748b; }
-    #gsc-results-table th { font-size:12px; white-space:nowrap; }
-    #gsc-results-table td { font-size:13px; vertical-align:middle; }
+    #gsc-results-table {
+        --bs-table-bg: transparent;
+        --bs-table-color: var(--gi-text);
+        --bs-table-border-color: var(--gi-border);
+        --bs-table-striped-bg: transparent;
+        --bs-table-hover-bg: rgba(148,163,184,0.08);
+    }
+    #gsc-results-table th { font-size:12px; white-space:nowrap; background:transparent; }
+    #gsc-results-table td { font-size:13px; vertical-align:middle; background:transparent; }
     #gsc-results-table td.url-cell { max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .gi-progress-bar-wrap { height:8px; background:var(--gi-border); border-radius:999px; overflow:hidden; }
     .gi-progress-bar { height:100%; background:linear-gradient(90deg,#6366f1,#8b5cf6); transition:width .3s ease; border-radius:999px; }
