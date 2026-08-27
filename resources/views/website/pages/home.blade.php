@@ -391,9 +391,11 @@
 .visual-cloud     .visual-ring { border-color: #7c3aed; }
 @keyframes ringPulse { 0%,100%{transform:scale(1);opacity:0.2} 50%{transform:scale(1.05);opacity:0.35} }
 
-.hero-indicators { bottom: 24px !important; gap: 8px; }
-.hero-indicators button { width: 32px !important; height: 4px !important; border-radius: 4px !important; background: rgba(15,23,42,0.2) !important; border: none !important; opacity: 1 !important; transition: all 0.3s ease; }
-.hero-indicators button.active { width: 17px !important; height: 17px !important; border-radius: 50% !important; background: #2563eb !important; }
+.hero-indicators { bottom: 24px !important; gap: 10px; }
+.hero-indicators button,
+.hero-indicators button.active { width: 12px !important; height: 12px !important; margin: 0 !important; border-radius: 50% !important; border: none !important; opacity: 1 !important; transition: background-color 0.3s ease, transform 0.3s ease; }
+.hero-indicators button { background: rgba(15,23,42,0.25) !important; }
+.hero-indicators button.active { background: #2563eb !important; transform: scale(1.15); }
 .hero-ctrl { width: 50px !important; height: 50px !important; background: rgba(255,255,255,0.92) !important; border-radius: 50% !important; top: 50% !important; transform: translateY(-50%) !important; box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important; border: 1.5px solid #e2e8f0 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
 .hero-ctrl i { color: #0f172a !important; font-size: 1rem !important; }
 .carousel-control-prev.hero-ctrl { left: 20px !important; }
@@ -401,6 +403,8 @@
 .about-preview{ background: white;}
 
 @media(max-width:768px) {
+    .hero-slide { min-height: auto; }
+    .hero-slide .row.min-vh-100 { min-height: auto !important; padding-top: 3.5rem !important; padding-bottom: 6rem !important; }
     .slide-title { font-size: 1.8rem !important; }
     .slide-stats { gap: 20px; }
     .hero-ctrl { display: none !important; }
@@ -1231,6 +1235,7 @@
         </div>
     </section>
 
+    @if(!isset($testimonials) || !$testimonials->count())
     <!-- ========================================
          TESTIMONIALS SECTION - NOIDA
     ======================================== -->
@@ -1434,6 +1439,7 @@
             </div>
         </div>
     </section>
+    @endif
     
     <!-- ========================================
          PARTNERS/TECHNOLOGIES SECTION

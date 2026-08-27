@@ -2759,8 +2759,9 @@ a {
 
 .slider-dot.active {
     background: #6366f1;
-    width: 40px;
-    border-radius: 6px;
+    width: 12px;
+    border-radius: 50%;
+    transform: scale(1.15);
 }
 
 .trust-badges {
@@ -5786,22 +5787,27 @@ select.form-control-creative option {
 /* ===== CAROUSEL CONTROLS ===== */
 .hero-indicators {
     bottom: 24px !important;
-    gap: 8px;
+    gap: 10px;
+}
+
+.hero-indicators button,
+.hero-indicators button.active {
+    width: 12px !important;
+    height: 12px !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+    border: none !important;
+    opacity: 1 !important;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .hero-indicators button {
-    width: 32px !important;
-    height: 4px !important;
-    border-radius: 4px !important;
     background: rgba(15,23,42,0.25) !important;
-    border: none !important;
-    transition: all 0.3s ease;
-    opacity: 1 !important;
 }
 
 .hero-indicators button.active {
-    width: 52px !important;
     background: #2563eb !important;
+    transform: scale(1.15);
 }
 
 .hero-ctrl {
@@ -5834,6 +5840,8 @@ select.form-control-creative option {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .hero-slide { min-height: auto; }
+    .hero-slide .row.min-vh-100 { min-height: auto !important; padding-top: 3.5rem !important; padding-bottom: 6rem !important; }
     .slide-title { font-size: 1.8rem; }
     .slide-desc  { font-size: 0.9rem; }
     .slide-stats { gap: 20px; }
