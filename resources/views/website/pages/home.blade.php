@@ -423,7 +423,7 @@
 #process .section-subtitle-creative { opacity: .72; }
 #process .process-timeline-horizontal { max-width: 1320px; padding: 2rem 0 0; }
 #process .timeline-progress-line {
-    top: 104px;
+    top: 78px;
     left: 12.5%;
     width: 75%;
     height: 1px;
@@ -438,9 +438,9 @@
 #process .step-circle-horizontal,
 #process .process-step-horizontal.active .step-circle-horizontal,
 #process .process-step-horizontal.completed .step-circle-horizontal {
-    width: 180px;
-    height: 180px;
-    margin-bottom: 42px;
+    width: 132px;
+    height: 132px;
+    margin-bottom: 32px;
     border: 0;
     border-radius: 50%;
     background: linear-gradient(135deg, #2563eb, #5ed7f3) !important;
@@ -450,13 +450,36 @@
 #process .process-step-horizontal:nth-child(even) .step-circle-horizontal {
     background: linear-gradient(135deg, #fb6b12, #ff9b2f) !important;
 }
-#process .step-ring,
-#process .step-pulse { display: none; }
+#process .step-ring {
+    display: block;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    border: 0;
+    animation: processDotOrbit 4s linear infinite !important;
+}
+#process .step-ring::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    width: 22px;
+    height: 22px;
+    background: #ffffff;
+    border: 3px solid #fb6b12;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(2, 6, 23, .32);
+    transform: translateX(-50%);
+}
+#process .step-pulse {
+    display: none;
+    animation: none !important;
+}
+@keyframes processDotOrbit { to { transform: rotate(360deg); } }
 #process .step-icon-container i,
 #process .process-step-horizontal.active .step-icon-container i,
 #process .process-step-horizontal.completed .step-icon-container i {
     color: #ffffff;
-    font-size: 3.65rem;
+    font-size: 2.8rem;
     filter: none;
     transform: none;
 }
@@ -468,8 +491,7 @@
     bottom: 14px;
     width: 24px;
     height: 24px;
-    background: #ffffff;
-    border: 3px solid #fb6b12;
+    display: none;
     color: transparent;
     box-shadow: none;
     transform: none;
@@ -516,7 +538,7 @@
     #process .process-step-horizontal { flex-basis: 100%; }
     #process .step-circle-horizontal,
     #process .process-step-horizontal.active .step-circle-horizontal,
-    #process .process-step-horizontal.completed .step-circle-horizontal { width: 136px; height: 136px; margin-bottom: 26px; }
+    #process .process-step-horizontal.completed .step-circle-horizontal { width: 112px; height: 112px; margin-bottom: 22px; }
     #process .step-icon-container i,
     #process .process-step-horizontal.active .step-icon-container i,
     #process .process-step-horizontal.completed .step-icon-container i { font-size: 2.8rem; }
