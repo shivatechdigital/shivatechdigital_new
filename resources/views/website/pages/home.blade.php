@@ -1930,58 +1930,6 @@
             });
         });
 
-        // ========================================
-        // TESTIMONIAL SLIDER
-        // ========================================
-        let currentTestimonial = 0;
-        const testimonialTrack = document.getElementById('testimonialsTrack');
-        const testimonialCards = testimonialTrack ? testimonialTrack.querySelectorAll('.testimonial-card-creative') : [];
-        const prevBtn = document.getElementById('prevTestimonial');
-        const nextBtn = document.getElementById('nextTestimonial');
-        const dotsContainer = document.getElementById('testimonialDots');
-
-        if (testimonialCards.length > 0 && dotsContainer) {
-            // Create dots
-            testimonialCards.forEach((_, index) => {
-                const dot = document.createElement('button');
-                dot.classList.add('slider-dot');
-                if (index === 0) dot.classList.add('active');
-                dot.setAttribute('aria-label', `Go to testimonial ${index + 1}`);
-                dot.addEventListener('click', () => goToTestimonial(index));
-                dotsContainer.appendChild(dot);
-            });
-
-            function goToTestimonial(index) {
-                currentTestimonial = index;
-                const cardWidth = testimonialCards[0].offsetWidth + 30;
-                testimonialTrack.style.transform = `translateX(-${index * cardWidth}px)`;
-                
-                dotsContainer.querySelectorAll('.slider-dot').forEach((dot, i) => {
-                    dot.classList.toggle('active', i === index);
-                });
-            }
-
-            if (prevBtn) {
-                prevBtn.addEventListener('click', () => {
-                    currentTestimonial = currentTestimonial > 0 ? currentTestimonial - 1 : testimonialCards.length - 1;
-                    goToTestimonial(currentTestimonial);
-                });
-            }
-
-            if (nextBtn) {
-                nextBtn.addEventListener('click', () => {
-                    currentTestimonial = currentTestimonial < testimonialCards.length - 1 ? currentTestimonial + 1 : 0;
-                    goToTestimonial(currentTestimonial);
-                });
-            }
-
-            // Auto-play
-            setInterval(() => {
-                currentTestimonial = (currentTestimonial + 1) % testimonialCards.length;
-                goToTestimonial(currentTestimonial);
-            }, 5000);
-        }
-
     });
 </script>
 @endpush
