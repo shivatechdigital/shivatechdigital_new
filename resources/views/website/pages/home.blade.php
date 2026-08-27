@@ -896,7 +896,7 @@
     <section class="about-preview py-5" id="about-us" aria-labelledby="about-heading">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6" data-aos="fade-right" style="margin-top:10px">
+                <div class="col-lg-6" data-aos="fade-right" style="margin-bottom:10px">
                     <div class="about-image-wrapper">
                         <img src="{{ asset('web_assets/img/about-team.jpg') }}" 
                              alt="Shiva Tech Digital team working on web development projects in Noida office"
