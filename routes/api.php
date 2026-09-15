@@ -15,6 +15,7 @@ Route::post('/upload-base64-image', [N8nBlogController::class, 'uploadBase64Imag
 Route::prefix('seo')->group(function () {
     // Blog Management
     Route::post('/blog/draft', [SeoController::class, 'createDraft']);
+    Route::get('/blog/{id}', [SeoController::class, 'getBlog']);
     Route::put('/blog/{id}', [SeoController::class, 'updateBlog']);
     Route::post('/blog/{id}/publish', [SeoController::class, 'publishBlog']);
     Route::get('/blog/pending', [SeoController::class, 'getPendingBlogs']);

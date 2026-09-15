@@ -276,9 +276,27 @@ class SeoController extends Controller
     }
 
     /**
-     * PUT /api/seo/blog/{id}
-     * Update blog draft
+     * GET /api/seo/blog/{id}
+     * Get blog post by ID for SEO automation
      */
+    public function getBlog(int $id): JsonResponse
+    {
+        $blog = BlogPost::find($id);
+
+        if (!$blog) {
+            return response()->json([
+                "success" => false,
+                "message" => "Blog not found",
+            ], 404);
+        }
+
+        return response()->json([
+            "success" => true,
+            "data" => $blog->fresh(),
+        ]);
+    }
+
+
     public function updateBlog(Request $request, int $id): JsonResponse
     {
         $blog = BlogPost::find($id);
