@@ -119,7 +119,8 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        return view('adminDashboard.pages.posts.create', compact('categories', 'tags'));
+        $internalLinkCandidates = $this->internalLinkCandidates();
+        return view('adminDashboard.pages.posts.create', compact('categories', 'tags', 'internalLinkCandidates'));
     }
 
     public function store(Request $request)
@@ -177,7 +178,58 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        return view('adminDashboard.pages.posts.edit', compact('post', 'categories', 'tags'));
+        $internalLinkCandidates = $this->internalLinkCandidates($post);
+        return view('adminDashboard.pages.posts.edit', compact('post', 'categories', 'tags', 'internalLinkCandidates'));
+    }
+
+    private function internalLinkCandidates(?Post $currentPost = null): array
+    {
+        $serviceLinks = [
+            ['title' => 'Web Development Services', 'url' => route('services.web-development', [], false), 'keywords' => 'website web development Laravel React Next.js PHP'],
+            ['title' => 'Web Development in Noida', 'url' => route('services.web-development-noida', [], false), 'keywords' => 'Noida website web development'],
+            ['title' => 'Web Development in Delhi', 'url' => route('services.web-development-delhi', [], false), 'keywords' => 'Delhi website web development'],
+            ['title' => 'Web Development in Gurgaon', 'url' => route('services.web-development-gurgaon', [], false), 'keywords' => 'Gurgaon website web development'],
+            ['title' => 'Web Development in Ghaziabad', 'url' => route('services.web-development-ghaziabad', [], false), 'keywords' => 'Ghaziabad website web development'],
+            ['title' => 'Mobile App Development', 'url' => route('services.mobile-app', [], false), 'keywords' => 'mobile app Android iOS application'],
+            ['title' => 'Mobile App Development in Noida', 'url' => route('services.mobile-app-noida', [], false), 'keywords' => 'Noida mobile app Android iOS'],
+            ['title' => 'Mobile App Development in Delhi', 'url' => route('services.mobile-app-delhi', [], false), 'keywords' => 'Delhi mobile app Android iOS'],
+            ['title' => 'Mobile App Development in Gurgaon', 'url' => route('services.mobile-app-gurgaon', [], false), 'keywords' => 'Gurgaon mobile app Android iOS'],
+            ['title' => 'Mobile App Development in Ghaziabad', 'url' => route('services.mobile-app-ghaziabad', [], false), 'keywords' => 'Ghaziabad mobile app Android iOS'],
+            ['title' => 'Ecommerce Development', 'url' => route('services.ecommerce', [], false), 'keywords' => 'ecommerce e-commerce Shopify WooCommerce online store'],
+            ['title' => 'Digital Marketing', 'url' => route('services.digital-marketing', [], false), 'keywords' => 'digital marketing growth campaigns leads'],
+            ['title' => 'SEO Services', 'url' => route('services.seo', [], false), 'keywords' => 'SEO search engine optimization organic search'],
+            ['title' => 'Social Media Marketing', 'url' => route('services.social-media', [], false), 'keywords' => 'social media Instagram Facebook reels'],
+            ['title' => 'Content Marketing', 'url' => route('services.content', [], false), 'keywords' => 'content marketing blogging content strategy'],
+            ['title' => 'Cloud Solutions', 'url' => route('services.cloud', [], false), 'keywords' => 'cloud AWS Azure migration infrastructure'],
+            ['title' => 'Cloud Migration in Noida', 'url' => route('services.cloud-migration-noida', [], false), 'keywords' => 'Noida cloud migration AWS Azure'],
+            ['title' => 'Cloud Migration in Delhi', 'url' => route('services.cloud-migration-delhi', [], false), 'keywords' => 'Delhi cloud migration AWS Azure'],
+            ['title' => 'Cloud Migration in Gurgaon', 'url' => route('services.cloud-migration-gurgaon', [], false), 'keywords' => 'Gurgaon cloud migration AWS Azure'],
+            ['title' => 'Cloud Migration in Ghaziabad', 'url' => route('services.cloud-migration-ghaziabad', [], false), 'keywords' => 'Ghaziabad cloud migration AWS Azure'],
+            ['title' => 'UI/UX Design', 'url' => route('services.ui-ux', [], false), 'keywords' => 'UI UX user experience interface design'],
+            ['title' => 'Branding Services', 'url' => route('services.branding', [], false), 'keywords' => 'branding brand identity'],
+            ['title' => 'Graphic Design', 'url' => route('services.graphic-design', [], false), 'keywords' => 'graphic design visual creative'],
+            ['title' => 'Video Production', 'url' => route('services.video', [], false), 'keywords' => 'video production video marketing'],
+        ];
+
+        $blogLinks = Post::published()
+            ->when($currentPost, fn ($query) => $query->where('id', '!=', $currentPost->getKey()))
+            ->with('category:id,name')
+            ->latest('published_at')
+            ->limit(100)
+            ->get(['id', 'title', 'slug', 'focus_keyword', 'excerpt', 'category_id'])
+            ->map(fn (Post $post) => [
+                'title' => $post->title,
+                'url' => route('blog.show', $post->slug, false),
+                'keywords' => implode(' ', array_filter([
+                    $post->title,
+                    $post->focus_keyword,
+                    strip_tags((string) $post->excerpt),
+                    $post->category?->name,
+                ])),
+            ])
+            ->all();
+
+        return array_merge($serviceLinks, $blogLinks);
     }
 
     public function update(Request $request, Post $post)

@@ -536,6 +536,7 @@
                             <small class="text-muted mt-1 d-block">
                                 Word count: <span id="wordCount">0</span> words
                             </small>
+                            @include('adminDashboard.pages.posts.partials.internal-link-suggestions')
                             @error('content')
                                 <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
@@ -847,6 +848,7 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+<script src="{{ asset('admin_assets/js/internal-link-suggestions.js') }}"></script>
 <script>
     let editorInstance;
     let isSourceMode = false;
@@ -953,6 +955,7 @@
         })
         .then(editor => {
             editorInstance = editor;
+            window.initInternalLinkSuggestions?.(editor);
             console.log('CKEditor initialized successfully');
             
             // Update word count on change
